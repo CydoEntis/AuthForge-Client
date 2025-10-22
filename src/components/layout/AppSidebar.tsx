@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/sidebar";
 import { NavUser } from "../shared/NavUser";
 import { NavMain } from "../shared/NavMain";
+import { ThemeToggle } from "@/features/theme/ThemeToggle";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const data = {
@@ -39,7 +40,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <a href="#">
-                <div className="bg-black  flex aspect-square size-8 items-center justify-center rounded-lg">
+                <div className="bg-card  flex aspect-square size-8 items-center justify-center rounded-lg">
                   <Anvil className="text-orange-400" size={20} />
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
@@ -62,6 +63,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
         </SidebarContent>
         <SidebarFooter>
+          <div className="px-2">
+            <ThemeToggle />
+          </div>
+
           <NavUser user={data.user} />
         </SidebarFooter>
       </SidebarContent>
