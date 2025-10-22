@@ -9,18 +9,30 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as privateRouteRouteImport } from './routes/(private)/route'
-import { Route as privateIndexRouteImport } from './routes/(private)/index'
+import { Route as PrivateRouteRouteImport } from './routes/private/route'
+import { Route as publicRouteRouteImport } from './routes/(public)/route'
+import { Route as PrivateIndexRouteImport } from './routes/private/index'
+import { Route as publicIndexRouteImport } from './routes/(public)/index'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
 
-const privateRouteRoute = privateRouteRouteImport.update({
-  id: '/(private)',
+const PrivateRouteRoute = PrivateRouteRouteImport.update({
+  id: '/private',
+  path: '/private',
   getParentRoute: () => rootRouteImport,
 } as any)
-const privateIndexRoute = privateIndexRouteImport.update({
+const publicRouteRoute = publicRouteRouteImport.update({
+  id: '/(public)',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivateIndexRoute = PrivateIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => privateRouteRoute,
+  getParentRoute: () => PrivateRouteRoute,
+} as any)
+const publicIndexRoute = publicIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => publicRouteRoute,
 } as any)
 const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
   id: '/demo/tanstack-query',
@@ -29,47 +41,73 @@ const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/private': typeof PrivateRouteRouteWithChildren
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/': typeof privateIndexRoute
+  '/': typeof publicIndexRoute
+  '/private/': typeof PrivateIndexRoute
 }
 export interface FileRoutesByTo {
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/': typeof privateIndexRoute
+  '/': typeof publicIndexRoute
+  '/private': typeof PrivateIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/(private)': typeof privateRouteRouteWithChildren
+  '/(public)': typeof publicRouteRouteWithChildren
+  '/private': typeof PrivateRouteRouteWithChildren
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/(private)/': typeof privateIndexRoute
+  '/(public)/': typeof publicIndexRoute
+  '/private/': typeof PrivateIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/demo/tanstack-query' | '/'
+  fullPaths: '/private' | '/demo/tanstack-query' | '/' | '/private/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/demo/tanstack-query' | '/'
-  id: '__root__' | '/(private)' | '/demo/tanstack-query' | '/(private)/'
+  to: '/demo/tanstack-query' | '/' | '/private'
+  id:
+    | '__root__'
+    | '/(public)'
+    | '/private'
+    | '/demo/tanstack-query'
+    | '/(public)/'
+    | '/private/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  privateRouteRoute: typeof privateRouteRouteWithChildren
+  publicRouteRoute: typeof publicRouteRouteWithChildren
+  PrivateRouteRoute: typeof PrivateRouteRouteWithChildren
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/(private)': {
-      id: '/(private)'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof privateRouteRouteImport
+    '/private': {
+      id: '/private'
+      path: '/private'
+      fullPath: '/private'
+      preLoaderRoute: typeof PrivateRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(private)/': {
-      id: '/(private)/'
+    '/(public)': {
+      id: '/(public)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof publicRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/private/': {
+      id: '/private/'
+      path: '/'
+      fullPath: '/private/'
+      preLoaderRoute: typeof PrivateIndexRouteImport
+      parentRoute: typeof PrivateRouteRoute
+    }
+    '/(public)/': {
+      id: '/(public)/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof privateIndexRouteImport
-      parentRoute: typeof privateRouteRoute
+      preLoaderRoute: typeof publicIndexRouteImport
+      parentRoute: typeof publicRouteRoute
     }
     '/demo/tanstack-query': {
       id: '/demo/tanstack-query'
@@ -81,20 +119,33 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface privateRouteRouteChildren {
-  privateIndexRoute: typeof privateIndexRoute
+interface publicRouteRouteChildren {
+  publicIndexRoute: typeof publicIndexRoute
 }
 
-const privateRouteRouteChildren: privateRouteRouteChildren = {
-  privateIndexRoute: privateIndexRoute,
+const publicRouteRouteChildren: publicRouteRouteChildren = {
+  publicIndexRoute: publicIndexRoute,
 }
 
-const privateRouteRouteWithChildren = privateRouteRoute._addFileChildren(
-  privateRouteRouteChildren,
+const publicRouteRouteWithChildren = publicRouteRoute._addFileChildren(
+  publicRouteRouteChildren,
+)
+
+interface PrivateRouteRouteChildren {
+  PrivateIndexRoute: typeof PrivateIndexRoute
+}
+
+const PrivateRouteRouteChildren: PrivateRouteRouteChildren = {
+  PrivateIndexRoute: PrivateIndexRoute,
+}
+
+const PrivateRouteRouteWithChildren = PrivateRouteRoute._addFileChildren(
+  PrivateRouteRouteChildren,
 )
 
 const rootRouteChildren: RootRouteChildren = {
-  privateRouteRoute: privateRouteRouteWithChildren,
+  publicRouteRoute: publicRouteRouteWithChildren,
+  PrivateRouteRoute: PrivateRouteRouteWithChildren,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
 }
 export const routeTree = rootRouteImport
