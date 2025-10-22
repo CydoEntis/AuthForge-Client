@@ -39,7 +39,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <a href="#">
-                <div className="bg-primary  flex aspect-square size-8 items-center justify-center rounded-lg">
+                <div className="bg-black  flex aspect-square size-8 items-center justify-center rounded-lg">
                   <Anvil className="text-orange-400" size={20} />
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
