@@ -5,6 +5,7 @@ import { useRegisterAdminForm } from "../hooks/useRegisterAdminForm";
 import { FormInput } from "@/components/shared/FormInput";
 import { FormRow } from "@/components/shared/FormRow";
 import FormError from "@/components/shared/FormError";
+import { LoadingButton } from "@/components/shared/LoadingButton";
 
 function RegisterAdmin() {
   const { form, handleSubmit, isLoading, error } = useRegisterAdminForm();
@@ -24,9 +25,9 @@ function RegisterAdmin() {
 
           {error && <FormError message={(error as Error).message} />}
 
-          <Button type="submit" className="w-full mt-8" disabled={isLoading}>
-            {isLoading ? "Creating..." : "Create Account"}
-          </Button>
+          <LoadingButton type="submit" className="w-full mt-8" isLoading={isLoading} loadingText="Setting up...">
+            Setup Account
+          </LoadingButton>
         </form>
       </Form>
     </AuthCard>
