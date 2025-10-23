@@ -42,7 +42,7 @@ function RouteComponent() {
     <div className="w-full min-h-screen flex items-center justify-center p-4 ">
       <Card
         className="max-w-[500px] w-full rounded-xl px-6 pb-12 bg-background 
-  bg-linear-to-b from-primary/15 via-background to-bg-background 
+  bg-linear-to-b from-primary/15 via-background to-bg-background border-4 
     shadow-xl z-50"
       >
         <CardHeader className="text-center text-white text-2xl font-semibold mb-4">
