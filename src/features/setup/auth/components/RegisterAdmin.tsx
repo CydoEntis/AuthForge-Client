@@ -22,8 +22,7 @@ function RegisterAdmin() {
           <FormInput form={form} name="password" label="Password" placeholder="******" type="password" />
           <FormInput form={form} name="confirmPassword" label="Confirm Password" placeholder="******" type="password" />
 
-          {/* {error && <FormError message={(error as Error).message} />} */}
-          {error && <FormError message="Internal server error occurred. Please try again later." />}
+          {error && <FormError message={(error as Error).message} />}
 
           <Button type="submit" className="w-full mt-8" disabled={isLoading}>
             {isLoading ? "Creating..." : "Create Account"}
