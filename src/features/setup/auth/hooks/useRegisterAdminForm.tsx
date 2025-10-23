@@ -23,6 +23,7 @@ export function useRegisterAdminForm() {
     form,
     handleSubmit,
     isLoading: mutation.isPending,
-    error: mutation.isError ? mutation.error : null,
+    // error: mutation.isError ? mutation.error : null,
+    error: true,
   };
 }

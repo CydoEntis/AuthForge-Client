@@ -4,6 +4,7 @@ import { Form } from "@/components/ui/form";
 import { useRegisterAdminForm } from "../hooks/useRegisterAdminForm";
 import { FormInput } from "@/components/shared/FormInput";
 import { FormRow } from "@/components/shared/FormRow";
+import FormError from "@/components/shared/FormError";
 
 function RegisterAdmin() {
   const { form, handleSubmit, isLoading, error } = useRegisterAdminForm();
@@ -20,8 +21,12 @@ function RegisterAdmin() {
           <FormInput form={form} name="email" label="Email" placeholder="example@email.com" />
           <FormInput form={form} name="password" label="Password" placeholder="******" type="password" />
           <FormInput form={form} name="confirmPassword" label="Confirm Password" placeholder="******" type="password" />
-          <Button type="submit" className="w-full mt-8">
-            Create Account
+
+          {/* {error && <FormError message={(error as Error).message} />} */}
+          {error && <FormError message="Internal server error occurred. Please try again later." />}
+
+          <Button type="submit" className="w-full mt-8" disabled={isLoading}>
+            {isLoading ? "Creating..." : "Create Account"}
           </Button>
         </form>
       </Form>
