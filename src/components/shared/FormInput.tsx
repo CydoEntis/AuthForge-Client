@@ -8,9 +8,18 @@ interface FormInputProps {
   placeholder?: string;
   type?: string;
   className?: string;
+  isLoading?: boolean;
 }
 
-export function FormInput({ form, name, label, placeholder, type = "text", className }: FormInputProps) {
+export function FormInput({
+  form,
+  name,
+  label,
+  placeholder,
+  type = "text",
+  className,
+  isLoading = false,
+}: FormInputProps) {
   return (
     <FormField
       control={form.control}
@@ -19,7 +28,7 @@ export function FormInput({ form, name, label, placeholder, type = "text", class
         <FormItem className={className}>
           <FormLabel className="text-white">{label}</FormLabel>
           <FormControl>
-            <Input {...field} type={type} placeholder={placeholder} />
+            <Input {...field} type={type} placeholder={placeholder} disabled={isLoading} />
           </FormControl>
           <FormMessage />
         </FormItem>
