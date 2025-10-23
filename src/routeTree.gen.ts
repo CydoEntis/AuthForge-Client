@@ -9,105 +9,90 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as PrivateRouteRouteImport } from './routes/private/route'
 import { Route as publicRouteRouteImport } from './routes/(public)/route'
-import { Route as PrivateIndexRouteImport } from './routes/private/index'
-import { Route as publicIndexRouteImport } from './routes/(public)/index'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
+import { Route as publicDashboardRouteRouteImport } from './routes/(public)/dashboard/route'
+import { Route as publicauthRouteRouteImport } from './routes/(public)/(auth)/route'
+import { Route as publicDashboardIndexRouteImport } from './routes/(public)/dashboard/index'
+import { Route as publicauthAuthRouteImport } from './routes/(public)/(auth)/auth'
 
-const PrivateRouteRoute = PrivateRouteRouteImport.update({
-  id: '/private',
-  path: '/private',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const publicRouteRoute = publicRouteRouteImport.update({
   id: '/(public)',
   getParentRoute: () => rootRouteImport,
-} as any)
-const PrivateIndexRoute = PrivateIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => PrivateRouteRoute,
-} as any)
-const publicIndexRoute = publicIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => publicRouteRoute,
 } as any)
 const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
   id: '/demo/tanstack-query',
   path: '/demo/tanstack-query',
   getParentRoute: () => rootRouteImport,
 } as any)
+const publicDashboardRouteRoute = publicDashboardRouteRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => publicRouteRoute,
+} as any)
+const publicauthRouteRoute = publicauthRouteRouteImport.update({
+  id: '/(auth)',
+  getParentRoute: () => publicRouteRoute,
+} as any)
+const publicDashboardIndexRoute = publicDashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => publicDashboardRouteRoute,
+} as any)
+const publicauthAuthRoute = publicauthAuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => publicauthRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/private': typeof PrivateRouteRouteWithChildren
+  '/dashboard': typeof publicDashboardRouteRouteWithChildren
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/': typeof publicIndexRoute
-  '/private/': typeof PrivateIndexRoute
+  '/auth': typeof publicauthAuthRoute
+  '/dashboard/': typeof publicDashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/': typeof publicIndexRoute
-  '/private': typeof PrivateIndexRoute
+  '/auth': typeof publicauthAuthRoute
+  '/dashboard': typeof publicDashboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(public)': typeof publicRouteRouteWithChildren
-  '/private': typeof PrivateRouteRouteWithChildren
+  '/(public)/(auth)': typeof publicauthRouteRouteWithChildren
+  '/(public)/dashboard': typeof publicDashboardRouteRouteWithChildren
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/(public)/': typeof publicIndexRoute
-  '/private/': typeof PrivateIndexRoute
+  '/(public)/(auth)/auth': typeof publicauthAuthRoute
+  '/(public)/dashboard/': typeof publicDashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/private' | '/demo/tanstack-query' | '/' | '/private/'
+  fullPaths: '/dashboard' | '/demo/tanstack-query' | '/auth' | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/demo/tanstack-query' | '/' | '/private'
+  to: '/demo/tanstack-query' | '/auth' | '/dashboard'
   id:
     | '__root__'
     | '/(public)'
-    | '/private'
+    | '/(public)/(auth)'
+    | '/(public)/dashboard'
     | '/demo/tanstack-query'
-    | '/(public)/'
-    | '/private/'
+    | '/(public)/(auth)/auth'
+    | '/(public)/dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   publicRouteRoute: typeof publicRouteRouteWithChildren
-  PrivateRouteRoute: typeof PrivateRouteRouteWithChildren
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/private': {
-      id: '/private'
-      path: '/private'
-      fullPath: '/private'
-      preLoaderRoute: typeof PrivateRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/(public)': {
       id: '/(public)'
       path: ''
       fullPath: ''
       preLoaderRoute: typeof publicRouteRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/private/': {
-      id: '/private/'
-      path: '/'
-      fullPath: '/private/'
-      preLoaderRoute: typeof PrivateIndexRouteImport
-      parentRoute: typeof PrivateRouteRoute
-    }
-    '/(public)/': {
-      id: '/(public)/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof publicIndexRouteImport
-      parentRoute: typeof publicRouteRoute
     }
     '/demo/tanstack-query': {
       id: '/demo/tanstack-query'
@@ -116,36 +101,76 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoTanstackQueryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(public)/dashboard': {
+      id: '/(public)/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof publicDashboardRouteRouteImport
+      parentRoute: typeof publicRouteRoute
+    }
+    '/(public)/(auth)': {
+      id: '/(public)/(auth)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof publicauthRouteRouteImport
+      parentRoute: typeof publicRouteRoute
+    }
+    '/(public)/dashboard/': {
+      id: '/(public)/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof publicDashboardIndexRouteImport
+      parentRoute: typeof publicDashboardRouteRoute
+    }
+    '/(public)/(auth)/auth': {
+      id: '/(public)/(auth)/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof publicauthAuthRouteImport
+      parentRoute: typeof publicauthRouteRoute
+    }
   }
 }
 
+interface publicauthRouteRouteChildren {
+  publicauthAuthRoute: typeof publicauthAuthRoute
+}
+
+const publicauthRouteRouteChildren: publicauthRouteRouteChildren = {
+  publicauthAuthRoute: publicauthAuthRoute,
+}
+
+const publicauthRouteRouteWithChildren = publicauthRouteRoute._addFileChildren(
+  publicauthRouteRouteChildren,
+)
+
+interface publicDashboardRouteRouteChildren {
+  publicDashboardIndexRoute: typeof publicDashboardIndexRoute
+}
+
+const publicDashboardRouteRouteChildren: publicDashboardRouteRouteChildren = {
+  publicDashboardIndexRoute: publicDashboardIndexRoute,
+}
+
+const publicDashboardRouteRouteWithChildren =
+  publicDashboardRouteRoute._addFileChildren(publicDashboardRouteRouteChildren)
+
 interface publicRouteRouteChildren {
-  publicIndexRoute: typeof publicIndexRoute
+  publicauthRouteRoute: typeof publicauthRouteRouteWithChildren
+  publicDashboardRouteRoute: typeof publicDashboardRouteRouteWithChildren
 }
 
 const publicRouteRouteChildren: publicRouteRouteChildren = {
-  publicIndexRoute: publicIndexRoute,
+  publicauthRouteRoute: publicauthRouteRouteWithChildren,
+  publicDashboardRouteRoute: publicDashboardRouteRouteWithChildren,
 }
 
 const publicRouteRouteWithChildren = publicRouteRoute._addFileChildren(
   publicRouteRouteChildren,
 )
 
-interface PrivateRouteRouteChildren {
-  PrivateIndexRoute: typeof PrivateIndexRoute
-}
-
-const PrivateRouteRouteChildren: PrivateRouteRouteChildren = {
-  PrivateIndexRoute: PrivateIndexRoute,
-}
-
-const PrivateRouteRouteWithChildren = PrivateRouteRoute._addFileChildren(
-  PrivateRouteRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   publicRouteRoute: publicRouteRouteWithChildren,
-  PrivateRouteRoute: PrivateRouteRouteWithChildren,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
 }
 export const routeTree = rootRouteImport
