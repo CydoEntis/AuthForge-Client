@@ -9,13 +9,19 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as setupRouteRouteImport } from './routes/(setup)/route'
 import { Route as publicRouteRouteImport } from './routes/(public)/route'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
+import { Route as setupSetupRouteImport } from './routes/(setup)/setup'
 import { Route as publicDashboardRouteRouteImport } from './routes/(public)/dashboard/route'
 import { Route as publicauthRouteRouteImport } from './routes/(public)/(auth)/route'
 import { Route as publicDashboardIndexRouteImport } from './routes/(public)/dashboard/index'
-import { Route as publicauthAuthRouteImport } from './routes/(public)/(auth)/auth'
+import { Route as publicauthLoginRouteImport } from './routes/(public)/(auth)/login'
 
+const setupRouteRoute = setupRouteRouteImport.update({
+  id: '/(setup)',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const publicRouteRoute = publicRouteRouteImport.update({
   id: '/(public)',
   getParentRoute: () => rootRouteImport,
@@ -24,6 +30,11 @@ const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
   id: '/demo/tanstack-query',
   path: '/demo/tanstack-query',
   getParentRoute: () => rootRouteImport,
+} as any)
+const setupSetupRoute = setupSetupRouteImport.update({
+  id: '/setup',
+  path: '/setup',
+  getParentRoute: () => setupRouteRoute,
 } as any)
 const publicDashboardRouteRoute = publicDashboardRouteRouteImport.update({
   id: '/dashboard',
@@ -39,54 +50,73 @@ const publicDashboardIndexRoute = publicDashboardIndexRouteImport.update({
   path: '/',
   getParentRoute: () => publicDashboardRouteRoute,
 } as any)
-const publicauthAuthRoute = publicauthAuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
+const publicauthLoginRoute = publicauthLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => publicauthRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/dashboard': typeof publicDashboardRouteRouteWithChildren
+  '/setup': typeof setupSetupRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/auth': typeof publicauthAuthRoute
+  '/login': typeof publicauthLoginRoute
   '/dashboard/': typeof publicDashboardIndexRoute
 }
 export interface FileRoutesByTo {
+  '/setup': typeof setupSetupRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/auth': typeof publicauthAuthRoute
+  '/login': typeof publicauthLoginRoute
   '/dashboard': typeof publicDashboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(public)': typeof publicRouteRouteWithChildren
+  '/(setup)': typeof setupRouteRouteWithChildren
   '/(public)/(auth)': typeof publicauthRouteRouteWithChildren
   '/(public)/dashboard': typeof publicDashboardRouteRouteWithChildren
+  '/(setup)/setup': typeof setupSetupRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/(public)/(auth)/auth': typeof publicauthAuthRoute
+  '/(public)/(auth)/login': typeof publicauthLoginRoute
   '/(public)/dashboard/': typeof publicDashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/dashboard' | '/demo/tanstack-query' | '/auth' | '/dashboard/'
+  fullPaths:
+    | '/dashboard'
+    | '/setup'
+    | '/demo/tanstack-query'
+    | '/login'
+    | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/demo/tanstack-query' | '/auth' | '/dashboard'
+  to: '/setup' | '/demo/tanstack-query' | '/login' | '/dashboard'
   id:
     | '__root__'
     | '/(public)'
+    | '/(setup)'
     | '/(public)/(auth)'
     | '/(public)/dashboard'
+    | '/(setup)/setup'
     | '/demo/tanstack-query'
-    | '/(public)/(auth)/auth'
+    | '/(public)/(auth)/login'
     | '/(public)/dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   publicRouteRoute: typeof publicRouteRouteWithChildren
+  setupRouteRoute: typeof setupRouteRouteWithChildren
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/(setup)': {
+      id: '/(setup)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof setupRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(public)': {
       id: '/(public)'
       path: ''
@@ -100,6 +130,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/demo/tanstack-query'
       preLoaderRoute: typeof DemoTanstackQueryRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/(setup)/setup': {
+      id: '/(setup)/setup'
+      path: '/setup'
+      fullPath: '/setup'
+      preLoaderRoute: typeof setupSetupRouteImport
+      parentRoute: typeof setupRouteRoute
     }
     '/(public)/dashboard': {
       id: '/(public)/dashboard'
@@ -122,22 +159,22 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicDashboardIndexRouteImport
       parentRoute: typeof publicDashboardRouteRoute
     }
-    '/(public)/(auth)/auth': {
-      id: '/(public)/(auth)/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof publicauthAuthRouteImport
+    '/(public)/(auth)/login': {
+      id: '/(public)/(auth)/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof publicauthLoginRouteImport
       parentRoute: typeof publicauthRouteRoute
     }
   }
 }
 
 interface publicauthRouteRouteChildren {
-  publicauthAuthRoute: typeof publicauthAuthRoute
+  publicauthLoginRoute: typeof publicauthLoginRoute
 }
 
 const publicauthRouteRouteChildren: publicauthRouteRouteChildren = {
-  publicauthAuthRoute: publicauthAuthRoute,
+  publicauthLoginRoute: publicauthLoginRoute,
 }
 
 const publicauthRouteRouteWithChildren = publicauthRouteRoute._addFileChildren(
@@ -169,8 +206,21 @@ const publicRouteRouteWithChildren = publicRouteRoute._addFileChildren(
   publicRouteRouteChildren,
 )
 
+interface setupRouteRouteChildren {
+  setupSetupRoute: typeof setupSetupRoute
+}
+
+const setupRouteRouteChildren: setupRouteRouteChildren = {
+  setupSetupRoute: setupSetupRoute,
+}
+
+const setupRouteRouteWithChildren = setupRouteRoute._addFileChildren(
+  setupRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   publicRouteRoute: publicRouteRouteWithChildren,
+  setupRouteRoute: setupRouteRouteWithChildren,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
 }
 export const routeTree = rootRouteImport
