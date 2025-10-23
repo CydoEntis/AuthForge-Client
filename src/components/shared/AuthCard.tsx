@@ -1,10 +1,13 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import AuthForgeLogo from "./AuthForgeLogo";
 
 type AuthCardProps = {
+  title: string;
+  subText?: string;
   children: React.ReactNode;
 };
 
-function AuthCard({ children }: AuthCardProps) {
+function AuthCard({ title, subText, children }: AuthCardProps) {
   return (
     <Card
       className="max-w-[500px] w-full rounded-xl px-6 pb-12 bg-background 
@@ -12,9 +15,11 @@ function AuthCard({ children }: AuthCardProps) {
     shadow-xl z-50"
     >
       <CardHeader className="text-center text-white text-2xl font-semibold mb-4">
-        <div className="flex justify-center items-center gap-2"></div>
-        <h3 className="mt-4 text-2xl">Welcome to Auth Forge</h3>
-        <p className="text-muted-foreground text-sm">Please make your admin account.</p>
+        <div className="flex justify-center items-center gap-2">
+          <AuthForgeLogo size={24} />
+        </div>
+        <h3 className="mt-4 text-2xl">{title}</h3>
+        <p className="text-muted-foreground text-sm">{subText}</p>
       </CardHeader>
       <CardContent>{children}</CardContent>
     </Card>
