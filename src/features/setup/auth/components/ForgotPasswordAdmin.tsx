@@ -6,34 +6,26 @@ import { LoadingButton } from "@/components/shared/LoadingButton";
 import { useLoginAdminForm } from "../hooks/useLoginAdminForm";
 import { Link } from "@tanstack/react-router";
 
-function LoginAdmin() {
+function ForgotPasswordAdmin() {
   const { form, handleSubmit, isLoading, error } = useLoginAdminForm();
 
   return (
-    <AuthCard title="Welcome Back" subText="Log in to manage your apps.">
+    <AuthCard title="Forgot Your Password" subText="Enter your email to recover account.">
       <Form {...form}>
         <form onSubmit={handleSubmit} className="space-y-6">
-          <FormInput form={form} name="email" label="Email" placeholder="example@email.com" isLoading={isLoading} />
           <div className="space-y-1">
-            <FormInput
-              form={form}
-              name="password"
-              label="Password"
-              placeholder="******"
-              type="password"
-              isLoading={isLoading}
-            />
+            <FormInput form={form} name="email" label="Email" placeholder="example@email.com" isLoading={isLoading} />
             <div className="w-full flex justify-end text-sm">
-              <Link to="/forgot-password" className="text-primary hover:underline">
-                Forgot Password?
+              <Link to="/login" className="text-primary hover:underline">
+                Rembered your password? Log in
               </Link>
             </div>
           </div>
 
           {error && <FormError message={(error as Error).message} />}
 
-          <LoadingButton type="submit" className="w-full mt-8" isLoading={isLoading} loadingText="Logging In...">
-            Log in
+          <LoadingButton type="submit" className="w-full mt-8" isLoading={isLoading} loadingText="Sending Email...">
+            Forgot Password
           </LoadingButton>
         </form>
       </Form>
@@ -41,4 +33,4 @@ function LoginAdmin() {
   );
 }
 
-export default LoginAdmin;
+export default ForgotPasswordAdmin;

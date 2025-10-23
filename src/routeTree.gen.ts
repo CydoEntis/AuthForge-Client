@@ -17,6 +17,7 @@ import { Route as publicDashboardRouteRouteImport } from './routes/(public)/dash
 import { Route as publicauthRouteRouteImport } from './routes/(public)/(auth)/route'
 import { Route as publicDashboardIndexRouteImport } from './routes/(public)/dashboard/index'
 import { Route as publicauthLoginRouteImport } from './routes/(public)/(auth)/login'
+import { Route as publicauthForgotPasswordRouteImport } from './routes/(public)/(auth)/forgot-password'
 
 const setupRouteRoute = setupRouteRouteImport.update({
   id: '/(setup)',
@@ -55,17 +56,25 @@ const publicauthLoginRoute = publicauthLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => publicauthRouteRoute,
 } as any)
+const publicauthForgotPasswordRoute =
+  publicauthForgotPasswordRouteImport.update({
+    id: '/forgot-password',
+    path: '/forgot-password',
+    getParentRoute: () => publicauthRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/dashboard': typeof publicDashboardRouteRouteWithChildren
   '/setup': typeof setupSetupRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/forgot-password': typeof publicauthForgotPasswordRoute
   '/login': typeof publicauthLoginRoute
   '/dashboard/': typeof publicDashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/setup': typeof setupSetupRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/forgot-password': typeof publicauthForgotPasswordRoute
   '/login': typeof publicauthLoginRoute
   '/dashboard': typeof publicDashboardIndexRoute
 }
@@ -77,6 +86,7 @@ export interface FileRoutesById {
   '/(public)/dashboard': typeof publicDashboardRouteRouteWithChildren
   '/(setup)/setup': typeof setupSetupRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/(public)/(auth)/forgot-password': typeof publicauthForgotPasswordRoute
   '/(public)/(auth)/login': typeof publicauthLoginRoute
   '/(public)/dashboard/': typeof publicDashboardIndexRoute
 }
@@ -86,10 +96,16 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/setup'
     | '/demo/tanstack-query'
+    | '/forgot-password'
     | '/login'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/setup' | '/demo/tanstack-query' | '/login' | '/dashboard'
+  to:
+    | '/setup'
+    | '/demo/tanstack-query'
+    | '/forgot-password'
+    | '/login'
+    | '/dashboard'
   id:
     | '__root__'
     | '/(public)'
@@ -98,6 +114,7 @@ export interface FileRouteTypes {
     | '/(public)/dashboard'
     | '/(setup)/setup'
     | '/demo/tanstack-query'
+    | '/(public)/(auth)/forgot-password'
     | '/(public)/(auth)/login'
     | '/(public)/dashboard/'
   fileRoutesById: FileRoutesById
@@ -166,14 +183,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicauthLoginRouteImport
       parentRoute: typeof publicauthRouteRoute
     }
+    '/(public)/(auth)/forgot-password': {
+      id: '/(public)/(auth)/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof publicauthForgotPasswordRouteImport
+      parentRoute: typeof publicauthRouteRoute
+    }
   }
 }
 
 interface publicauthRouteRouteChildren {
+  publicauthForgotPasswordRoute: typeof publicauthForgotPasswordRoute
   publicauthLoginRoute: typeof publicauthLoginRoute
 }
 
 const publicauthRouteRouteChildren: publicauthRouteRouteChildren = {
+  publicauthForgotPasswordRoute: publicauthForgotPasswordRoute,
   publicauthLoginRoute: publicauthLoginRoute,
 }
 
