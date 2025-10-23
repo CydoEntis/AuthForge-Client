@@ -1,8 +1,9 @@
 import { useAuthForm } from "@/hooks/useAuthForm";
 import { registerAdminSchema } from "../schemas";
 import type { RegisterAdminValues } from "../types";
+import { useRegisterAdminMutation } from "./useRegisterAdminMutation";
 
-export function useRegisterAdminForm(onSubmit: (values: RegisterAdminValues) => void) {
+export function useRegisterAdminForm() {
   const form = useAuthForm<RegisterAdminValues>(registerAdminSchema, {
     username: "",
     firstName: "",
@@ -12,7 +13,16 @@ export function useRegisterAdminForm(onSubmit: (values: RegisterAdminValues) => 
     confirmPassword: "",
   });
 
-  const handleSubmit = form.handleSubmit(onSubmit);
+  const mutation = useRegisterAdminMutation();
 
-  return { form, handleSubmit };
+  const handleSubmit = form.handleSubmit(async (values) => {
+    await mutation.mutateAsync(values);
+  });
+
+  return {
+    form,
+    handleSubmit,
+    isLoading: mutation.isPending,
+    error: mutation.isError ? mutation.error : null,
+  };
 }

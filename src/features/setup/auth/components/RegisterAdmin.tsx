@@ -6,9 +6,7 @@ import { FormInput } from "@/components/shared/FormInput";
 import { FormRow } from "@/components/shared/FormRow";
 
 function RegisterAdmin() {
-  const { form, handleSubmit } = useRegisterAdminForm((values) => {
-    console.log("Register admin:", values);
-  });
+  const { form, handleSubmit, isLoading, error } = useRegisterAdminForm();
 
   return (
     <AuthCard title="Welcome to Auth Forge" subText="Please setup your admin account.">
