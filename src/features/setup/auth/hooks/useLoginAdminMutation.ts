@@ -1,16 +1,34 @@
 import { useMutation } from "@tanstack/react-query";
 import { authApi } from "../api";
 import type { LoginAdminValues } from "../types";
+import { useNavigate } from "@tanstack/react-router";
+import { useAuthStore } from "@/store/useAuthStore";
 
 export function useLoginAdminMutation() {
+  const navigate = useNavigate();
+  const { setTokens, setAdmin } = useAuthStore();
+
   return useMutation({
     mutationFn: (values: LoginAdminValues) => authApi.loginAdmin(values),
     onError: (error: any) => {
       console.error("Login failed:", error.message);
+      // Todo: Add toast notification
     },
     onSuccess: (data) => {
       console.log("Logged in successfully", data);
-      // Todo: Add toast + redirect
+
+      const { accessToken, refreshToken, admin } = data;
+
+      setTokens(accessToken, refreshToken);
+
+      setAdmin({
+        id: admin.id,
+        email: admin.email,
+      });
+
+      navigate({ to: "/dashboard" });
+
+      // Todo: Add success toast
     },
   });
 }

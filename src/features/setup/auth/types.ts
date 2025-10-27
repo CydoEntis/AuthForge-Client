@@ -8,7 +8,11 @@ export type ForgotPasswordAdminValues = z.infer<typeof forgotPasswordAdminSchema
 export type LoginAdminResponse = {
   accessToken: string;
   refreshToken: string;
-  expiresAt: Date;
+  expiresIn: number;
+  admin: {
+    id: string;
+    email: string;
+  };
 };
 
 export type ForgotPasswordAdminResponse = {
