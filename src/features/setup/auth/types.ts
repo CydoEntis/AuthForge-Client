@@ -7,6 +7,10 @@ export type RegisterAdminValues = z.infer<typeof registerAdminSchema>;
 export type LoginAdminValues = z.infer<typeof loginAdminSchema>;
 export type ForgotPasswordAdminValues = z.infer<typeof forgotPasswordAdminSchema>;
 
+export type SetupStatusResponse = {
+  isSetupRequired: boolean;
+};
+
 export type LoginAdminResponse = {
   tokens: TokenPair;
   admin: AdminDetails;

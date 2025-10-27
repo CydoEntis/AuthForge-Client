@@ -6,9 +6,20 @@ import type {
   RegisterAdminValues,
   ForgotPasswordAdminValues,
   ForgotPasswordAdminResponse,
+  SetupStatusResponse,
 } from "./types";
 
 export const authApi = {
+  getSetupStatus: async (): Promise<SetupStatusResponse> => {
+    const res = await apiClient.get<ApiResponse<SetupStatusResponse>>("/admin/setup/status");
+
+    if (!res.success || !res.data) {
+      throw new Error("Failed to get setup status");
+    }
+
+    return res.data;
+  },
+
   registerAdmin: async (values: RegisterAdminValues) => {
     const res = await apiClient.post<ApiResponse<{}>>("/admin/register", values);
     if (!res.success) throw new Error(res.error?.message);
@@ -16,11 +27,9 @@ export const authApi = {
   },
 
   loginAdmin: async (values: LoginAdminValues): Promise<LoginAdminResponse> => {
-    // ✅ Explicitly type the return
     const res = await apiClient.post<ApiResponse<LoginAdminResponse>>("/admin/login", values);
     if (!res.success) throw new Error(res.error?.message);
 
-    // ✅ Assert that data exists
     if (!res.data) {
       throw new Error("Login response is missing data");
     }
