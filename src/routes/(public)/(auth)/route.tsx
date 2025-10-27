@@ -1,21 +1,11 @@
 import { StarsBackground } from "@/components/animate-ui/components/backgrounds/stars";
-import { authApi } from "@/features/setup/auth/api";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/store/useAuthStore";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { useTheme } from "next-themes";
 
 export const Route = createFileRoute("/(public)/(auth)")({
-  beforeLoad: async ({ context }) => {
-    const setupStatus = await context.queryClient.ensureQueryData({
-      queryKey: ["setup-status"],
-      queryFn: authApi.getSetupStatus,
-    });
-
-    if (setupStatus.isSetupRequired) {
-      throw redirect({ to: "/setup" });
-    }
-
+  beforeLoad: async () => {
     const { isAuthenticated } = useAuthStore.getState();
     if (isAuthenticated) {
       throw redirect({ to: "/dashboard" });

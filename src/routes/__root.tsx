@@ -12,30 +12,26 @@ interface MyRouterContext {
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   beforeLoad: async ({ context, location }) => {
-    // Only redirect from root "/" path
     if (location.pathname !== "/") {
       return;
     }
 
-    // Check setup status
     const setupStatus = await context.queryClient.ensureQueryData({
       queryKey: ["setup-status"],
       queryFn: authApi.getSetupStatus,
     });
 
-    // If setup required, redirect to setup
     if (setupStatus.isSetupRequired) {
       throw redirect({ to: "/setup" });
     }
 
-    // Check authentication
     const { isAuthenticated } = useAuthStore.getState();
 
     if (isAuthenticated) {
-      // Authenticated - go to dashboard
       throw redirect({ to: "/dashboard" });
     } else {
-      // Not authenticated - go to login
+      console.log("TO login?");
+
       throw redirect({ to: "/login" });
     }
   },
