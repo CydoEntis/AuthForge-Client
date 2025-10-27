@@ -5,9 +5,6 @@ import { useRegisterAdminMutation } from "./useRegisterAdminMutation";
 
 export function useRegisterAdminForm() {
   const form = useAuthForm<RegisterAdminValues>(registerAdminSchema, {
-    username: "",
-    firstName: "",
-    lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -22,8 +19,7 @@ export function useRegisterAdminForm() {
   return {
     form,
     handleSubmit,
-    // isLoading: mutation.isPending,
-    isLoading: true,
+    isLoading: mutation.isPending,
     error: mutation.isError ? mutation.error : null,
   };
 }
