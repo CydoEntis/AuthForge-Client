@@ -9,3 +9,10 @@ export type ApiResponse<T> = {
   error?: ApiError | null;
   timestamp: string;
 };
+
+export type TokenPair = {
+  accessToken: string;
+  refreshToken: string;
+  accessTokenExpiresAt: string;
+  refreshTokenExpiresAt: string;
+};

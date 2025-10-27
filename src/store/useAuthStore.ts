@@ -1,14 +1,14 @@
-import type { Admin } from "@/types/types";
+import type { AdminDetails } from "@/types/types";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;
-  admin: Admin | null;
+  admin: AdminDetails | null;
   isAuthenticated: boolean;
   setTokens: (accessToken: string, refreshToken: string) => void;
-  setAdmin: (admin: Admin) => void;
+  setAdmin: (admin: AdminDetails) => void;
   updateAccessToken: (accessToken: string) => void;
   logout: () => void;
 }

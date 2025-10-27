@@ -15,20 +15,22 @@ export function useLoginAdminMutation() {
       // Todo: Add toast notification
     },
     onSuccess: (data) => {
+      if (!data) {
+        console.error("Login response is empty");
+        return;
+      }
+
       console.log("Logged in successfully", data);
 
-      const { accessToken, refreshToken, admin } = data;
+      const { tokens, admin } = data;
 
-      setTokens(accessToken, refreshToken);
+      setTokens(tokens.accessToken, tokens.refreshToken);
 
-      setAdmin({
-        id: admin.id,
-        email: admin.email,
-      });
+      setAdmin(admin);
 
       navigate({ to: "/dashboard" });
 
-      // Todo: Add success toast
+      // TODO: Add toast notification
     },
   });
 }
