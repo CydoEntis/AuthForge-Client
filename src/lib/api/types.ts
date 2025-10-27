@@ -1,11 +1,11 @@
 export type ApiError = {
-  Code: string;
-  Message: string;
+  code: string;
+  message: string;
 };
 
 export type ApiResponse<T> = {
-  Success: boolean;
-  Data?: T | null;
-  Error?: ApiError | null;
-  Timestamp: string;
+  success: boolean;
+  data?: T | null;
+  error?: ApiError | null;
+  timestamp: string;
 };
