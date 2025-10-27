@@ -10,6 +10,7 @@ import { routeTree } from "./routeTree.gen";
 import "./styles.css";
 import reportWebVitals from "./reportWebVitals.ts";
 import { ThemeProvider } from "./features/theme/ThemeProvider.tsx";
+import { Toaster } from "sonner";
 
 // Create a new router instance
 
@@ -41,6 +42,7 @@ if (rootElement && !rootElement.innerHTML) {
       <ThemeProvider defaultTheme="dark">
         <TanStackQueryProvider.Provider {...TanStackQueryProviderContext}>
           <RouterProvider router={router} />
+          <Toaster richColors />
         </TanStackQueryProvider.Provider>
       </ThemeProvider>
     </StrictMode>

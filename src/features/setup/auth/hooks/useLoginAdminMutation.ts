@@ -3,6 +3,7 @@ import { authApi } from "../api";
 import type { LoginAdminValues } from "../types";
 import { useNavigate } from "@tanstack/react-router";
 import { useAuthStore } from "@/store/useAuthStore";
+import { toast } from "sonner";
 
 export function useLoginAdminMutation() {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ export function useLoginAdminMutation() {
     mutationFn: (values: LoginAdminValues) => authApi.loginAdmin(values),
     onError: (error: any) => {
       console.error("Login failed:", error.message);
-      // Todo: Add toast notification
+      toast.error("Failed to login. Please check your credentials and try again.");
     },
     onSuccess: (data) => {
       if (!data) {
@@ -20,17 +21,15 @@ export function useLoginAdminMutation() {
         return;
       }
 
-      console.log("Logged in successfully", data);
-
       const { tokens, admin } = data;
 
       setTokens(tokens.accessToken, tokens.refreshToken);
 
       setAdmin(admin);
 
-      navigate({ to: "/dashboard" });
+      toast.success("Login successful!");
 
-      // TODO: Add toast notification
+      navigate({ to: "/dashboard" });
     },
   });
 }
