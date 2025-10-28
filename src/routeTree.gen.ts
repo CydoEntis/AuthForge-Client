@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as setupRouteRouteImport } from './routes/(setup)/route'
 import { Route as publicRouteRouteImport } from './routes/(public)/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PlaygroundIndexRouteImport } from './routes/playground/index'
 import { Route as setupSetupRouteImport } from './routes/(setup)/setup'
 import { Route as publicDashboardRouteRouteImport } from './routes/(public)/dashboard/route'
 import { Route as publicauthRouteRouteImport } from './routes/(public)/(auth)/route'
@@ -30,6 +31,11 @@ const publicRouteRoute = publicRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlaygroundIndexRoute = PlaygroundIndexRouteImport.update({
+  id: '/playground/',
+  path: '/playground/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const setupSetupRoute = setupSetupRouteImport.update({
@@ -67,6 +73,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof publicDashboardRouteRouteWithChildren
   '/setup': typeof setupSetupRoute
+  '/playground': typeof PlaygroundIndexRoute
   '/forgot-password': typeof publicauthForgotPasswordRoute
   '/login': typeof publicauthLoginRoute
   '/dashboard/': typeof publicDashboardIndexRoute
@@ -74,6 +81,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/setup': typeof setupSetupRoute
+  '/playground': typeof PlaygroundIndexRoute
   '/forgot-password': typeof publicauthForgotPasswordRoute
   '/login': typeof publicauthLoginRoute
   '/dashboard': typeof publicDashboardIndexRoute
@@ -86,6 +94,7 @@ export interface FileRoutesById {
   '/(public)/(auth)': typeof publicauthRouteRouteWithChildren
   '/(public)/dashboard': typeof publicDashboardRouteRouteWithChildren
   '/(setup)/setup': typeof setupSetupRoute
+  '/playground/': typeof PlaygroundIndexRoute
   '/(public)/(auth)/forgot-password': typeof publicauthForgotPasswordRoute
   '/(public)/(auth)/login': typeof publicauthLoginRoute
   '/(public)/dashboard/': typeof publicDashboardIndexRoute
@@ -96,11 +105,18 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/setup'
+    | '/playground'
     | '/forgot-password'
     | '/login'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/setup' | '/forgot-password' | '/login' | '/dashboard'
+  to:
+    | '/'
+    | '/setup'
+    | '/playground'
+    | '/forgot-password'
+    | '/login'
+    | '/dashboard'
   id:
     | '__root__'
     | '/'
@@ -109,6 +125,7 @@ export interface FileRouteTypes {
     | '/(public)/(auth)'
     | '/(public)/dashboard'
     | '/(setup)/setup'
+    | '/playground/'
     | '/(public)/(auth)/forgot-password'
     | '/(public)/(auth)/login'
     | '/(public)/dashboard/'
@@ -118,6 +135,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   publicRouteRoute: typeof publicRouteRouteWithChildren
   setupRouteRoute: typeof setupRouteRouteWithChildren
+  PlaygroundIndexRoute: typeof PlaygroundIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -141,6 +159,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/playground/': {
+      id: '/playground/'
+      path: '/playground'
+      fullPath: '/playground'
+      preLoaderRoute: typeof PlaygroundIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(setup)/setup': {
@@ -243,6 +268,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   publicRouteRoute: publicRouteRouteWithChildren,
   setupRouteRoute: setupRouteRouteWithChildren,
+  PlaygroundIndexRoute: PlaygroundIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
