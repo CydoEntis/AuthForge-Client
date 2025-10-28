@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as setupRouteRouteImport } from './routes/(setup)/route'
 import { Route as publicRouteRouteImport } from './routes/(public)/route'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as setupSetupRouteImport } from './routes/(setup)/setup'
 import { Route as publicDashboardRouteRouteImport } from './routes/(public)/dashboard/route'
 import { Route as publicauthRouteRouteImport } from './routes/(public)/(auth)/route'
@@ -24,6 +25,11 @@ const setupRouteRoute = setupRouteRouteImport.update({
 } as any)
 const publicRouteRoute = publicRouteRouteImport.update({
   id: '/(public)',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const setupSetupRoute = setupSetupRouteImport.update({
@@ -58,6 +64,7 @@ const publicauthForgotPasswordRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/dashboard': typeof publicDashboardRouteRouteWithChildren
   '/setup': typeof setupSetupRoute
   '/forgot-password': typeof publicauthForgotPasswordRoute
@@ -65,6 +72,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/': typeof publicDashboardIndexRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/setup': typeof setupSetupRoute
   '/forgot-password': typeof publicauthForgotPasswordRoute
   '/login': typeof publicauthLoginRoute
@@ -72,6 +80,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/(public)': typeof publicRouteRouteWithChildren
   '/(setup)': typeof setupRouteRouteWithChildren
   '/(public)/(auth)': typeof publicauthRouteRouteWithChildren
@@ -84,15 +93,17 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/dashboard'
     | '/setup'
     | '/forgot-password'
     | '/login'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/setup' | '/forgot-password' | '/login' | '/dashboard'
+  to: '/' | '/setup' | '/forgot-password' | '/login' | '/dashboard'
   id:
     | '__root__'
+    | '/'
     | '/(public)'
     | '/(setup)'
     | '/(public)/(auth)'
@@ -104,6 +115,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   publicRouteRoute: typeof publicRouteRouteWithChildren
   setupRouteRoute: typeof setupRouteRouteWithChildren
 }
@@ -122,6 +134,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof publicRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(setup)/setup': {
@@ -221,6 +240,7 @@ const setupRouteRouteWithChildren = setupRouteRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   publicRouteRoute: publicRouteRouteWithChildren,
   setupRouteRoute: setupRouteRouteWithChildren,
 }

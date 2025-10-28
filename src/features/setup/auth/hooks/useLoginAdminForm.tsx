@@ -1,7 +1,11 @@
+// hooks/useLoginAdminForm.ts
 import { useAuthForm } from "@/hooks/useAuthForm";
 import { loginAdminSchema } from "../schemas";
 import type { LoginAdminValues } from "../types";
-import { useLoginAdminMutation } from "./useLoginAdminMutation";
+import { authApi } from "../api";
+import { useNavigate } from "@tanstack/react-router";
+import { useAuthStore } from "@/store/useAuthStore";
+import { useFormMutation } from "@/hooks/useFormMutation";
 
 export function useLoginAdminForm() {
   const form = useAuthForm<LoginAdminValues>(loginAdminSchema, {
@@ -9,11 +13,22 @@ export function useLoginAdminForm() {
     password: "",
   });
 
-  const mutation = useLoginAdminMutation();
+  const navigate = useNavigate();
+  const { setTokens, setAdmin } = useAuthStore();
 
-  const handleSubmit = form.handleSubmit(async (values) => {
-    await mutation.mutateAsync(values);
+  const mutation = useFormMutation({
+    mutationFn: authApi.loginAdmin,
+    setError: form.setError,
+    successMessage: "Login successful!",
+    onSuccess: (data) => {
+      const { tokens, admin } = data;
+      setTokens(tokens.accessToken, tokens.refreshToken);
+      setAdmin(admin);
+      navigate({ to: "/dashboard" });
+    },
   });
+
+  const handleSubmit = form.handleSubmit((values) => mutation.mutate(values));
 
   return {
     form,

@@ -42,7 +42,7 @@ if (rootElement && !rootElement.innerHTML) {
       <ThemeProvider defaultTheme="dark">
         <TanStackQueryProvider.Provider {...TanStackQueryProviderContext}>
           <RouterProvider router={router} />
-          <Toaster richColors />
+          <Toaster richColors position="top-right" />
         </TanStackQueryProvider.Provider>
       </ThemeProvider>
     </StrictMode>

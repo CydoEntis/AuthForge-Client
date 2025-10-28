@@ -7,13 +7,16 @@ import { useLoginAdminForm } from "../hooks/useLoginAdminForm";
 import { Link } from "@tanstack/react-router";
 
 function LoginAdmin() {
-  const { form, handleSubmit, isLoading, error } = useLoginAdminForm();
+  const { form, handleSubmit, isLoading } = useLoginAdminForm();
+
+  console.log("🎨 LoginAdmin rendering, form errors:", form.formState.errors);
 
   return (
     <AuthCard title="Welcome Back" subText="Log in to manage your apps.">
       <Form {...form}>
         <form onSubmit={handleSubmit} className="space-y-6">
           <FormInput form={form} name="email" label="Email" placeholder="example@email.com" isLoading={isLoading} />
+
           <div className="space-y-1">
             <FormInput
               form={form}
@@ -30,7 +33,7 @@ function LoginAdmin() {
             </div>
           </div>
 
-          {error && <FormError message={(error as Error).message} />}
+          {form.formState.errors.root && <FormError message={form.formState.errors.root.message as string} />}
 
           <LoadingButton type="submit" className="w-full mt-8" isLoading={isLoading} loadingText="Logging In...">
             Log in

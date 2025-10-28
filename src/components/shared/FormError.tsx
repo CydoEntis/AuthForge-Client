@@ -1,4 +1,4 @@
-import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+import { Alert, AlertTitle } from "../ui/alert";
 import { CircleAlert } from "lucide-react";
 
 type FormErrorProps = {
@@ -9,8 +9,7 @@ function FormError({ message }: FormErrorProps) {
   return (
     <Alert variant="destructive">
       <CircleAlert />
-      <AlertTitle>Uh oh, something went wrong!</AlertTitle>
-      <AlertDescription>{message}</AlertDescription>
+      <AlertTitle>{message}</AlertTitle>
     </Alert>
   );
 }

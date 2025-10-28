@@ -5,7 +5,7 @@ import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { useTheme } from "next-themes";
 
 export const Route = createFileRoute("/(public)/(auth)")({
-  beforeLoad: async () => {
+  beforeLoad: () => {
     const { isAuthenticated } = useAuthStore.getState();
     if (isAuthenticated) {
       throw redirect({ to: "/dashboard" });

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import RegisterAdmin from "@/features/setup/auth/components/RegisterAdmin";
+import SetupAdmin from "@/features/setup/auth/components/SetupAdmin";
 
 export const Route = createFileRoute("/(setup)/setup")({
   component: RouteComponent,
@@ -8,7 +8,7 @@ export const Route = createFileRoute("/(setup)/setup")({
 function RouteComponent() {
   return (
     <div className="w-full min-h-screen flex items-center justify-center p-4 ">
-      <RegisterAdmin />
+      <SetupAdmin />
     </div>
   );
 }

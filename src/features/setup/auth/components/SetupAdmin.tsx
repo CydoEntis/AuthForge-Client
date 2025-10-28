@@ -1,12 +1,12 @@
 import AuthCard from "@/components/shared/AuthCard";
 import { Form } from "@/components/ui/form";
-import { useRegisterAdminForm } from "../hooks/useRegisterAdminForm";
 import { FormInput } from "@/components/shared/FormInput";
 import FormError from "@/components/shared/FormError";
 import { LoadingButton } from "@/components/shared/LoadingButton";
+import { useSetupAdminForm } from "../hooks/useSetupAdminForm";
 
 function RegisterAdmin() {
-  const { form, handleSubmit, isLoading, error } = useRegisterAdminForm();
+  const { form, handleSubmit, isLoading } = useSetupAdminForm();
 
   return (
     <AuthCard title="Welcome to Auth Forge" subText="Please setup your admin account.">
@@ -30,7 +30,7 @@ function RegisterAdmin() {
             isLoading={isLoading}
           />
 
-          {error && <FormError message={(error as Error).message} />}
+          {form.formState.errors.root && <FormError message={form.formState.errors.root.message!} />}
 
           <LoadingButton type="submit" className="w-full mt-8" isLoading={isLoading} loadingText="Setting up...">
             Setup Account
