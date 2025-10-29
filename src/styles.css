@@ -192,6 +192,19 @@ code {
   --shadow-blur: var(--shadow-blur);
   --shadow-opacity: var(--shadow-opacity);
   --color-shadow-color: var(--shadow-color);
+  --animate-aurora: aurora 60s linear infinite;
+  @keyframes aurora {
+    from {
+      backgroundposition:
+        50% 50%,
+        50% 50%;
+    }
+    to {
+      backgroundposition:
+        350% 50%,
+        350% 50%;
+    }
+  }
 }
 
 @layer base {
@@ -214,6 +227,22 @@ code {
     }
     100% {
       background-position: 0% 80%;
+    }
+  }
+}
+
+@theme inline {
+  --animate-aurora: aurora 60s linear infinite;
+  @keyframes aurora {
+    from {
+      background-position:
+        50% 50%,
+        50% 50%;
+    }
+    to {
+      background-position:
+        350% 50%,
+        350% 50%;
     }
   }
 }
