@@ -7,6 +7,7 @@ import { WizardStep } from "./WizardStep";
 import ConfigureEmailProviderForm from "./ConfigureEmailProviderForm";
 import { EMAIL_PROVIDERS } from "../types";
 import type { AllowedEmailProviders, EmailConfig, SetupWizardStep } from "../types";
+import { Button } from "@/components/ui/button";
 
 export default function SelectEmailProvider({
   selectedProvider = EMAIL_PROVIDERS.SMTP,
@@ -24,6 +25,8 @@ export default function SelectEmailProvider({
   const { theme } = useTheme();
   const resendImg = theme === "dark" ? ResendWhite : ResendBlack;
 
+  const providerNeedsConfig = selectedProvider === EMAIL_PROVIDERS.SMTP || selectedProvider === EMAIL_PROVIDERS.RESEND;
+
   return (
     <WizardStep
       isEmpty={!selectedProvider}
@@ -35,7 +38,7 @@ export default function SelectEmailProvider({
           title={EMAIL_PROVIDERS.SMTP}
           description="Use your existing SMTP credentials"
           icon={<Mail size={80} />}
-          selected={false}
+          selected={selectedProvider === EMAIL_PROVIDERS.SMTP}
           onSelect={() => setSelectedProvider(EMAIL_PROVIDERS.SMTP)}
         />,
         <SetupOptionCard
@@ -43,7 +46,7 @@ export default function SelectEmailProvider({
           title={EMAIL_PROVIDERS.RESEND}
           description="Use Resend’s modern email API"
           imageSrc={resendImg}
-          selected={false}
+          selected={selectedProvider === EMAIL_PROVIDERS.RESEND}
           onSelect={() => setSelectedProvider(EMAIL_PROVIDERS.RESEND)}
         />,
       ]}
@@ -67,14 +70,23 @@ export default function SelectEmailProvider({
             onSelect={() => {}}
           />
           <div className="w-full md:flex-1 flex flex-col items-center md:items-start">
-            <ConfigureEmailProviderForm
-              provider={selectedProvider}
-              initialConfig={emailConfig}
-              onSave={(cfg) => {
-                setEmailConfig(cfg);
-                setStep("done");
-              }}
-            />
+            {providerNeedsConfig ? (
+              <ConfigureEmailProviderForm
+                provider={selectedProvider}
+                initialConfig={emailConfig}
+                onSave={(cfg) => {
+                  setEmailConfig(cfg);
+                  setStep("done");
+                }}
+              />
+            ) : (
+              <div className="p-6 border rounded-lg text-center bg-muted/10 w-full">
+                <p className="text-sm text-muted-foreground mb-4">
+                  No configuration needed — continue to the next step.
+                </p>
+                <Button onClick={() => setStep("done")}>Continue</Button>
+              </div>
+            )}
           </div>
         </div>
       }

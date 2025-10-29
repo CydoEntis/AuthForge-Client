@@ -1,11 +1,9 @@
-import { FormProvider, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { FormProvider } from "react-hook-form";
 import { FormInput } from "@/components/shared/FormInput";
 import { LoadingButton } from "@/components/shared/LoadingButton";
 import FormError from "@/components/shared/FormError";
-import { useFormMutation } from "@/hooks/useFormMutation";
-import { resendSchema, smtpSchema } from "../schemas";
 import type { EmailConfig, AllowedEmailProviders } from "../types";
+import { useConfigureEmailForm } from "../hooks/useConfigureEmailProviderForm";
 
 export default function ConfigureEmailProviderForm({
   provider,
@@ -16,29 +14,12 @@ export default function ConfigureEmailProviderForm({
   initialConfig: EmailConfig;
   onSave: (cfg: EmailConfig) => void;
 }) {
-  const schema = provider === "SMTP" ? smtpSchema : resendSchema;
-
-  const form = useForm<EmailConfig>({
-    resolver: zodResolver(schema),
-    defaultValues: initialConfig,
-  });
-
-  const { mutateAsync, isPending } = useFormMutation({
-    mutationFn: async (values: EmailConfig) => {
-      console.log(`Testing ${provider} config`, values);
-      return new Promise((res) => setTimeout(res, 1000));
-    },
-    setError: form.setError,
-    successMessage: `${provider} configuration works!`,
-  });
+  const { form, handleSubmit, isLoading } = useConfigureEmailForm(provider, initialConfig, onSave);
 
   return (
     <FormProvider {...form}>
-      <form
-        onSubmit={form.handleSubmit((values) => mutateAsync(values).then(() => onSave(values)))}
-        className="space-y-6 w-full"
-      >
-        <h2 className="text-xl font-semibold">Configure {provider === "SMTP" ? "SMTP Server" : "Resend"}</h2>
+      <form onSubmit={handleSubmit} className="space-y-6 w-full">
+        <h2 className="text-xl font-semibold">Configure {provider}</h2>
 
         {provider === "SMTP" ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -54,7 +35,7 @@ export default function ConfigureEmailProviderForm({
         {form.formState.errors.root && <FormError message={form.formState.errors.root.message!} />}
 
         <div className="flex justify-end gap-3">
-          <LoadingButton type="submit" isLoading={isPending} loadingText="Testing configuration...">
+          <LoadingButton type="submit" isLoading={isLoading} loadingText="Testing configuration...">
             Test & Continue
           </LoadingButton>
         </div>

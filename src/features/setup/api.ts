@@ -1,5 +1,11 @@
 import { apiClient } from "@/lib/api/apiClient";
-import type { AllowedDatabases, TestDatabaseConnectionResponse } from "./types";
+import type {
+  AllowedDatabases,
+  AllowedEmailProviders,
+  EmailConfig,
+  TestDatabaseConnectionResponse,
+  TestEmailResponse,
+} from "./types";
 
 export const setupApi = {
   testDBConnection: async (
@@ -9,6 +15,12 @@ export const setupApi = {
     return apiClient.post<TestDatabaseConnectionResponse>("/admin/setup/test-db-connection", {
       databaseType,
       connectionString,
+    });
+  },
+  testEmailProvider: async (provider: AllowedEmailProviders, config: EmailConfig): Promise<TestEmailResponse> => {
+    return apiClient.post<TestEmailResponse>("/admin/setup/test-email", {
+      provider,
+      ...config,
     });
   },
 };

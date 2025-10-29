@@ -34,3 +34,8 @@ export type TestDatabaseConnectionResponse = {
   isSuccessful: boolean;
   message: string;
 };
+
+export type TestEmailResponse = {
+  isSuccessful: boolean;
+  message: string;
+};
