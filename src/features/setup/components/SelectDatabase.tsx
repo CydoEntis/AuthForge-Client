@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import SetupOptionCard from "../auth/components/SetupOptionCard";
 import { DATABASES } from "../types";
 import ConfigureDatabaseForm from "./ConfigureDatabaseForm";

@@ -1,7 +1,7 @@
 import SetupOptionCard from "../auth/components/SetupOptionCard";
 import { Mail } from "lucide-react";
-import ResendBlack from "@/public/resend-icon-black.svg";
-import ResendWhite from "@/public/resend-icon-white.svg";
+import ResendBlack from "@/assets/resend-icon-black.svg";
+import ResendWhite from "@/assets/resend-icon-white.svg";
 import { useTheme } from "@/features/theme/hooks/useTheme";
 import { WizardStep } from "./WizardStep";
 import ConfigureEmailProviderForm from "./ConfigureEmailProviderForm";
