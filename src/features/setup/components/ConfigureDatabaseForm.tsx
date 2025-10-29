@@ -1,39 +1,34 @@
 import FormError from "@/components/shared/FormError";
 import { FormInput } from "@/components/shared/FormInput";
 import { LoadingButton } from "@/components/shared/LoadingButton";
-import { useFormMutation } from "@/hooks/useFormMutation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, useForm } from "react-hook-form";
-import { postgresSchema } from "../schemas";
-import type { PostgresConfig } from "../types";
+import { FormProvider } from "react-hook-form";
+import type { PostgresConfig, AllowedDatabases } from "../types";
+import { useConfigureDatabaseForm } from "../hooks/useConfigureDatabaseForm";
+import { DATABASES } from "../types";
 
 export default function ConfigureDatabaseForm({
+  databaseType,
   initialConfig,
   onSave,
 }: {
+  databaseType: AllowedDatabases;
   initialConfig: PostgresConfig;
   onSave: (cfg: PostgresConfig) => void;
 }) {
-  const form = useForm<PostgresConfig>({
-    resolver: zodResolver(postgresSchema),
-    defaultValues: initialConfig,
-  });
+  const { form, handleSubmit, isLoading } = useConfigureDatabaseForm(databaseType, initialConfig, onSave);
 
-  const { mutateAsync, isPending } = useFormMutation({
-    mutationFn: async (values: PostgresConfig) => {
-      console.log("Testing Postgres config", values);
-      return new Promise((res) => setTimeout(res, 1000));
-    },
-    setError: form.setError,
-    successMessage: "Postgres configuration works!",
-  });
+  if (databaseType === DATABASES.SQLITE) {
+    return (
+      <div className="p-6 border rounded-lg text-center bg-muted/10 w-full">
+        <p>SQLite selected — no configuration required.</p>
+        <LoadingButton onClick={() => onSave(initialConfig)}>Continue</LoadingButton>
+      </div>
+    );
+  }
 
   return (
     <FormProvider {...form}>
-      <form
-        onSubmit={form.handleSubmit((values) => mutateAsync(values).then(() => onSave(values)))}
-        className="space-y-6"
-      >
+      <form onSubmit={handleSubmit} className="space-y-6">
         <h2 className="text-xl font-semibold">Configure Postgres</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormInput form={form} name="host" label="Host" placeholder="localhost" />
@@ -44,7 +39,7 @@ export default function ConfigureDatabaseForm({
         </div>
         {form.formState.errors.root && <FormError message={form.formState.errors.root.message!} />}
         <div className="flex justify-end gap-3">
-          <LoadingButton type="submit" isLoading={isPending} loadingText="Testing configuration...">
+          <LoadingButton type="submit" isLoading={isLoading} loadingText="Testing configuration...">
             Test & Continue
           </LoadingButton>
         </div>

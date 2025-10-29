@@ -1,4 +1,4 @@
-import { useAuthForm } from "@/hooks/useAuthForm";
+import { useZodForm } from "@/hooks/useZodForm";
 import { useFormMutation } from "@/hooks/useFormMutation";
 import { setupAdminSchema } from "../schemas";
 import { useNavigate } from "@tanstack/react-router";
@@ -7,7 +7,7 @@ import { authApi } from "../api";
 import type { SetupAdminValues } from "../types";
 
 export function useSetupAdminForm() {
-  const form = useAuthForm<SetupAdminValues>(setupAdminSchema, {
+  const form = useZodForm<SetupAdminValues>(setupAdminSchema, {
     email: "",
     password: "",
     confirmPassword: "",

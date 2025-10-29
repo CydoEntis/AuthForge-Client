@@ -28,9 +28,7 @@ export default function SelectDatabase({
           key={db}
           title={db}
           description={
-            db === DATABASES.SQLITE
-              ? "No setup needed — start instantly with local storage"
-              : "Connect to your own Postgres instance"
+            db === DATABASES.SQLITE ? "Start instantly with local storage" : "Connect to your own Postgres instance"
           }
           iconClass={db === DATABASES.SQLITE ? "devicon-sqlite-plain" : "devicon-postgresql-plain"}
           selected={selectedDatabase === db}
@@ -43,7 +41,7 @@ export default function SelectDatabase({
             title={selectedDatabase!}
             description={
               selectedDatabase === DATABASES.SQLITE
-                ? "No setup needed — start instantly with local storage"
+                ? "Start instantly with local storage"
                 : "Connect to your own Postgres instance"
             }
             iconClass={selectedDatabase === DATABASES.SQLITE ? "devicon-sqlite-plain" : "devicon-postgresql-plain"}
@@ -51,23 +49,16 @@ export default function SelectDatabase({
             onSelect={() => {}}
           />
           <div className="w-full md:flex-1 flex flex-col items-center md:items-start">
-            {selectedDatabase === DATABASES.POSTGRESQL ? (
+            {selectedDatabase ? (
               <ConfigureDatabaseForm
+                databaseType={selectedDatabase}
                 initialConfig={postgresConfig}
                 onSave={(cfg) => {
                   setPostgresConfig(cfg);
                   setStep("selectEmailProvider");
                 }}
               />
-            ) : (
-              <div className="p-6 border rounded-lg text-center bg-muted/10 w-full">
-                <h3 className="text-xl font-semibold mb-2">SQLite Selected</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  No setup needed — Auth Forge will use a local SQLite database.
-                </p>
-                <Button onClick={() => setStep("selectEmailProvider")}>Continue</Button>
-              </div>
-            )}
+            ) : null}
           </div>
         </div>
       }

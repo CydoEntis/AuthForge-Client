@@ -1,5 +1,5 @@
 // hooks/useLoginAdminForm.ts
-import { useAuthForm } from "@/hooks/useAuthForm";
+import { useZodForm } from "@/hooks/useZodForm";
 import { loginAdminSchema } from "../schemas";
 import type { LoginAdminValues } from "../types";
 import { authApi } from "../api";
@@ -8,7 +8,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { useFormMutation } from "@/hooks/useFormMutation";
 
 export function useLoginAdminForm() {
-  const form = useAuthForm<LoginAdminValues>(loginAdminSchema, {
+  const form = useZodForm<LoginAdminValues>(loginAdminSchema, {
     email: "",
     password: "",
   });

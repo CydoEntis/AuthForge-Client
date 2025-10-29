@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { ZodType } from "zod";
 import type { FieldValues, UseFormReturn } from "react-hook-form";
 
-export function useAuthForm<T extends FieldValues = any>(
+export function useZodForm<T extends FieldValues = any>(
   schema: ZodType<any, any, any>,
   defaultValues?: Partial<T>
 ): UseFormReturn<T> {

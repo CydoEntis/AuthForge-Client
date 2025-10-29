@@ -29,3 +29,8 @@ export type PostgresConfig = z.infer<typeof postgresSchema>;
 export type SmtpConfig = z.infer<typeof smtpSchema>;
 export type ResendConfig = z.infer<typeof resendSchema>;
 export type EmailConfig = SmtpConfig | ResendConfig;
+
+export type TestDatabaseConnectionResponse = {
+  isSuccessful: boolean;
+  message: string;
+};

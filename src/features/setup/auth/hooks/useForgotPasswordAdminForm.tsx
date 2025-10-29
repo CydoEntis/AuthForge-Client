@@ -1,10 +1,10 @@
-import { useAuthForm } from "@/hooks/useAuthForm";
+import { useZodForm } from "@/hooks/useZodForm";
 import { loginAdminSchema } from "../schemas";
 import type { LoginAdminValues } from "../types";
 import { useForgotPasswordAdminMutation } from "./useForgotPasswordAdminMutation";
 
 export function useForgotPasswordAdminForm() {
-  const form = useAuthForm<LoginAdminValues>(loginAdminSchema, {
+  const form = useZodForm<LoginAdminValues>(loginAdminSchema, {
     email: "",
   });
 
