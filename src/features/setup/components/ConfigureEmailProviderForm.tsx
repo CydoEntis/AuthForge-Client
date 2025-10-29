@@ -5,24 +5,26 @@ import { LoadingButton } from "@/components/shared/LoadingButton";
 import FormError from "@/components/shared/FormError";
 import { useFormMutation } from "@/hooks/useFormMutation";
 import { resendSchema, smtpSchema } from "../schemas";
+import type { EmailConfig, AllowedEmailProviders } from "../types";
 
 export default function ConfigureEmailProviderForm({
   provider,
   initialConfig,
   onSave,
 }: {
-  provider: "SMTP" | "Resend";
-  initialConfig: any;
-  onSave: (cfg: any) => void;
+  provider: AllowedEmailProviders;
+  initialConfig: EmailConfig;
+  onSave: (cfg: EmailConfig) => void;
 }) {
   const schema = provider === "SMTP" ? smtpSchema : resendSchema;
-  const form = useForm({
+
+  const form = useForm<EmailConfig>({
     resolver: zodResolver(schema),
     defaultValues: initialConfig,
   });
 
   const { mutateAsync, isPending } = useFormMutation({
-    mutationFn: async (values: any) => {
+    mutationFn: async (values: EmailConfig) => {
       console.log(`Testing ${provider} config`, values);
       return new Promise((res) => setTimeout(res, 1000));
     },

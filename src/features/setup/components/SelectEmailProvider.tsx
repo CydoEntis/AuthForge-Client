@@ -7,6 +7,7 @@ import ResendWhite from "@/public/resend-icon-white.svg";
 import { useTheme } from "@/features/theme/hooks/useTheme";
 import type { AllowedEmailProviders, EmailConfig, SetupWizardStep } from "../types";
 import ConfigureEmailProviderForm from "./ConfigureEmailProviderForm";
+import { EMAIL_PROVIDERS } from "../types";
 
 type SelectEmailProviderProps = {
   selectedProvider: AllowedEmailProviders;
@@ -17,7 +18,7 @@ type SelectEmailProviderProps = {
 };
 
 export default function SelectEmailProvider({
-  selectedProvider = "SMTP",
+  selectedProvider = EMAIL_PROVIDERS.SMTP,
   setSelectedProvider,
   setStep,
   emailConfig,
@@ -48,18 +49,18 @@ export default function SelectEmailProvider({
             className="flex justify-center gap-6"
           >
             <SetupOptionCard
-              title="SMTP"
+              title={EMAIL_PROVIDERS.SMTP}
               description="Use your existing SMTP credentials"
               icon={<Mail size={80} />}
               selected={false}
-              onSelect={() => setSelectedProvider("SMTP")}
+              onSelect={() => setSelectedProvider(EMAIL_PROVIDERS.SMTP)}
             />
             <SetupOptionCard
-              title="Resend"
+              title={EMAIL_PROVIDERS.RESEND}
               description="Use Resend’s modern email API"
               imageSrc={resendImg}
               selected={false}
-              onSelect={() => setSelectedProvider("Resend")}
+              onSelect={() => setSelectedProvider(EMAIL_PROVIDERS.RESEND)}
             />
           </motion.div>
         ) : (
@@ -74,12 +75,12 @@ export default function SelectEmailProvider({
             <SetupOptionCard
               title={selectedProvider}
               description={
-                selectedProvider === "SMTP"
+                selectedProvider === EMAIL_PROVIDERS.SMTP
                   ? "Use your SMTP credentials to send emails"
                   : "Connect your Resend account with an API key"
               }
               icon={
-                selectedProvider === "SMTP" ? (
+                selectedProvider === EMAIL_PROVIDERS.SMTP ? (
                   <Mail size={80} />
                 ) : (
                   <img src={resendImg} alt="Resend" className="w-16 h-16" />
@@ -101,7 +102,7 @@ export default function SelectEmailProvider({
           <Button
             variant="outline"
             className="text-xs opacity-80 hover:opacity-100"
-            onClick={() => setSelectedProvider("SMTP")}
+            onClick={() => setSelectedProvider(EMAIL_PROVIDERS.SMTP)}
           >
             ← Back
           </Button>

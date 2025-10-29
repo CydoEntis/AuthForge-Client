@@ -1,18 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { AnimatePresence, motion } from "framer-motion";
 import SetupOptionCard from "../auth/components/SetupOptionCard";
-import type { AllowedDatabases, SetupWizardStep } from "../types";
+import type { AllowedDatabases, SetupWizardStep, PostgresConfig } from "../types";
+import { DATABASES } from "../types";
 import ConfigureDatabaseForm from "./ConfigureDatabaseForm";
 
 type SelectDatabaseProps = {
-  selectedDatabase: string;
+  selectedDatabase: AllowedDatabases;
   setSelectedDatabase: (db: AllowedDatabases) => void;
   setStep: (step: SetupWizardStep) => void;
-  postgresConfig: () => void;
-  setPostgresConfig: (cfg: any) => void;
+  postgresConfig: PostgresConfig;
+  setPostgresConfig: (cfg: PostgresConfig) => void;
 };
 
-function SelectDatabase({
+export default function SelectDatabase({
   selectedDatabase,
   setSelectedDatabase,
   setStep,
@@ -35,18 +36,18 @@ function SelectDatabase({
             transition={{ duration: 0.35 }}
             className="flex justify-center gap-6"
           >
-            {["SQLite", "PostgreSQL"].map((db) => (
+            {Object.values(DATABASES).map((db) => (
               <SetupOptionCard
                 key={db}
                 title={db}
                 description={
-                  db === "SQLite"
+                  db === DATABASES.SQLITE
                     ? "No setup needed — start instantly with local storage"
                     : "Connect to your own Postgres instance"
                 }
-                iconClass={db === "SQLite" ? "devicon-sqlite-plain" : "devicon-postgresql-plain"}
-                selected={false}
-                onSelect={() => setSelectedDatabase(db as "SQLite" | "PostgreSQL")}
+                iconClass={db === DATABASES.SQLITE ? "devicon-sqlite-plain" : "devicon-postgresql-plain"}
+                selected={selectedDatabase === db}
+                onSelect={() => setSelectedDatabase(db)}
               />
             ))}
           </motion.div>
@@ -64,20 +65,20 @@ function SelectDatabase({
                 <SetupOptionCard
                   title={selectedDatabase}
                   description={
-                    selectedDatabase === "SQLite"
+                    selectedDatabase === DATABASES.SQLITE
                       ? "No setup needed — start instantly with local storage"
                       : "Connect to your own Postgres instance"
                   }
-                  iconClass={selectedDatabase === "SQLite" ? "devicon-sqlite-plain" : "devicon-postgresql-plain"}
+                  iconClass={
+                    selectedDatabase === DATABASES.SQLITE ? "devicon-sqlite-plain" : "devicon-postgresql-plain"
+                  }
                   selected
-                  onSelect={function (): void {
-                    throw new Error("Function not implemented.");
-                  }}
+                  onSelect={() => {}}
                 />
               </div>
 
               <motion.div layout className="w-full md:flex-1 flex flex-col items-center md:items-start">
-                {selectedDatabase === "PostgreSQL" ? (
+                {selectedDatabase === DATABASES.POSTGRESQL ? (
                   <ConfigureDatabaseForm
                     initialConfig={postgresConfig}
                     onSave={(cfg) => {
@@ -102,5 +103,3 @@ function SelectDatabase({
     </motion.div>
   );
 }
-
-export default SelectDatabase;

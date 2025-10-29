@@ -1,9 +1,9 @@
 import { z } from "zod";
-import type { forgotPasswordAdminSchema, loginAdminSchema, setupAdminSchema } from "./schemas";
+import type { forgotPasswordAdminSchema, loginAdminSchema } from "./schemas";
 import type { TokenPair } from "@/lib/api/types";
 import type { AdminDetails } from "@/types/types";
 
-export type SetupAdminValues = z.infer<typeof setupAdminSchema>;
+// export type SetupAdminValues = z.infer<typeof setupAdminSchema>;
 export type LoginAdminValues = z.infer<typeof loginAdminSchema>;
 export type ForgotPasswordAdminValues = z.infer<typeof forgotPasswordAdminSchema>;
 

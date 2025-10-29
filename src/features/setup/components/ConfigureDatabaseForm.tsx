@@ -5,21 +5,22 @@ import { useFormMutation } from "@/hooks/useFormMutation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { postgresSchema } from "../schemas";
+import type { PostgresConfig } from "../types";
 
 export default function ConfigureDatabaseForm({
   initialConfig,
   onSave,
 }: {
-  initialConfig: any;
-  onSave: (cfg: any) => void;
+  initialConfig: PostgresConfig;
+  onSave: (cfg: PostgresConfig) => void;
 }) {
-  const form = useForm({
+  const form = useForm<PostgresConfig>({
     resolver: zodResolver(postgresSchema),
     defaultValues: initialConfig,
   });
 
   const { mutateAsync, isPending } = useFormMutation({
-    mutationFn: async (values: any) => {
+    mutationFn: async (values: PostgresConfig) => {
       console.log("Testing Postgres config", values);
       return new Promise((res) => setTimeout(res, 1000));
     },
