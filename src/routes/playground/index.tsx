@@ -17,6 +17,7 @@ import SetupOptionCard from "@/features/setup/auth/components/SetupOptionCard";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { AnimatePresence, motion } from "framer-motion";
+import type { AllowedDatabases, SetupWizardStep } from "@/features/setup/types";
 
 // --------------------------
 // Zod Schemas
@@ -52,11 +53,6 @@ const resendSchema = z.object({
 });
 
 // --------------------------
-// Wizard Steps Enum
-// --------------------------
-type WizardStep = "welcome" | "selectDatabase" | "selectEmailProvider" | "configureEmail" | "done";
-
-// --------------------------
 // Main Route Component
 // --------------------------
 export const Route = createFileRoute("/playground/")({
@@ -65,8 +61,8 @@ export const Route = createFileRoute("/playground/")({
 
 export function SetupWizard() {
   const { theme } = useTheme();
-  const [step, setStep] = useState<WizardStep>("welcome");
-  const [selectedDatabase, setSelectedDatabase] = useState<"SQLite" | "PostgreSQL" | null>(null);
+  const [step, setStep] = useState<SetupWizardStep>("welcome");
+  const [selectedDatabase, setSelectedDatabase] = useState<AllowedDatabases>("SQLite");
   const [selectedEmail, setSelectedEmail] = useState<"SMTP" | "Resend" | null>(null);
 
   const [postgresConfig, setPostgresConfig] = useState({});
