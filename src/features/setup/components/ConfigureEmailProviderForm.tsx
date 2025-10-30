@@ -8,13 +8,13 @@ import { useConfigureEmailForm } from "../hooks/useConfigureEmailProviderForm";
 export default function ConfigureEmailProviderForm({
   provider,
   initialConfig,
-  onSave,
+  onConnectionSuccess,
 }: {
   provider: AllowedEmailProviders;
   initialConfig: EmailConfig;
-  onSave: (cfg: EmailConfig) => void;
+  onConnectionSuccess: (cfg: EmailConfig) => void;
 }) {
-  const { form, handleSubmit, isLoading } = useConfigureEmailForm(provider, initialConfig, onSave);
+  const { form, handleSubmit, isLoading } = useConfigureEmailForm(provider, initialConfig, onConnectionSuccess);
 
   return (
     <FormProvider {...form}>
@@ -36,7 +36,7 @@ export default function ConfigureEmailProviderForm({
 
         <div className="flex justify-end gap-3">
           <LoadingButton type="submit" isLoading={isLoading} loadingText="Testing configuration...">
-            Test & Continue
+            Test Connection
           </LoadingButton>
         </div>
       </form>

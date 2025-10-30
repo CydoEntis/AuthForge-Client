@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Progress } from "@radix-ui/react-progress";
 import { Check, Lock } from "lucide-react";
 import type { SetupWizardStep } from "../types";
+import { Progress } from "@/components/ui/progress";
 
 type WelcomeToSetupProps = {
   setStep: (step: SetupWizardStep) => void;

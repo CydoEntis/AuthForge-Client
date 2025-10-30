@@ -1,95 +1,72 @@
+import { useState, useImperativeHandle, forwardRef } from "react";
 import SetupOptionCard from "../auth/components/SetupOptionCard";
+import ConfigureEmailProviderForm from "./ConfigureEmailProviderForm";
+import { EMAIL_PROVIDERS } from "../types";
 import { Mail } from "lucide-react";
 import ResendBlack from "@/assets/resend-icon-black.svg";
 import ResendWhite from "@/assets/resend-icon-white.svg";
 import { useTheme } from "@/features/theme/hooks/useTheme";
-import { WizardStep } from "./WizardStep";
-import ConfigureEmailProviderForm from "./ConfigureEmailProviderForm";
-import { EMAIL_PROVIDERS } from "../types";
-import type { AllowedEmailProviders, EmailConfig, SetupWizardStep } from "../types";
-import { Button } from "@/components/ui/button";
+import type { AllowedEmailProviders, EmailConfig } from "../types";
 
-export default function SelectEmailProvider({
-  selectedProvider = EMAIL_PROVIDERS.SMTP,
-  setSelectedProvider,
-  setStep,
-  emailConfig,
-  setEmailConfig,
-}: {
+interface Props {
   selectedProvider: AllowedEmailProviders;
   setSelectedProvider: (provider: AllowedEmailProviders) => void;
-  setStep: (step: SetupWizardStep) => void;
   emailConfig: EmailConfig;
   setEmailConfig: (cfg: EmailConfig) => void;
-}) {
-  const { theme } = useTheme();
-  const resendImg = theme === "dark" ? ResendWhite : ResendBlack;
-
-  const providerNeedsConfig = selectedProvider === EMAIL_PROVIDERS.SMTP || selectedProvider === EMAIL_PROVIDERS.RESEND;
-
-  return (
-    <WizardStep
-      isEmpty={!selectedProvider}
-      selectionKey="email-selection"
-      configKey="email-config"
-      selectionContent={[
-        <SetupOptionCard
-          key={EMAIL_PROVIDERS.SMTP}
-          title={EMAIL_PROVIDERS.SMTP}
-          description="Use your existing SMTP credentials"
-          icon={<Mail size={80} />}
-          selected={selectedProvider === EMAIL_PROVIDERS.SMTP}
-          onSelect={() => setSelectedProvider(EMAIL_PROVIDERS.SMTP)}
-        />,
-        <SetupOptionCard
-          key={EMAIL_PROVIDERS.RESEND}
-          title={EMAIL_PROVIDERS.RESEND}
-          description="Use Resend’s modern email API"
-          imageSrc={resendImg}
-          selected={selectedProvider === EMAIL_PROVIDERS.RESEND}
-          onSelect={() => setSelectedProvider(EMAIL_PROVIDERS.RESEND)}
-        />,
-      ]}
-      configContent={
-        <div className="flex flex-col md:flex-row items-start gap-8 w-full max-w-4xl">
-          <SetupOptionCard
-            title={selectedProvider}
-            description={
-              selectedProvider === EMAIL_PROVIDERS.SMTP
-                ? "Use your SMTP credentials to send emails"
-                : "Connect your Resend account with an API key"
-            }
-            icon={
-              selectedProvider === EMAIL_PROVIDERS.SMTP ? (
-                <Mail size={80} />
-              ) : (
-                <img src={resendImg} alt="Resend" className="w-16 h-16" />
-              )
-            }
-            selected
-            onSelect={() => {}}
-          />
-          <div className="w-full md:flex-1 flex flex-col items-center md:items-start">
-            {providerNeedsConfig ? (
-              <ConfigureEmailProviderForm
-                provider={selectedProvider}
-                initialConfig={emailConfig}
-                onSave={(cfg) => {
-                  setEmailConfig(cfg);
-                  setStep("done");
-                }}
-              />
-            ) : (
-              <div className="p-6 border rounded-lg text-center bg-muted/10 w-full">
-                <p className="text-sm text-muted-foreground mb-4">
-                  No configuration needed — continue to the next step.
-                </p>
-                <Button onClick={() => setStep("done")}>Continue</Button>
-              </div>
-            )}
-          </div>
-        </div>
-      }
-    />
-  );
+  validateRef: React.Ref<{ (): Promise<boolean> }>;
 }
+
+const SelectEmailProvider = forwardRef<HTMLDivElement, Props>(
+  ({ selectedProvider, setSelectedProvider, emailConfig, setEmailConfig, validateRef }, _ref) => {
+    const [mode, setMode] = useState<"selection" | "config">("selection");
+    const { theme } = useTheme();
+    const resendImg = theme === "dark" ? ResendWhite : ResendBlack;
+
+    const handleSelect = (provider: AllowedEmailProviders) => {
+      setSelectedProvider(provider);
+      setMode("config");
+    };
+
+    useImperativeHandle(validateRef, () => async () => {
+      if (mode === "selection") return false;
+      // simulate validation
+      return new Promise<boolean>((resolve) => resolve(true));
+    });
+
+    return (
+      <div className="flex flex-col items-center w-full">
+        {mode === "selection" ? (
+          <>
+            <h2 className="text-2xl font-semibold mb-6">Select your email provider</h2>
+            <div className="flex flex-wrap justify-center gap-6">
+              <SetupOptionCard
+                key={EMAIL_PROVIDERS.SMTP}
+                title={EMAIL_PROVIDERS.SMTP}
+                description="Use your existing SMTP credentials"
+                icon={<Mail size={80} />}
+                selected={selectedProvider === EMAIL_PROVIDERS.SMTP}
+                onSelect={() => handleSelect(EMAIL_PROVIDERS.SMTP)}
+              />
+              <SetupOptionCard
+                key={EMAIL_PROVIDERS.RESEND}
+                title={EMAIL_PROVIDERS.RESEND}
+                description="Use Resend’s modern email API"
+                imageSrc={resendImg}
+                selected={selectedProvider === EMAIL_PROVIDERS.RESEND}
+                onSelect={() => handleSelect(EMAIL_PROVIDERS.RESEND)}
+              />
+            </div>
+          </>
+        ) : (
+          <ConfigureEmailProviderForm
+            provider={selectedProvider}
+            initialConfig={emailConfig}
+            onConnectionSuccess={setEmailConfig}
+          />
+        )}
+      </div>
+    );
+  }
+);
+
+export default SelectEmailProvider;

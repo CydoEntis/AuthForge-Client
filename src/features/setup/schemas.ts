@@ -18,11 +18,26 @@ export const setupAdminSchema = z
   });
 
 export const postgresSchema = z.object({
-  host: z.string().min(1),
-  port: z.string().min(1),
-  user: z.string().min(1),
-  password: z.string().min(1),
-  database: z.string().min(1),
+  host: z
+    .string()
+    .min(1, "Host is required.")
+    .refine(
+      (val) => /^([a-zA-Z0-9.-]+|\d{1,3}(\.\d{1,3}){3})$/.test(val),
+      "Host must be a valid hostname or IP address (e.g. localhost or 192.168.1.10)."
+    ),
+  port: z
+    .string()
+    .min(1, "Port is required.")
+    .refine(
+      (val) => /^\d+$/.test(val) && Number(val) > 0 && Number(val) <= 65535,
+      "Port must be a number between 1 and 65535."
+    ),
+  user: z.string().min(1, "Database user is required."),
+  password: z.string().min(1, "Password is required.").max(128, "Password is too long."),
+  database: z
+    .string()
+    .min(1, "Database name is required.")
+    .regex(/^[a-zA-Z0-9_-]+$/, "Database name can only contain letters, numbers, underscores, or hyphens."),
 });
 
 export const smtpSchema = z.object({

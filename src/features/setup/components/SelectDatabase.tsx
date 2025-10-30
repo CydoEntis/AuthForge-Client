@@ -1,66 +1,74 @@
+import { useState } from "react";
 import SetupOptionCard from "../auth/components/SetupOptionCard";
 import { DATABASES } from "../types";
-import ConfigureDatabaseForm from "./ConfigureDatabaseForm";
-import type { AllowedDatabases, SetupWizardStep, PostgresConfig } from "../types";
-import { WizardStep } from "./WizardStep";
+import type { AllowedDatabases, PostgresConfig } from "../types";
+import ConfigureDatabase from "./ConfigureDatabase";
 
-export default function SelectDatabase({
-  selectedDatabase,
-  setSelectedDatabase,
-  setStep,
-  postgresConfig,
-  setPostgresConfig,
-}: {
+type SelectDatabaseProps = {
   selectedDatabase: AllowedDatabases;
   setSelectedDatabase: (db: AllowedDatabases) => void;
-  setStep: (step: SetupWizardStep) => void;
-  postgresConfig: PostgresConfig;
-  setPostgresConfig: (cfg: PostgresConfig) => void;
-}) {
+  initialConfig: PostgresConfig;
+  onConnectionSuccess: (cfg: PostgresConfig) => void;
+};
+
+const SelectDatabase = ({
+  selectedDatabase,
+  setSelectedDatabase,
+  initialConfig,
+  onConnectionSuccess,
+}: SelectDatabaseProps) => {
+  const [configModalOpen, setConfigModalOpen] = useState(false);
+  const [databaseToConfigure, setDatabaseToConfigure] = useState<AllowedDatabases | null>(null);
+
+  const [isDatabaseConfigured, setIsDatabaseConfigured] = useState(false);
+
+  const handleSelect = (db: AllowedDatabases) => {
+    setSelectedDatabase(db);
+    if (db === DATABASES.POSTGRESQL) {
+      setIsDatabaseConfigured(false);
+    }
+  };
+
+  const openConfig = (db: AllowedDatabases) => {
+    setDatabaseToConfigure(db);
+    setConfigModalOpen(true);
+  };
+
   return (
-    <WizardStep
-      isEmpty={!selectedDatabase}
-      selectionKey="db-selection"
-      configKey="db-config"
-      selectionContent={Object.values(DATABASES).map((db) => (
-        <SetupOptionCard
-          key={db}
-          title={db}
-          description={
-            db === DATABASES.SQLITE ? "Start instantly with local storage" : "Connect to your own Postgres instance"
-          }
-          iconClass={db === DATABASES.SQLITE ? "devicon-sqlite-plain" : "devicon-postgresql-plain"}
-          selected={selectedDatabase === db}
-          onSelect={() => setSelectedDatabase(db)}
-        />
-      ))}
-      configContent={
-        <div className="flex flex-col md:flex-row items-start gap-8 w-full max-w-4xl">
+    <div className="flex flex-col items-center w-full">
+      <h2 className="text-2xl font-semibold mb-6">Select your database</h2>
+      <div className="flex gap-6 ">
+        {Object.values(DATABASES).map((db) => (
           <SetupOptionCard
-            title={selectedDatabase!}
+            key={db}
+            title={db}
             description={
-              selectedDatabase === DATABASES.SQLITE
-                ? "Start instantly with local storage"
-                : "Connect to your own Postgres instance"
+              db === DATABASES.SQLITE ? "Start instantly with local storage" : "Connect to your own Postgres instance"
             }
-            iconClass={selectedDatabase === DATABASES.SQLITE ? "devicon-sqlite-plain" : "devicon-postgresql-plain"}
-            selected
-            onSelect={() => {}}
+            iconClass={db === DATABASES.SQLITE ? "devicon-sqlite-plain" : "devicon-postgresql-plain"}
+            selected={selectedDatabase === db}
+            onSelect={() => handleSelect(db)}
+            requiresConfig={db === DATABASES.POSTGRESQL}
+            isConfigured={db === DATABASES.POSTGRESQL ? isDatabaseConfigured : true}
+            onConfigure={db === DATABASES.POSTGRESQL ? () => openConfig(db) : undefined}
           />
-          <div className="w-full md:flex-1 flex flex-col items-center md:items-start">
-            {selectedDatabase ? (
-              <ConfigureDatabaseForm
-                databaseType={selectedDatabase}
-                initialConfig={postgresConfig}
-                onSave={(cfg) => {
-                  setPostgresConfig(cfg);
-                  setStep("selectEmailProvider");
-                }}
-              />
-            ) : null}
-          </div>
-        </div>
-      }
-    />
+        ))}
+      </div>
+
+      {databaseToConfigure && (
+        <ConfigureDatabase
+          databaseType={databaseToConfigure}
+          initialConfig={initialConfig}
+          open={configModalOpen}
+          onOpenChange={setConfigModalOpen}
+          onConnectionSuccess={(cfg) => {
+            onConnectionSuccess(cfg);
+            setIsDatabaseConfigured(true);
+          }}
+        />
+      )}
+    </div>
   );
-}
+};
+
+export default SelectDatabase;
