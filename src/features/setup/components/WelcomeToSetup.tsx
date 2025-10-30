@@ -3,11 +3,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Check, Lock } from "lucide-react";
-import type { SetupWizardStep } from "../types";
 import { Progress } from "@/components/ui/progress";
 
 type WelcomeToSetupProps = {
-  setStep: (step: SetupWizardStep) => void;
+  onBegin: () => void;
 };
 
 const steps = [
@@ -16,30 +15,25 @@ const steps = [
   { label: "Choose Email Provider", description: "Pick how your system will send reset emails." },
 ];
 
-function WelcomeToSetup({ setStep }: WelcomeToSetupProps) {
+export default function WelcomeToSetup({ onBegin }: WelcomeToSetupProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     let active = true;
-
     const runLoop = async () => {
       while (active) {
         for (let i = 0; i <= steps.length; i++) {
           setCurrentStep(i);
           animateProgress((i / steps.length) * 100);
-
-          // Begin animation immediately - then pause before each step afterwards
           if (i > 0) await new Promise((r) => setTimeout(r, 1200));
         }
-
-        await new Promise((r) => setTimeout(r, 1500)); // pause at 100%
+        await new Promise((r) => setTimeout(r, 1500));
         setCurrentStep(0);
         animateProgress(0);
-        await new Promise((r) => setTimeout(r, 800)); // pause at reset
+        await new Promise((r) => setTimeout(r, 800));
       }
     };
-
     runLoop();
     return () => {
       active = false;
@@ -113,7 +107,7 @@ function WelcomeToSetup({ setStep }: WelcomeToSetupProps) {
                     layout
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }} // slower, smoother
+                    transition={{ duration: 0.5, ease: "easeOut" }}
                     className="flex justify-between items-start"
                   >
                     <div className="flex flex-col gap-1">
@@ -171,15 +165,10 @@ function WelcomeToSetup({ setStep }: WelcomeToSetupProps) {
         <h3 className="text-center text-muted-foreground">
           Time to forge your own authentication system. We’ll walk you through everything you need to get started.
         </h3>
-        <Button
-          className="border border-primary/30 bg-primary/10 text-foreground rounded"
-          onClick={() => setStep("selectDatabase")}
-        >
+        <Button className="border border-primary/30 bg-primary/10 text-foreground rounded" onClick={onBegin}>
           Ready to Begin
         </Button>
       </div>
     </motion.div>
   );
 }
-
-export default WelcomeToSetup;
