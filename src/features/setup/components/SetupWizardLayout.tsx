@@ -2,6 +2,7 @@ import { useState } from "react";
 import WelcomeToSetup from "./WelcomeToSetup";
 import SelectDatabase from "./SelectDatabase";
 import AuthCard from "@/components/shared/AuthCard";
+import SelectEmailProvider from "./SelectEmailProvider";
 import {
   type AllowedDatabases,
   type AllowedEmailProviders,
@@ -29,6 +30,8 @@ export default function SetupWizardLayout() {
     username: "",
     password: "",
     apiKey: "",
+    from: "",
+    to: "",
   });
 
   const steps: SetupWizardStep[] = ["welcome", "selectDatabase", "selectEmailProvider", "done"];
@@ -53,20 +56,18 @@ export default function SetupWizardLayout() {
             selectedDatabase={selectedDatabase}
             setSelectedDatabase={setSelectedDatabase}
             initialConfig={postgresConfig}
-            onConnectionSuccess={(cfg: PostgresConfig) => setPostgresConfig(cfg)}
+            onConnectionSuccess={(cfg) => setPostgresConfig(cfg)}
           />
         );
 
       case "selectEmailProvider":
         return (
-          <p>Test</p>
-          // Replace <p>Test</p> with your email provider step when ready:
-          // <SelectEmailProvider
-          //   selectedProvider={selectedEmail}
-          //   setSelectedProvider={setSelectedEmail}
-          //   emailConfig={emailConfig}
-          //   setEmailConfig={setEmailConfig}
-          // />
+          <SelectEmailProvider
+            selectedProvider={selectedEmail}
+            setSelectedProvider={setSelectedEmail}
+            emailConfig={emailConfig}
+            setEmailConfig={setEmailConfig}
+          />
         );
 
       case "done":

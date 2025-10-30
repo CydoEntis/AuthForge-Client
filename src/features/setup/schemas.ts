@@ -41,12 +41,19 @@ export const postgresSchema = z.object({
 });
 
 export const smtpSchema = z.object({
-  host: z.string().min(1),
-  port: z.string().min(1),
-  username: z.string().min(1),
-  password: z.string().min(1),
+  host: z.string().min(1, { message: "SMTP host is required" }),
+  port: z
+    .string()
+    .min(1, { message: "SMTP port is required" })
+    .refine((val) => !isNaN(Number(val)), { message: "Port must be a number" }),
+  username: z.string().min(1, { message: "SMTP username is required" }),
+  password: z.string().min(1, { message: "SMTP password is required" }),
+  from: z.email({ message: "From email must be valid" }),
+  to: z.email({ message: "To email must be valid" }),
 });
 
 export const resendSchema = z.object({
-  apiKey: z.string().min(1),
+  apiKey: z.string().min(1, { message: "Resend API key is required" }),
+  from: z.email({ message: "From email must be valid" }),
+  to: z.email({ message: "To email must be valid" }),
 });
