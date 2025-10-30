@@ -7,7 +7,7 @@ type FormErrorProps = {
 
 function FormError({ message }: FormErrorProps) {
   return (
-    <Alert variant="destructive">
+    <Alert variant="destructive" className="bg-red-500/10! border-red-500/30">
       <CircleAlert />
       <AlertTitle>{message}</AlertTitle>
     </Alert>

@@ -5,6 +5,8 @@ import { FormProvider } from "react-hook-form";
 import type { PostgresConfig, AllowedDatabases } from "../types";
 import { useConfigureDatabaseForm } from "../hooks/useConfigureDatabaseForm";
 import ConfigDialog from "./ConfigDialog";
+import { useEffect } from "react";
+import FadeSlide from "@/components/shared/animations/FadeSlide";
 
 export default function ConfigureDatabase({
   databaseType,
@@ -24,6 +26,14 @@ export default function ConfigureDatabase({
     onOpenChange(false);
   });
 
+  useEffect(() => {
+    if (open) {
+      form.reset(initialConfig);
+    }
+  }, [open, initialConfig, form]);
+
+  const rootError = form.formState.errors.root?.message;
+
   return (
     <ConfigDialog title="Configure your database" open={open} onOpenChange={onOpenChange}>
       <FormProvider {...form}>
@@ -35,7 +45,13 @@ export default function ConfigureDatabase({
             <FormInput form={form} name="password" label="Password" placeholder="••••••" type="password" />
             <FormInput form={form} name="database" label="Database" placeholder="authforge" />
           </div>
-          {form.formState.errors.root && <FormError message={form.formState.errors.root.message!} />}
+
+          <div className="min-h-[3rem]">
+            <FadeSlide visible={!!rootError} direction="down" className="text-sm text-destructive">
+              <FormError message={rootError!} />
+            </FadeSlide>
+          </div>
+
           <div className="flex justify-end gap-3">
             <LoadingButton
               type="submit"
