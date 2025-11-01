@@ -4,18 +4,9 @@ import type {
   LoginAdminResponse,
   ForgotPasswordAdminValues,
   ForgotPasswordAdminResponse,
-  SetupStatusResponse,
 } from "./types";
 
 export const authApi = {
-  getSetupStatus: async (): Promise<SetupStatusResponse> => {
-    return apiClient.get<SetupStatusResponse>("/admin/setup/status");
-  },
-
-  // setupAdmin: async (values: SetupAdminValues): Promise<SetupAdminResponse> => {
-  //   return apiClient.post<SetupAdminResponse>("/admin/setup", values);
-  // },
-
   loginAdmin: async (values: LoginAdminValues): Promise<LoginAdminResponse> => {
     return apiClient.post<LoginAdminResponse>("/admin/login", values);
   },
