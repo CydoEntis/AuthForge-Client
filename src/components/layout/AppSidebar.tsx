@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Anvil, Home } from "lucide-react";
-import AFLogo from "../../../public/af-logo.png";
 
 import {
   Sidebar,
