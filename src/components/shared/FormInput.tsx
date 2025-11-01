@@ -1,6 +1,6 @@
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import { FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from "@/components/ui/form"; // ✅ Add FormDescription
 import { Input } from "@/components/ui/input";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import FadeSlide from "./animations/FadeSlide";
 
 interface FormInputProps {
@@ -11,6 +11,7 @@ interface FormInputProps {
   type?: string;
   className?: string;
   isLoading?: boolean;
+  description?: string; // ✅ Add this
 }
 
 export function FormInput({
@@ -21,6 +22,7 @@ export function FormInput({
   type = "text",
   className,
   isLoading = false,
+  description, // ✅ Add this
 }: FormInputProps) {
   const error = form.formState.errors?.[name]?.message as string | undefined;
 
@@ -34,6 +36,11 @@ export function FormInput({
           <FormControl>
             <Input {...field} type={type} placeholder={placeholder} disabled={isLoading} />
           </FormControl>
+
+          {/* ✅ Add description if provided */}
+          {description && !error && (
+            <FormDescription className="text-xs text-muted-foreground">{description}</FormDescription>
+          )}
 
           <div className="relative min-h-[.5rem]">
             <AnimatePresence mode="wait" initial={false}>
