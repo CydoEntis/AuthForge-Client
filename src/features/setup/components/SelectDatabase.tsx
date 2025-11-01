@@ -9,6 +9,7 @@ type SelectDatabaseProps = {
   setSelectedDatabase: (db: AllowedDatabases) => void;
   initialConfig: PostgresConfig;
   onConnectionSuccess: (cfg: PostgresConfig) => void;
+  onDatabaseChange: () => void;
 };
 
 const SelectDatabase = ({
@@ -16,14 +17,16 @@ const SelectDatabase = ({
   setSelectedDatabase,
   initialConfig,
   onConnectionSuccess,
+  onDatabaseChange,
 }: SelectDatabaseProps) => {
   const [configModalOpen, setConfigModalOpen] = useState(false);
   const [databaseToConfigure, setDatabaseToConfigure] = useState<AllowedDatabases | null>(null);
-
   const [isDatabaseConfigured, setIsDatabaseConfigured] = useState(false);
 
   const handleSelect = (db: AllowedDatabases) => {
     setSelectedDatabase(db);
+    onDatabaseChange();
+
     if (db === DATABASES.POSTGRESQL) {
       setIsDatabaseConfigured(false);
     }
@@ -37,7 +40,7 @@ const SelectDatabase = ({
   return (
     <div className="flex flex-col items-center w-full">
       <h2 className="text-2xl font-semibold mb-6">Select your database</h2>
-      <div className="flex gap-6 ">
+      <div className="flex gap-6">
         {Object.values(DATABASES).map((db) => (
           <SetupOptionCard
             key={db}

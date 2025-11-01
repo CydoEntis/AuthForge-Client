@@ -5,26 +5,42 @@ import type {
   EmailConfig,
   TestDatabaseConnectionResponse,
   TestEmailResponse,
+  CompleteSetupPayload,
+  CompleteSetupResponse,
+  SetupStatusResponse,
 } from "./types";
 
 export const setupApi = {
-  testDBConnection: async (
+  getSetupStatus: async (): Promise<SetupStatusResponse> => {
+    return apiClient.get<SetupStatusResponse>("/setup/status");
+  },
+
+  testDatabaseConnection: async (
     databaseType: AllowedDatabases,
     connectionString: string | null
   ): Promise<TestDatabaseConnectionResponse> => {
-    return apiClient.post<TestDatabaseConnectionResponse>("/admin/setup/test-db-connection", {
+    return apiClient.post<TestDatabaseConnectionResponse>("/setup/test-database", {
       databaseType,
       connectionString,
     });
   },
+
   testEmailProvider: async (provider: AllowedEmailProviders, config: EmailConfig): Promise<TestEmailResponse> => {
-    return apiClient.post<TestEmailResponse>("/admin/setup/test-email", {
+    return apiClient.post<TestEmailResponse>("/setup/test-email", {
       provider,
-      ...config,
+      resendApiKey: config.apiKey || null,
+      smtpHost: config.host || null,
+      smtpPort: config.port ? Number(config.port) : null,
+      smtpUsername: config.username || null,
+      smtpPassword: config.password || null,
+      smtpUseSsl: true,
+      fromEmail: config.from,
+      fromName: "AuthForge",
+      testRecipient: config.to,
     });
   },
-};
 
-// setupAdmin: async (values: SetupAdminValues): Promise<SetupAdminResponse> => {
-//   return apiClient.post<SetupAdminResponse>("/admin/setup", values);
-// },
+  completeSetup: async (payload: CompleteSetupPayload): Promise<CompleteSetupResponse> => {
+    return apiClient.post<CompleteSetupResponse>("/setup/complete", payload);
+  },
+};

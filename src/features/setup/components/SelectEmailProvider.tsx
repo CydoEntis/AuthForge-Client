@@ -13,6 +13,8 @@ type SelectEmailProviderProps = {
   setSelectedProvider: (provider: AllowedEmailProviders) => void;
   emailConfig: EmailConfig;
   setEmailConfig: (cfg: EmailConfig) => void;
+  onEmailConfigured: () => void;
+  onProviderChange: () => void;
 };
 
 export default function SelectEmailProvider({
@@ -20,19 +22,20 @@ export default function SelectEmailProvider({
   setSelectedProvider,
   emailConfig,
   setEmailConfig,
+  onEmailConfigured,
+  onProviderChange,
 }: SelectEmailProviderProps) {
   const [configModalOpen, setConfigModalOpen] = useState(false);
   const [providerToConfigure, setProviderToConfigure] = useState<AllowedEmailProviders | null>(null);
-  const [isConfigured, setIsConfigured] = useState(false);
+  const [smtpConfigured, setSmtpConfigured] = useState(false);
+  const [resendConfigured, setResendConfigured] = useState(false);
 
   const { theme } = useTheme();
   const resendImg = theme === "dark" ? ResendWhite : ResendBlack;
 
   const handleSelect = (provider: AllowedEmailProviders) => {
     setSelectedProvider(provider);
-    if (provider === EMAIL_PROVIDERS.SMTP || provider === EMAIL_PROVIDERS.RESEND) {
-      setIsConfigured(false);
-    }
+    onProviderChange();
   };
 
   const openConfig = (provider: AllowedEmailProviders) => {
@@ -43,23 +46,31 @@ export default function SelectEmailProvider({
   return (
     <div className="flex flex-col items-center w-full">
       <h2 className="text-2xl font-semibold mb-6">Select your email provider</h2>
+
       <div className="flex gap-6">
-        {Object.values(EMAIL_PROVIDERS).map((provider) => (
-          <SetupOptionCard
-            key={provider}
-            title={provider}
-            description={
-              provider === EMAIL_PROVIDERS.SMTP ? "Use your existing SMTP credentials" : "Use Resend’s modern email API"
-            }
-            icon={provider === EMAIL_PROVIDERS.SMTP ? <Mail size={80} /> : undefined}
-            imageSrc={provider === EMAIL_PROVIDERS.RESEND ? resendImg : undefined}
-            selected={selectedProvider === provider}
-            onSelect={() => handleSelect(provider)}
-            requiresConfig={provider === EMAIL_PROVIDERS.SMTP || provider === EMAIL_PROVIDERS.RESEND}
-            isConfigured={isConfigured}
-            onConfigure={() => openConfig(provider)}
-          />
-        ))}
+        <SetupOptionCard
+          key={EMAIL_PROVIDERS.SMTP}
+          title={EMAIL_PROVIDERS.SMTP}
+          description="Use your existing SMTP credentials"
+          icon={<Mail size={80} />}
+          selected={selectedProvider === EMAIL_PROVIDERS.SMTP}
+          onSelect={() => handleSelect(EMAIL_PROVIDERS.SMTP)}
+          requiresConfig={true}
+          isConfigured={smtpConfigured}
+          onConfigure={() => openConfig(EMAIL_PROVIDERS.SMTP)}
+        />
+
+        <SetupOptionCard
+          key={EMAIL_PROVIDERS.RESEND}
+          title={EMAIL_PROVIDERS.RESEND}
+          description="Use Resend's modern email API"
+          imageSrc={resendImg}
+          selected={selectedProvider === EMAIL_PROVIDERS.RESEND}
+          onSelect={() => handleSelect(EMAIL_PROVIDERS.RESEND)}
+          requiresConfig={true}
+          isConfigured={resendConfigured}
+          onConfigure={() => openConfig(EMAIL_PROVIDERS.RESEND)}
+        />
       </div>
 
       {providerToConfigure && (
@@ -70,7 +81,14 @@ export default function SelectEmailProvider({
           onOpenChange={setConfigModalOpen}
           onConnectionSuccess={(cfg) => {
             setEmailConfig(cfg);
-            setIsConfigured(true);
+
+            if (providerToConfigure === EMAIL_PROVIDERS.SMTP) {
+              setSmtpConfigured(true);
+            } else if (providerToConfigure === EMAIL_PROVIDERS.RESEND) {
+              setResendConfigured(true);
+            }
+
+            onEmailConfigured();
             setConfigModalOpen(false);
           }}
         />

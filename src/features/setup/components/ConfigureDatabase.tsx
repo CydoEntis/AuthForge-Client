@@ -4,7 +4,7 @@ import { LoadingButton } from "@/components/shared/LoadingButton";
 import { FormProvider } from "react-hook-form";
 import type { PostgresConfig, AllowedDatabases } from "../types";
 import { useConfigureDatabaseForm } from "../hooks/useConfigureDatabaseForm";
-import ConfigDialog from "./ConfigDialog";
+import ConfigDialog from "../../../components/shared/Modal";
 import { useEffect } from "react";
 import FadeSlide from "@/components/shared/animations/FadeSlide";
 

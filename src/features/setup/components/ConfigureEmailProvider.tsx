@@ -4,7 +4,7 @@ import { LoadingButton } from "@/components/shared/LoadingButton";
 import FormError from "@/components/shared/FormError";
 import { type EmailConfig, type AllowedEmailProviders, EMAIL_PROVIDERS } from "../types";
 import { useConfigureEmailForm } from "../hooks/useConfigureEmailProviderForm";
-import ConfigDialog from "./ConfigDialog";
+import ConfigDialog from "../../../components/shared/Modal";
 import FadeSlide from "@/components/shared/animations/FadeSlide";
 import { useEffect } from "react";
 
