@@ -1,14 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import SetupAdmin from "@/features/setup/auth/components/SetupAdmin";
+import SetupWizardLayout from "@/features/setup/components/SetupWizardLayout";
 
 export const Route = createFileRoute("/(setup)/setup")({
-  component: RouteComponent,
+  component: SetupWizardLayout,
 });
-
-function RouteComponent() {
-  return (
-    <div className="w-full min-h-screen flex items-center justify-center p-4 ">
-      <SetupAdmin />
-    </div>
-  );
-}

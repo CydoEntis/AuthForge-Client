@@ -18,12 +18,16 @@ export function useConfigureDatabaseForm(
           ? `Host=${values.host};Port=${values.port};Username=${values.user};Password=${values.password};Database=${values.database}`
           : null;
 
-      return setupApi.testDBConnection(databaseType, connectionString);
+      return setupApi.testDatabaseConnection(databaseType, connectionString);
     },
     setError: form.setError,
+    successMessage: "Database connection successful!",
     onSuccess: (response) => {
-      if (response.isSuccessful) onSave(form.getValues());
-      else form.setError("root", { type: "manual", message: response.message });
+      if (response.isSuccessful) {
+        onSave(form.getValues());
+      } else {
+        form.setError("root", { type: "manual", message: response.message });
+      }
     },
   });
 
