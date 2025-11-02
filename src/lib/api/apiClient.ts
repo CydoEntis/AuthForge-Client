@@ -41,7 +41,6 @@ client.interceptors.request.use(
 
 client.interceptors.response.use(
   async (response) => {
-    // ✅ Don't try to refresh token on auth endpoints
     const isAuthEndpoint =
       response.config.url?.includes("/login") ||
       response.config.url?.includes("/setup") ||

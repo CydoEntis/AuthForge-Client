@@ -153,7 +153,47 @@ export default function SetupWizardLayout() {
         );
 
       case "done":
-        return <h3 className="text-7xl text-center text-foreground font-semibold">Setup Complete!</h3>;
+        return (
+          <div className="flex flex-col items-center justify-center space-y-6 py-12">
+            <div className="rounded-full bg-green-500/20 p-6">
+              <svg className="w-16 h-16 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+
+            <div className="text-center space-y-2">
+              <h2 className="text-4xl font-bold text-foreground">Setup Complete! 🎉</h2>
+              <p className="text-muted-foreground">Your AuthForge instance is ready to use</p>
+            </div>
+
+            <div className="w-full max-w-md space-y-4 pt-4">
+              <div className="rounded-lg border bg-card p-4 space-y-2">
+                <h3 className="font-semibold">What's Next?</h3>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary">→</span>
+                    <span>Your admin account has been created</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary">→</span>
+                    <span>Database configured and migrations applied</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary">→</span>
+                    <span>Email provider configured and tested</span>
+                  </li>
+                </ul>
+              </div>
+
+              <button
+                onClick={() => (window.location.href = "/login")}
+                className="w-full px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
+              >
+                Go to Login →
+              </button>
+            </div>
+          </div>
+        );
 
       default:
         return null;

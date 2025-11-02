@@ -4,12 +4,12 @@ import { useAuthStore } from "@/store/useAuthStore";
 
 export const Route = createFileRoute("/")({
   beforeLoad: async ({ context }) => {
-    const setupStatus = await context.queryClient.ensureQueryData({
+    const { isComplete } = await context.queryClient.ensureQueryData({
       queryKey: ["setup-status"],
       queryFn: setupApi.getSetupStatus,
     });
 
-    if (setupStatus.isSetupRequired) {
+    if (!isComplete) {
       throw redirect({ to: "/setup" });
     }
 

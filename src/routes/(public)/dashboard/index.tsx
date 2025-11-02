@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Safari } from "@/components/ui/shadcn-io/safari";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { Anvil } from "lucide-react";
-import { ThemeToggle } from "@/features/theme/ThemeToggle";
+import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(public)/dashboard/")({
   component: RouteComponent,

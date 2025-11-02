@@ -1,14 +1,14 @@
-import { authApi } from "@/features/setup/auth/api";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { setupApi } from "@/features/setup/api";
 
 export const Route = createFileRoute("/(public)")({
   beforeLoad: async ({ context }) => {
-    const setupStatus = await context.queryClient.ensureQueryData({
+    const { isComplete } = await context.queryClient.ensureQueryData({
       queryKey: ["setup-status"],
-      queryFn: authApi.getSetupStatus,
+      queryFn: setupApi.getSetupStatus,
     });
 
-    if (setupStatus.isSetupRequired) {
+    if (!isComplete) {
       throw redirect({ to: "/setup" });
     }
   },

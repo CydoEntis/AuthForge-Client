@@ -72,11 +72,5 @@ export type CompleteSetupResponse = {
 };
 
 export type SetupStatusResponse = {
-  isSetupRequired: boolean;
-  currentStep: number;
-  progress: {
-    isDatabaseConfigured: boolean;
-    isEmailConfigured: boolean;
-    isAdminCreated: boolean;
-  };
+  isComplete: boolean;
 };

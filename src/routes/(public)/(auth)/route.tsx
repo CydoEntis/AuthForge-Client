@@ -6,8 +6,9 @@ import { useTheme } from "next-themes";
 
 export const Route = createFileRoute("/(public)/(auth)")({
   beforeLoad: () => {
-    const { isAuthenticated } = useAuthStore.getState();
-    if (isAuthenticated) {
+    const { refreshToken } = useAuthStore.getState();
+    // Check for actual token presence instead of isAuthenticated flag
+    if (refreshToken) {
       throw redirect({ to: "/dashboard" });
     }
   },
