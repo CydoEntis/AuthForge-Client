@@ -9,7 +9,7 @@ import type { AdminConfig } from "../types";
 type CreateAdminProps = {
   adminConfig: AdminConfig;
   setAdminConfig: (config: AdminConfig) => void;
-  onComplete: () => void;
+  onComplete: (config: AdminConfig) => void;
   isLoading?: boolean;
 };
 
@@ -17,8 +17,9 @@ export default function CreateAdmin({ adminConfig, setAdminConfig, onComplete, i
   const form = useZodForm<AdminConfig>(setupAdminSchema, adminConfig);
 
   const handleSubmit = form.handleSubmit((values) => {
+    console.log("✅ Admin form values:", values);
     setAdminConfig(values);
-    onComplete();
+    onComplete(values);
   });
 
   return (

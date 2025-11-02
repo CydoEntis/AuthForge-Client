@@ -81,7 +81,7 @@ export default function SetupWizardLayout() {
     if (currentIndex < steps.length - 1) goToStep(steps[currentIndex + 1]);
   };
 
-  const handleCompleteSetup = () => {
+  const handleCompleteSetup = (finalAdminConfig: AdminConfig) => {
     const setupPayload = {
       databaseType: selectedDatabase,
       connectionString:
@@ -97,9 +97,12 @@ export default function SetupWizardLayout() {
       smtpUseSsl: selectedEmail === EMAIL_PROVIDERS.SMTP ? true : null,
       fromEmail: emailConfig.from,
       fromName: "AuthForge",
-      adminEmail: adminConfig.email,
-      adminPassword: adminConfig.password,
+      adminEmail: finalAdminConfig.email,
+      adminPassword: finalAdminConfig.password,
     };
+
+    console.log("🚀 Complete Setup Payload:", setupPayload);
+    console.log("📧 Admin Config Received:", finalAdminConfig);
 
     completeSetupMutation.mutate(setupPayload, {
       onSuccess: () => {
