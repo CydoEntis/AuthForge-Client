@@ -14,4 +14,8 @@ export const authApi = {
   forgotPasswordAdmin: async (values: ForgotPasswordAdminValues): Promise<ForgotPasswordAdminResponse> => {
     return apiClient.post<ForgotPasswordAdminResponse>("/admin/forgot-password", values);
   },
+
+  logoutAdmin: async (): Promise<void> => {
+    return apiClient.post<void>("/admin/logout");
+  },
 };

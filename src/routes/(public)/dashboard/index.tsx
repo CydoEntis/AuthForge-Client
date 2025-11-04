@@ -12,7 +12,6 @@ function RouteComponent() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Trigger mounted on next tick
     const timeout = setTimeout(() => setMounted(true), 50);
 
     const handleScroll = () => {

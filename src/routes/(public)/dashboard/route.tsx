@@ -1,9 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/features/theme/ThemeToggle";
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, redirect } from "@tanstack/react-router";
 import { Anvil } from "lucide-react";
+import { useAuthStore } from "@/store/useAuthStore";
 
 export const Route = createFileRoute("/(public)/dashboard")({
+  beforeLoad: () => {
+    const { refreshToken } = useAuthStore.getState();
+    if (refreshToken) {
+      throw redirect({ to: "/apps" });
+    }
+  },
   component: RouteComponent,
 });
 
