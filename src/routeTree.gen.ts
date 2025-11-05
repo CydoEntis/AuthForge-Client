@@ -18,9 +18,10 @@ import { Route as setupSetupRouteImport } from './routes/(setup)/setup'
 import { Route as publicDashboardRouteRouteImport } from './routes/(public)/dashboard/route'
 import { Route as publicauthRouteRouteImport } from './routes/(public)/(auth)/route'
 import { Route as publicDashboardIndexRouteImport } from './routes/(public)/dashboard/index'
-import { Route as privateAppsIndexRouteImport } from './routes/(private)/apps/index'
+import { Route as privateApplicationsIndexRouteImport } from './routes/(private)/applications/index'
 import { Route as publicauthLoginRouteImport } from './routes/(public)/(auth)/login'
 import { Route as publicauthForgotPasswordRouteImport } from './routes/(public)/(auth)/forgot-password'
+import { Route as privateApplicationsIdRouteImport } from './routes/(private)/applications/$id'
 
 const setupRouteRoute = setupRouteRouteImport.update({
   id: '/(setup)',
@@ -63,11 +64,12 @@ const publicDashboardIndexRoute = publicDashboardIndexRouteImport.update({
   path: '/',
   getParentRoute: () => publicDashboardRouteRoute,
 } as any)
-const privateAppsIndexRoute = privateAppsIndexRouteImport.update({
-  id: '/apps/',
-  path: '/apps/',
-  getParentRoute: () => privateRouteRoute,
-} as any)
+const privateApplicationsIndexRoute =
+  privateApplicationsIndexRouteImport.update({
+    id: '/applications/',
+    path: '/applications/',
+    getParentRoute: () => privateRouteRoute,
+  } as any)
 const publicauthLoginRoute = publicauthLoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -79,24 +81,31 @@ const publicauthForgotPasswordRoute =
     path: '/forgot-password',
     getParentRoute: () => publicauthRouteRoute,
   } as any)
+const privateApplicationsIdRoute = privateApplicationsIdRouteImport.update({
+  id: '/applications/$id',
+  path: '/applications/$id',
+  getParentRoute: () => privateRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof publicDashboardRouteRouteWithChildren
   '/setup': typeof setupSetupRoute
   '/playground': typeof PlaygroundIndexRoute
+  '/applications/$id': typeof privateApplicationsIdRoute
   '/forgot-password': typeof publicauthForgotPasswordRoute
   '/login': typeof publicauthLoginRoute
-  '/apps': typeof privateAppsIndexRoute
+  '/applications': typeof privateApplicationsIndexRoute
   '/dashboard/': typeof publicDashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/setup': typeof setupSetupRoute
   '/playground': typeof PlaygroundIndexRoute
+  '/applications/$id': typeof privateApplicationsIdRoute
   '/forgot-password': typeof publicauthForgotPasswordRoute
   '/login': typeof publicauthLoginRoute
-  '/apps': typeof privateAppsIndexRoute
+  '/applications': typeof privateApplicationsIndexRoute
   '/dashboard': typeof publicDashboardIndexRoute
 }
 export interface FileRoutesById {
@@ -109,9 +118,10 @@ export interface FileRoutesById {
   '/(public)/dashboard': typeof publicDashboardRouteRouteWithChildren
   '/(setup)/setup': typeof setupSetupRoute
   '/playground/': typeof PlaygroundIndexRoute
+  '/(private)/applications/$id': typeof privateApplicationsIdRoute
   '/(public)/(auth)/forgot-password': typeof publicauthForgotPasswordRoute
   '/(public)/(auth)/login': typeof publicauthLoginRoute
-  '/(private)/apps/': typeof privateAppsIndexRoute
+  '/(private)/applications/': typeof privateApplicationsIndexRoute
   '/(public)/dashboard/': typeof publicDashboardIndexRoute
 }
 export interface FileRouteTypes {
@@ -121,18 +131,20 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/setup'
     | '/playground'
+    | '/applications/$id'
     | '/forgot-password'
     | '/login'
-    | '/apps'
+    | '/applications'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/setup'
     | '/playground'
+    | '/applications/$id'
     | '/forgot-password'
     | '/login'
-    | '/apps'
+    | '/applications'
     | '/dashboard'
   id:
     | '__root__'
@@ -144,9 +156,10 @@ export interface FileRouteTypes {
     | '/(public)/dashboard'
     | '/(setup)/setup'
     | '/playground/'
+    | '/(private)/applications/$id'
     | '/(public)/(auth)/forgot-password'
     | '/(public)/(auth)/login'
-    | '/(private)/apps/'
+    | '/(private)/applications/'
     | '/(public)/dashboard/'
   fileRoutesById: FileRoutesById
 }
@@ -223,11 +236,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicDashboardIndexRouteImport
       parentRoute: typeof publicDashboardRouteRoute
     }
-    '/(private)/apps/': {
-      id: '/(private)/apps/'
-      path: '/apps'
-      fullPath: '/apps'
-      preLoaderRoute: typeof privateAppsIndexRouteImport
+    '/(private)/applications/': {
+      id: '/(private)/applications/'
+      path: '/applications'
+      fullPath: '/applications'
+      preLoaderRoute: typeof privateApplicationsIndexRouteImport
       parentRoute: typeof privateRouteRoute
     }
     '/(public)/(auth)/login': {
@@ -244,15 +257,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicauthForgotPasswordRouteImport
       parentRoute: typeof publicauthRouteRoute
     }
+    '/(private)/applications/$id': {
+      id: '/(private)/applications/$id'
+      path: '/applications/$id'
+      fullPath: '/applications/$id'
+      preLoaderRoute: typeof privateApplicationsIdRouteImport
+      parentRoute: typeof privateRouteRoute
+    }
   }
 }
 
 interface privateRouteRouteChildren {
-  privateAppsIndexRoute: typeof privateAppsIndexRoute
+  privateApplicationsIdRoute: typeof privateApplicationsIdRoute
+  privateApplicationsIndexRoute: typeof privateApplicationsIndexRoute
 }
 
 const privateRouteRouteChildren: privateRouteRouteChildren = {
-  privateAppsIndexRoute: privateAppsIndexRoute,
+  privateApplicationsIdRoute: privateApplicationsIdRoute,
+  privateApplicationsIndexRoute: privateApplicationsIndexRoute,
 }
 
 const privateRouteRouteWithChildren = privateRouteRoute._addFileChildren(

@@ -23,7 +23,7 @@ export function useLoginAdminForm() {
       const { tokens, admin } = data;
       setTokens(tokens.accessToken, tokens.refreshToken);
       setAdmin(admin);
-      navigate({ to: "/dashboard" });
+      navigate({ to: "/applications" });
     },
   });
 

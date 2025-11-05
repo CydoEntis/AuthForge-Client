@@ -8,7 +8,7 @@ export const Route = createFileRoute("/(public)/dashboard")({
   beforeLoad: () => {
     const { refreshToken } = useAuthStore.getState();
     if (refreshToken) {
-      throw redirect({ to: "/apps" });
+      throw redirect({ to: "/applications" });
     }
   },
   component: RouteComponent,
