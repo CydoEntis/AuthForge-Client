@@ -2,16 +2,27 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import AppShell from "@/components/layout/AppShell";
 import { setupApi } from "@/features/setup/api";
 import { useAuthStore } from "@/store/useAuthStore";
+import { authApi } from "@/features/setup/auth/api";
 
 export const Route = createFileRoute("/(private)")({
   beforeLoad: async ({ context }) => {
-    // Check authentication first
-    const { refreshToken } = useAuthStore.getState();
+    const { accessToken, refreshToken, updateAccessToken, logout } = useAuthStore.getState();
+
     if (!refreshToken) {
       throw redirect({ to: "/login" });
     }
 
-    // Then check if setup is complete
+    if (!accessToken) {
+      try {
+        const response = await authApi.refreshToken(refreshToken);
+        updateAccessToken(response.accessToken);
+      } catch (error) {
+        console.error("Failed to refresh token:", error);
+        logout();
+        throw redirect({ to: "/login" });
+      }
+    }
+
     const { isComplete } = await context.queryClient.ensureQueryData({
       queryKey: ["setup-status"],
       queryFn: setupApi.getSetupStatus,

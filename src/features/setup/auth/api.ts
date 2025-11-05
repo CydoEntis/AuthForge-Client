@@ -4,6 +4,7 @@ import type {
   LoginAdminResponse,
   ForgotPasswordAdminValues,
   ForgotPasswordAdminResponse,
+  RefreshTokenResponse,
 } from "./types";
 
 export const authApi = {
@@ -15,7 +16,11 @@ export const authApi = {
     return apiClient.post<ForgotPasswordAdminResponse>("/admin/forgot-password", values);
   },
 
-  logoutAdmin: async (): Promise<void> => {
-    return apiClient.post<void>("/admin/logout");
+  refreshToken: async (refreshToken: string): Promise<RefreshTokenResponse> => {
+    return apiClient.post<RefreshTokenResponse>("/admin/refresh-token", { refreshToken });
+  },
+
+  logoutAdmin: async (refreshToken: string): Promise<void> => {
+    return apiClient.post<void>("/admin/logout", { refreshToken });
   },
 };

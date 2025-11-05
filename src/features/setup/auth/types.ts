@@ -25,3 +25,9 @@ export type SetupAdminResponse = {
 export type ForgotPasswordAdminResponse = {
   message: string;
 };
+
+export interface RefreshTokenResponse {
+  accessToken: string;
+  refreshToken: string;
+  expiresAt: string; // ISO date string
+}

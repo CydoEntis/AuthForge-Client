@@ -34,7 +34,7 @@ export const useAuthStore = create<AuthState>()(
       },
 
       updateAccessToken: (accessToken) => {
-        set({ accessToken });
+        set({ accessToken, isAuthenticated: true });
       },
 
       logout: () => {
@@ -49,12 +49,12 @@ export const useAuthStore = create<AuthState>()(
     {
       name: "auth-storage",
       partialize: (state) => ({
+        accessToken: state.accessToken,
         refreshToken: state.refreshToken,
         admin: state.admin,
       }),
       onRehydrateStorage: () => (state) => {
-        // After hydrating from localStorage, set isAuthenticated based on token existence
-        if (state && state.refreshToken) {
+        if (state && state.accessToken && state.refreshToken) {
           state.isAuthenticated = true;
         }
       },

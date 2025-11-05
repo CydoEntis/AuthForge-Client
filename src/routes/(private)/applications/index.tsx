@@ -26,11 +26,9 @@ function ApplicationsDashboard() {
 
   const pageSize = 10;
 
-  // Convert sorting to backend format
   const sortBy = sorting[0]?.id ? sorting[0].id.charAt(0).toUpperCase() + sorting[0].id.slice(1) : "CreatedAt";
   const sortOrder = sorting[0]?.desc ? "Desc" : "Asc";
 
-  // Queries
   const { data, isLoading } = useApplications({
     pageNumber: page,
     pageSize,
@@ -41,7 +39,6 @@ function ApplicationsDashboard() {
 
   const { data: editingApplication, isLoading: isLoadingApplication } = useApplication(editingId);
 
-  // Mutations
   const createMutation = useCreateApplication();
   const updateMutation = useUpdateApplication(editingId || "");
 
@@ -106,7 +103,6 @@ function ApplicationsDashboard() {
         onEdit={handleEdit}
       />
 
-      {/* Unified Create/Edit Modal */}
       <ApplicationFormModal
         open={modalOpen}
         onOpenChange={handleCloseModal}
