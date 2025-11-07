@@ -142,7 +142,7 @@ function ApplicationsDashboard() {
           </div>
         </BrowserCard>
 
-        <BrowserCard url="www.cloudcrate.com">
+        {/* <BrowserCard url="www.cloudcrate.com">
           <div className="flex flex-col  px-4 py-2">
             <div className="flex items-center gap-2">
               <Avatar className="rounded bg-sidebar border flex justify-center items-center">C</Avatar>
@@ -203,7 +203,7 @@ function ApplicationsDashboard() {
               </div>
             </div>
           </div>
-        </BrowserCard>
+        </BrowserCard> */}
       </div>
 
       {/* <ApplicationsTable

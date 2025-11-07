@@ -10,7 +10,7 @@ type AuthCardProps = {
 function AuthCard({ title, subText, children }: AuthCardProps) {
   return (
     <Card
-      className="max-w-[500px] w-full rounded-xl px-6 pb-12 bg-background 
+      className="max-w-[500px] w-full rounded px-6 pb-12 bg-background 
   bg-linear-to-b from-primary/15 via-background to-bg-background border-4 
     shadow-xl z-50"
     >
