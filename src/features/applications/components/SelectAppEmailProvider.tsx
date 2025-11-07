@@ -29,9 +29,6 @@ export default function SelectAppEmailProvider({ form }: SelectAppEmailProviderP
     <div className="w-full max-w-md">
       <FieldGroup>
         <FieldSet>
-          <FieldLabel htmlFor="email-provider">Email Provider</FieldLabel>
-          <FieldDescription>Select the email provider you wish to use.</FieldDescription>
-
           <RadioGroup
             value={selectedProvider}
             onValueChange={(val) => form.setValue("emailProvider", val)}
