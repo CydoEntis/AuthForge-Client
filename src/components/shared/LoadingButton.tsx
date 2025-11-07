@@ -14,7 +14,11 @@ export function LoadingButton({
   ...props
 }: LoadingButtonProps) {
   return (
-    <Button disabled={isLoading} {...props}>
+    <Button
+      disabled={isLoading}
+      {...props}
+      className="border border-primary/30 bg-primary/10 text-primary hover:bg-primary/20! "
+    >
       {isLoading ? (
         <>
           <Spinner className="mr-2 inline-block" /> {loadingText}
