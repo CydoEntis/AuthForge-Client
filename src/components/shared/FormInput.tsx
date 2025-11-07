@@ -1,4 +1,4 @@
-import { FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from "@/components/ui/form"; // ✅ Add FormDescription
+import { FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { AnimatePresence } from "framer-motion";
 import FadeSlide from "./animations/FadeSlide";
@@ -22,7 +22,7 @@ export function FormInput({
   type = "text",
   className,
   isLoading = false,
-  description, // ✅ Add this
+  description,
 }: FormInputProps) {
   const error = form.formState.errors?.[name]?.message as string | undefined;
 
