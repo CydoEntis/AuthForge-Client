@@ -21,6 +21,7 @@ import { Route as publicDashboardIndexRouteImport } from './routes/(public)/dash
 import { Route as privateApplicationsIndexRouteImport } from './routes/(private)/applications/index'
 import { Route as publicauthLoginRouteImport } from './routes/(public)/(auth)/login'
 import { Route as publicauthForgotPasswordRouteImport } from './routes/(public)/(auth)/forgot-password'
+import { Route as privateApplicationsCreateRouteImport } from './routes/(private)/applications/create'
 import { Route as privateApplicationsIdRouteImport } from './routes/(private)/applications/$id'
 
 const setupRouteRoute = setupRouteRouteImport.update({
@@ -81,6 +82,12 @@ const publicauthForgotPasswordRoute =
     path: '/forgot-password',
     getParentRoute: () => publicauthRouteRoute,
   } as any)
+const privateApplicationsCreateRoute =
+  privateApplicationsCreateRouteImport.update({
+    id: '/applications/create',
+    path: '/applications/create',
+    getParentRoute: () => privateRouteRoute,
+  } as any)
 const privateApplicationsIdRoute = privateApplicationsIdRouteImport.update({
   id: '/applications/$id',
   path: '/applications/$id',
@@ -93,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/setup': typeof setupSetupRoute
   '/playground': typeof PlaygroundIndexRoute
   '/applications/$id': typeof privateApplicationsIdRoute
+  '/applications/create': typeof privateApplicationsCreateRoute
   '/forgot-password': typeof publicauthForgotPasswordRoute
   '/login': typeof publicauthLoginRoute
   '/applications': typeof privateApplicationsIndexRoute
@@ -103,6 +111,7 @@ export interface FileRoutesByTo {
   '/setup': typeof setupSetupRoute
   '/playground': typeof PlaygroundIndexRoute
   '/applications/$id': typeof privateApplicationsIdRoute
+  '/applications/create': typeof privateApplicationsCreateRoute
   '/forgot-password': typeof publicauthForgotPasswordRoute
   '/login': typeof publicauthLoginRoute
   '/applications': typeof privateApplicationsIndexRoute
@@ -119,6 +128,7 @@ export interface FileRoutesById {
   '/(setup)/setup': typeof setupSetupRoute
   '/playground/': typeof PlaygroundIndexRoute
   '/(private)/applications/$id': typeof privateApplicationsIdRoute
+  '/(private)/applications/create': typeof privateApplicationsCreateRoute
   '/(public)/(auth)/forgot-password': typeof publicauthForgotPasswordRoute
   '/(public)/(auth)/login': typeof publicauthLoginRoute
   '/(private)/applications/': typeof privateApplicationsIndexRoute
@@ -132,6 +142,7 @@ export interface FileRouteTypes {
     | '/setup'
     | '/playground'
     | '/applications/$id'
+    | '/applications/create'
     | '/forgot-password'
     | '/login'
     | '/applications'
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
     | '/setup'
     | '/playground'
     | '/applications/$id'
+    | '/applications/create'
     | '/forgot-password'
     | '/login'
     | '/applications'
@@ -157,6 +169,7 @@ export interface FileRouteTypes {
     | '/(setup)/setup'
     | '/playground/'
     | '/(private)/applications/$id'
+    | '/(private)/applications/create'
     | '/(public)/(auth)/forgot-password'
     | '/(public)/(auth)/login'
     | '/(private)/applications/'
@@ -257,6 +270,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicauthForgotPasswordRouteImport
       parentRoute: typeof publicauthRouteRoute
     }
+    '/(private)/applications/create': {
+      id: '/(private)/applications/create'
+      path: '/applications/create'
+      fullPath: '/applications/create'
+      preLoaderRoute: typeof privateApplicationsCreateRouteImport
+      parentRoute: typeof privateRouteRoute
+    }
     '/(private)/applications/$id': {
       id: '/(private)/applications/$id'
       path: '/applications/$id'
@@ -269,11 +289,13 @@ declare module '@tanstack/react-router' {
 
 interface privateRouteRouteChildren {
   privateApplicationsIdRoute: typeof privateApplicationsIdRoute
+  privateApplicationsCreateRoute: typeof privateApplicationsCreateRoute
   privateApplicationsIndexRoute: typeof privateApplicationsIndexRoute
 }
 
 const privateRouteRouteChildren: privateRouteRouteChildren = {
   privateApplicationsIdRoute: privateApplicationsIdRoute,
+  privateApplicationsCreateRoute: privateApplicationsCreateRoute,
   privateApplicationsIndexRoute: privateApplicationsIndexRoute,
 }
 

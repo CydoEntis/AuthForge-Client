@@ -4,7 +4,6 @@ import { Plus, Search } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import type { SortingState, OnChangeFn } from "@tanstack/react-table";
-import ApplicationFormModal from "@/features/applications/components/ApplicationFormModal";
 import { ApplicationsTable } from "@/features/applications/components/ApplicationsTable";
 import { useApplications } from "@/features/applications/hooks/useApplications";
 import { useCreateApplication } from "@/features/applications/hooks/useCreateApplication";
@@ -41,13 +40,7 @@ function ApplicationsDashboard() {
 
   const { data: editingApplication, isLoading: isLoadingApplication } = useApplication(editingId);
 
-  const createMutation = useCreateApplication();
   const updateMutation = useUpdateApplication(editingId || "");
-
-  const handleCreateApp = async (formData: CreateApplication) => {
-    await createMutation.mutateAsync(formData);
-    setModalOpen(false);
-  };
 
   const handleUpdateApp = async (formData: CreateApplication) => {
     await updateMutation.mutateAsync(formData);
@@ -113,10 +106,10 @@ function ApplicationsDashboard() {
       </div> */}
 
       <div className="flex gap-4">
-        <BrowserCard url="www.authforge.com" name={"Auth Forge"} isOnline>
+        <BrowserCard url="www.authforge.com" isOnline>
           <div className="flex flex-col  px-4 py-2">
             <div className="flex items-center gap-2">
-              <Avatar className="rounded bg-card flex justify-center items-center shadow-md">A</Avatar>
+              <Avatar className="rounded bg-sidebar border flex justify-center items-center">A</Avatar>
               <div className="">
                 <h3 className="font-semibold text-sm">Auth Forge</h3>
                 <p className="text-xs text-muted-foreground">auth-forge</p>
@@ -152,7 +145,7 @@ function ApplicationsDashboard() {
         <BrowserCard url="www.cloudcrate.com">
           <div className="flex flex-col  px-4 py-2">
             <div className="flex items-center gap-2">
-              <Avatar className="rounded bg-card flex justify-center items-center shadow-md">C</Avatar>
+              <Avatar className="rounded bg-sidebar border flex justify-center items-center">C</Avatar>
               <div className="">
                 <h3 className="font-semibold text-sm">Cloud Crate</h3>
                 <p className="text-xs text-muted-foreground">cloud-crate</p>
@@ -185,7 +178,7 @@ function ApplicationsDashboard() {
         <BrowserCard url="www.ripple.com">
           <div className="flex flex-col  px-4 py-2">
             <div className="flex items-center gap-2">
-              <Avatar className="rounded bg-card flex justify-center items-center shadow-md">R</Avatar>
+              <Avatar className="rounded bg-sidebar border flex justify-center items-center">R</Avatar>
               <div className="">
                 <h3 className="font-semibold text-sm">Ripple</h3>
                 <p className="text-xs text-muted-foreground">ripple</p>
@@ -224,13 +217,13 @@ function ApplicationsDashboard() {
         onEdit={handleEdit}
       /> */}
 
-      <ApplicationFormModal
+      {/* <ApplicationFormModal
         open={modalOpen}
         onOpenChange={handleCloseModal}
         onSubmit={editingId ? handleUpdateApp : handleCreateApp}
         application={editingApplication || null}
         isLoading={isLoadingApplication}
-      />
+      /> */}
     </div>
   );
 }
