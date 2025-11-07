@@ -4,33 +4,32 @@ import { useEffect, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Info } from "lucide-react";
-import { SMTP_PRESET_OPTIONS, SMTP_PRESETS } from "@/features/setup/constants/smtpPresets";
+import { SMTP_PRESET_OPTIONS, SMTP_PRESETS, SmtpPresetKey } from "@/features/setup/constants/smtpPresets";
+import { EMAIL_PROVIDERS, type AllowedEmailProviders } from "@/features/setup/types";
 
 interface EmailProviderSettingsProps {
   form: any;
   isLoading?: boolean;
-  provider: "Smtp" | "Resend";
+  provider: AllowedEmailProviders;
 }
 
 export default function EmailProviderSettings({ form, isLoading, provider }: EmailProviderSettingsProps) {
-  const [selectedPreset, setSelectedPreset] = useState<string>("CUSTOM");
+  const [selectedPreset, setSelectedPreset] = useState<SmtpPresetKey>(SmtpPresetKey.GMAIL);
 
   useEffect(() => {
-    setSelectedPreset("CUSTOM");
+    setSelectedPreset(SmtpPresetKey.GMAIL);
   }, [provider]);
 
-  const handlePresetChange = (presetKey: string) => {
+  const handlePresetChange = (presetKey: SmtpPresetKey) => {
     setSelectedPreset(presetKey);
     const preset = SMTP_PRESETS[presetKey];
-    if (preset) {
-      form.setValue("emailConfig.host", preset.host || "");
-      form.setValue("emailConfig.port", preset.port?.toString() || "");
-    }
+    form.setValue("emailConfig.host", preset.host);
+    form.setValue("emailConfig.port", preset.port);
   };
 
   return (
     <AnimatePresence mode="wait">
-      {provider === "Smtp" && (
+      {provider === EMAIL_PROVIDERS.SMTP && (
         <motion.div
           key="smtp-settings"
           initial={{ opacity: 0, y: -10 }}
@@ -103,7 +102,7 @@ export default function EmailProviderSettings({ form, isLoading, provider }: Ema
         </motion.div>
       )}
 
-      {provider === "Resend" && (
+      {provider === EMAIL_PROVIDERS.RESEND && (
         <motion.div
           key="resend-settings"
           initial={{ opacity: 0, y: -10 }}
@@ -111,7 +110,7 @@ export default function EmailProviderSettings({ form, isLoading, provider }: Ema
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.3 }}
           layout
-          className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-4"
         >
           <FormInput
             form={form}
