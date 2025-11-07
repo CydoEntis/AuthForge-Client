@@ -1,4 +1,3 @@
-// src/routes/(private)/applications/index.tsx
 import { createFileRoute } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Plus, Search } from "lucide-react";
@@ -13,7 +12,8 @@ import { useUpdateApplication } from "@/features/applications/hooks/useUpdateApp
 import { useApplication } from "@/features/applications/hooks/useApplication";
 import type { CreateApplication } from "@/features/applications/types";
 import { BrowserCard } from "@/components/shared/BrowserCard";
-import { BrowserCardGlow } from "@/components/shared/BrowserCardGlow";
+import { Avatar } from "@/components/ui/avatar";
+import { GoogleLogo, GithubLogo, EnvelopeSimple } from "@phosphor-icons/react";
 
 export const Route = createFileRoute("/(private)/applications/")({
   component: ApplicationsDashboard,
@@ -114,10 +114,102 @@ function ApplicationsDashboard() {
 
       <div className="flex gap-4">
         <BrowserCard url="www.authforge.com" name={"Auth Forge"} isOnline>
-          <p>Some shits gonna go in here</p>
+          <div className="flex flex-col  px-4 py-2">
+            <div className="flex items-center gap-2">
+              <Avatar className="rounded bg-card flex justify-center items-center shadow-md">A</Avatar>
+              <div className="">
+                <h3 className="font-semibold text-sm">Auth Forge</h3>
+                <p className="text-xs text-muted-foreground">auth-forge</p>
+              </div>
+            </div>
+            <div className="flex gap-4 mt-4">
+              <div className="border bg-card py-1 px-2 w-100 rounded-lg">
+                <h3 className="text-xl font-semibold">2187</h3>
+                <p className="text-muted-foreground text-xs">active users</p>
+              </div>
+              <div className="border bg-card py-1 px-2 w-100 rounded-lg">
+                <h3 className="text-xl font-semibold">12642</h3>
+                <p className="text-muted-foreground text-xs">weekly logins</p>
+              </div>
+            </div>
+            <div className="flex flex-col mt-2">
+              <h3 className="text-muted-foreground text-sm">Auth Methods</h3>
+              <div className="flex gap-2 mt-1">
+                <div className="p-2 border bg-card rounded">
+                  <GoogleLogo size={14} />
+                </div>
+                <div className="p-2 border bg-card rounded">
+                  <GithubLogo size={14} />
+                </div>
+                <div className="p-2 border bg-card rounded">
+                  <EnvelopeSimple size={14} />
+                </div>
+              </div>
+            </div>
+          </div>
         </BrowserCard>
-        <BrowserCard url="www.example.com" name={"Example App"}>
-          <p>Some shits gonna go in here</p>
+
+        <BrowserCard url="www.cloudcrate.com">
+          <div className="flex flex-col  px-4 py-2">
+            <div className="flex items-center gap-2">
+              <Avatar className="rounded bg-card flex justify-center items-center shadow-md">C</Avatar>
+              <div className="">
+                <h3 className="font-semibold text-sm">Cloud Crate</h3>
+                <p className="text-xs text-muted-foreground">cloud-crate</p>
+              </div>
+            </div>
+            <div className="flex gap-4 mt-4">
+              <div className="border bg-card py-1 px-2 w-100 rounded-lg">
+                <h3 className="text-xl font-semibold">900</h3>
+                <p className="text-muted-foreground text-xs">active users</p>
+              </div>
+              <div className="border bg-card py-1 px-2 w-100 rounded-lg">
+                <h3 className="text-xl font-semibold">8742</h3>
+                <p className="text-muted-foreground text-xs">weekly logins</p>
+              </div>
+            </div>
+            <div className="flex flex-col mt-2">
+              <h3 className="text-muted-foreground text-sm">Auth Methods</h3>
+              <div className="flex gap-2 mt-1">
+                <div className="p-2 border bg-card rounded">
+                  <GoogleLogo size={14} />
+                </div>
+                <div className="p-2 border bg-card rounded">
+                  <EnvelopeSimple size={14} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </BrowserCard>
+
+        <BrowserCard url="www.ripple.com">
+          <div className="flex flex-col  px-4 py-2">
+            <div className="flex items-center gap-2">
+              <Avatar className="rounded bg-card flex justify-center items-center shadow-md">R</Avatar>
+              <div className="">
+                <h3 className="font-semibold text-sm">Ripple</h3>
+                <p className="text-xs text-muted-foreground">ripple</p>
+              </div>
+            </div>
+            <div className="flex gap-4 mt-4">
+              <div className="border bg-card py-1 px-2 w-100 rounded-lg">
+                <h3 className="text-xl font-semibold">187</h3>
+                <p className="text-muted-foreground text-xs">active users</p>
+              </div>
+              <div className="border bg-card py-1 px-2 w-100 rounded-lg">
+                <h3 className="text-xl font-semibold">1218</h3>
+                <p className="text-muted-foreground text-xs">weekly logins</p>
+              </div>
+            </div>
+            <div className="flex flex-col mt-2">
+              <h3 className="text-muted-foreground text-sm">Auth Methods</h3>
+              <div className="flex gap-2 mt-1">
+                <div className="p-2 border bg-card rounded">
+                  <EnvelopeSimple size={14} />
+                </div>
+              </div>
+            </div>
+          </div>
         </BrowserCard>
       </div>
 

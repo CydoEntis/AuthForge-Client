@@ -71,7 +71,7 @@ client.interceptors.response.use(
 
       try {
         const refreshResponse = await axios.post(
-          `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5255/api"}/admin/refresh-token`,
+          `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5255/api"}/admin/refresh`,
           { refreshToken }
         );
 
@@ -89,6 +89,7 @@ client.interceptors.response.use(
 
         return client(originalRequest);
       } catch (refreshError) {
+        console.log(refreshError);
         processQueue(refreshError);
         isRefreshing = false;
         logout();

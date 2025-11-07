@@ -17,7 +17,7 @@ export const authApi = {
   },
 
   refreshToken: async (refreshToken: string): Promise<RefreshTokenResponse> => {
-    return apiClient.post<RefreshTokenResponse>("/admin/refresh-token", { refreshToken });
+    return apiClient.post<RefreshTokenResponse>("/admin/refresh", { refreshToken });
   },
 
   logoutAdmin: async (refreshToken: string): Promise<void> => {
