@@ -12,6 +12,8 @@ import { useCreateApplication } from "@/features/applications/hooks/useCreateApp
 import { useUpdateApplication } from "@/features/applications/hooks/useUpdateApplication";
 import { useApplication } from "@/features/applications/hooks/useApplication";
 import type { CreateApplication } from "@/features/applications/types";
+import { BrowserCard } from "@/components/shared/BrowserCard";
+import { BrowserCardGlow } from "@/components/shared/BrowserCardGlow";
 
 export const Route = createFileRoute("/(private)/applications/")({
   component: ApplicationsDashboard,
@@ -92,7 +94,34 @@ function ApplicationsDashboard() {
         </div>
       </div>
 
-      <ApplicationsTable
+      {/* <div className="container">
+        <div className="card">
+          <div className="cardimg">
+            <img
+              src="https://www.estadao.com.br/resizer/v2/QJGR4J7YDBGKPKRJFCG5IM7SDM.jpg?quality=80&auth=7ede915d23741bb62ea2fcc4418712b73e3629199870cf1ae38fc99788456b27&width=1262&height=710&smart=true"
+              alt=""
+            />
+          </div>
+          <div className="tag">
+            <p>
+              <span>Online</span>
+            </p>
+          </div>
+          <div className="curve_one"></div>
+          <div className="curve_two"></div>
+        </div>
+      </div> */}
+
+      <div className="flex gap-4">
+        <BrowserCard url="www.authforge.com" name={"Auth Forge"} isOnline>
+          <p>Some shits gonna go in here</p>
+        </BrowserCard>
+        <BrowserCard url="www.example.com" name={"Example App"}>
+          <p>Some shits gonna go in here</p>
+        </BrowserCard>
+      </div>
+
+      {/* <ApplicationsTable
         data={data}
         isLoading={isLoading}
         sorting={sorting}
@@ -101,7 +130,7 @@ function ApplicationsDashboard() {
         pageSize={pageSize}
         onPageChange={setPage}
         onEdit={handleEdit}
-      />
+      /> */}
 
       <ApplicationFormModal
         open={modalOpen}
