@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Plus, Search } from "lucide-react";
 import { useState } from "react";
@@ -9,6 +9,10 @@ import { useApplications } from "@/features/applications/hooks/useApplications";
 import { useUpdateApplication } from "@/features/applications/hooks/useUpdateApplication";
 import { useApplication } from "@/features/applications/hooks/useApplication";
 import type { CreateApplication } from "@/features/applications/types";
+import { BrowserCard } from "@/components/shared/BrowserCard";
+import { Avatar } from "@/components/ui/avatar";
+import { GoogleLogoIcon, GithubLogoIcon, EnvelopeSimpleIcon } from "@phosphor-icons/react";
+import { Separator } from "@/components/ui/separator";
 
 export const Route = createFileRoute("/(private)/applications/")({
   component: ApplicationsDashboard,
@@ -51,18 +55,22 @@ export function ApplicationsDashboard() {
 
   return (
     <div className="flex flex-col gap-4 p-4 min-h-screen">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Applications</h1>
-          <p className="text-muted-foreground">Manage your OAuth applications and API clients</p>
+      <div>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">Applications</h1>
+            <p className="text-muted-foreground">Manage your OAuth applications and API clients</p>
+          </div>
+          <Link to={"/applications/create"}>
+            <Button
+              className="border border-primary/30 bg-primary/10 text-primary hover:bg-primary/30!"
+              onClick={() => console.log("New Application")}
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              New Application
+            </Button>
+          </Link>
         </div>
-        <Button
-          className="border border-primary/30 bg-primary/10 text-primary hover:bg-primary/30!"
-          onClick={() => console.log("New Application")}
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          New Application
-        </Button>
       </div>
 
       <div className="flex items-center gap-4">
@@ -77,8 +85,8 @@ export function ApplicationsDashboard() {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col justify-center items-center">
-        {isLoading ? (
+      <div className="flex flex-wrap gap-4">
+        {/* {isLoading ? (
           <p>Loading...</p>
         ) : !data || data.items.length === 0 ? (
           <div className="relative flex flex-col justify-center items-center overflow-hidden">
@@ -107,18 +115,55 @@ export function ApplicationsDashboard() {
               Forge Application <Plus size={22} />
             </Button>
           </div>
-        ) : (
-          <ApplicationsTable
-            data={data}
-            isLoading={isLoading}
-            sorting={sorting}
-            onSortingChange={handleSortingChange}
-            page={page}
-            pageSize={pageSize}
-            onPageChange={setPage}
-            onEdit={handleEdit}
-          />
-        )}
+        ) : ( */}
+        {Array.from({ length: 50 }).map(() => (
+          <BrowserCard url="www.authforge.com" isOnline>
+            <div className="flex flex-col  px-4 py-2">
+              <div className="flex items-center gap-2">
+                <Avatar className="rounded bg-sidebar border flex justify-center items-center">A</Avatar>
+                <div className="">
+                  <h3 className="font-semibold text-sm">Auth Forge</h3>
+                  <p className="text-xs text-muted-foreground">auth-forge</p>
+                </div>
+              </div>
+              <div className="flex gap-4 mt-4">
+                <div className="border bg-card py-1 px-2 w-100 rounded-lg">
+                  <h3 className="text-xl font-semibold">2187</h3>
+                  <p className="text-muted-foreground text-xs">active users</p>
+                </div>
+                <div className="border bg-card py-1 px-2 w-100 rounded-lg">
+                  <h3 className="text-xl font-semibold">12642</h3>
+                  <p className="text-muted-foreground text-xs">weekly logins</p>
+                </div>
+              </div>
+              <div className="flex flex-col mt-2">
+                <h3 className="text-muted-foreground text-sm">Auth Methods</h3>
+                <div className="flex gap-2 mt-1">
+                  <div className="p-2 border bg-card rounded">
+                    <GoogleLogoIcon size={14} />
+                  </div>
+                  <div className="p-2 border bg-card rounded">
+                    <GithubLogoIcon size={14} />
+                  </div>
+                  <div className="p-2 border bg-card rounded">
+                    <EnvelopeSimpleIcon size={14} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </BrowserCard>
+        ))}
+        {/* <ApplicationsTable
+             data={data}
+             isLoading={isLoading}
+             sorting={sorting}
+             onSortingChange={handleSortingChange}
+             page={page}
+             pageSize={pageSize}
+             onPageChange={setPage}
+             onEdit={handleEdit}
+           /> */}
+        {/* )} */}
       </div>
     </div>
   );
