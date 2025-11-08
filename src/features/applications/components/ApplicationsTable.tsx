@@ -11,7 +11,7 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MoreHorizontal, Pencil, Trash2, Eye, ArrowUpDown } from "lucide-react";
+import { MoreHorizontal, Pencil, Trash2, Eye, ArrowUpDown, Plus } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -48,26 +48,20 @@ export function ApplicationsTable({
     () => [
       {
         accessorKey: "name",
-        header: ({ column }) => {
-          return (
-            <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-              Name
-              <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-          );
-        },
+        header: ({ column }) => (
+          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+            Name <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        ),
         cell: ({ row }) => <div className="font-medium">{row.original.name}</div>,
       },
       {
         accessorKey: "slug",
-        header: ({ column }) => {
-          return (
-            <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-              Slug
-              <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-          );
-        },
+        header: ({ column }) => (
+          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+            Slug <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        ),
         cell: ({ row }) => <code className="text-xs">{row.original.slug}</code>,
       },
       {
@@ -91,14 +85,11 @@ export function ApplicationsTable({
       },
       {
         accessorKey: "createdAtUtc",
-        header: ({ column }) => {
-          return (
-            <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-              Created
-              <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-          );
-        },
+        header: ({ column }) => (
+          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+            Created <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        ),
         cell: ({ row }) => new Date(row.original.createdAtUtc).toLocaleDateString(),
       },
       {
@@ -113,17 +104,14 @@ export function ApplicationsTable({
             <DropdownMenuContent align="end">
               <DropdownMenuItem asChild>
                 <Link to="/applications/$id" params={{ id: row.original.applicationId }}>
-                  <Eye className="mr-2 h-4 w-4" />
-                  View Details
+                  <Eye className="mr-2 h-4 w-4" /> View Details
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => onEdit(row.original.applicationId)}>
-                <Pencil className="mr-2 h-4 w-4" />
-                Edit
+                <Pencil className="mr-2 h-4 w-4" /> Edit
               </DropdownMenuItem>
               <DropdownMenuItem className="text-destructive">
-                <Trash2 className="mr-2 h-4 w-4" />
-                Delete
+                <Trash2 className="mr-2 h-4 w-4" /> Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -140,24 +128,13 @@ export function ApplicationsTable({
     manualSorting: true,
     manualPagination: true,
     pageCount: data?.totalPages ?? 0,
-    state: {
-      sorting,
-    },
+    state: { sorting },
     onSortingChange,
   });
 
-  if (isLoading) {
-    return <TableSkeleton />;
-  }
+  if (isLoading) return <TableSkeleton />;
 
-  if (!data || data.items.length === 0) {
-    return (
-      <div className="rounded-lg border border-dashed p-8 text-center">
-        <p className="text-muted-foreground">No applications found</p>
-        <p className="text-sm text-muted-foreground mt-1">Create your first application to get started</p>
-      </div>
-    );
-  }
+  if (!data || data.items.length === 0) return null; // Handled in Dashboard
 
   return (
     <>
@@ -187,7 +164,7 @@ export function ApplicationsTable({
       </div>
 
       {/* Pagination */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mt-2">
         <p className="text-sm text-muted-foreground">
           Showing {(page - 1) * pageSize + 1} to {Math.min(page * pageSize, data.totalCount)} of {data.totalCount}
         </p>
