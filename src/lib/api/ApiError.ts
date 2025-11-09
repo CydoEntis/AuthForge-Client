@@ -1,22 +1,39 @@
-import { extractFieldFromErrorCode } from "../utils";
-import type { ApiError as ApiErrorType } from "./types";
+import type { ApiError as ApiErrorType, FieldError } from "./types";
 
 export class ApiError extends Error {
   public code: string;
-  public field?: string;
+  public fieldErrors?: FieldError[];
 
   constructor(apiError: ApiErrorType) {
     super(apiError.message);
     this.name = "ApiError";
     this.code = apiError.code;
-    this.field = extractFieldFromErrorCode(apiError.code);
+    this.fieldErrors = apiError.fieldErrors ?? undefined;
 
-    // ✅ Fix prototype chain for instanceof
     Object.setPrototypeOf(this, ApiError.prototype);
+  }
 
-    console.log("🔨 ApiError constructor called");
-    console.log("  - message:", apiError.message);
-    console.log("  - code:", apiError.code);
-    console.log("  - extracted field:", this.field);
+  isValidationError(): boolean {
+    return this.code.startsWith("Validation.");
+  }
+
+  getFieldError(field: string): string | undefined {
+    return this.fieldErrors?.find((e) => e.field === field)?.message;
+  }
+
+  getFieldErrors(): Record<string, string> | undefined {
+    if (!this.fieldErrors || this.fieldErrors.length === 0) return undefined;
+
+    return this.fieldErrors.reduce(
+      (acc, error) => {
+        acc[error.field] = error.message;
+        return acc;
+      },
+      {} as Record<string, string>
+    );
+  }
+
+  hasFieldError(field: string): boolean {
+    return this.fieldErrors?.some((e) => e.field === field) ?? false;
   }
 }

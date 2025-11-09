@@ -18,6 +18,11 @@ export const DATABASES = {
 
 export type AllowedDatabases = (typeof DATABASES)[keyof typeof DATABASES];
 
+export type DatabaseConfig = {
+  databaseType: AllowedDatabases;
+  connectionString: string | null;
+};
+
 export const EMAIL_PROVIDERS = {
   SMTP: "Smtp",
   RESEND: "Resend",
@@ -41,20 +46,9 @@ export type EmailConfig = {
 
 export type AdminConfig = z.infer<typeof setupAdminSchema>;
 
-export type CompleteSetupPayload = {
-  databaseType: string;
-  connectionString: string | null;
-  emailProvider: string;
-  resendApiKey: string | null;
-  smtpHost: string | null;
-  smtpPort: number | null;
-  smtpUsername: string | null;
-  smtpPassword: string | null;
-  smtpUseSsl: boolean | null;
-  fromEmail: string;
-  fromName: string;
-  adminEmail: string;
-  adminPassword: string;
+export type SetupStatusResponse = {
+  isSetupComplete: boolean;
+  message: string;
 };
 
 export type TestDatabaseConnectionResponse = {
@@ -71,6 +65,18 @@ export type CompleteSetupResponse = {
   message: string;
 };
 
-export type SetupStatusResponse = {
-  isComplete: boolean;
+export type CompleteSetupPayload = {
+  databaseType: AllowedDatabases;
+  connectionString: string | null;
+  emailProvider: AllowedEmailProviders;
+  resendApiKey: string | null;
+  smtpHost: string | null;
+  smtpPort: number | null;
+  smtpUsername: string | null;
+  smtpPassword: string | null;
+  smtpUseSsl: boolean | null;
+  fromEmail: string;
+  fromName: string;
+  adminEmail: string;
+  adminPassword: string;
 };

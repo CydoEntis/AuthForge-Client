@@ -18,7 +18,7 @@ export function useConfigureDatabaseForm(
           ? `Host=${values.host};Port=${values.port};Username=${values.user};Password=${values.password};Database=${values.database}`
           : null;
 
-      return setupApi.testDatabaseConnection(databaseType, connectionString);
+      return setupApi.testDatabaseConnection(DATABASES.POSTGRESQL, connectionString);
     },
     setError: form.setError,
     successMessage: "Database connection successful!",

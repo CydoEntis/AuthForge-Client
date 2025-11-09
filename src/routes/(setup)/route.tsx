@@ -7,13 +7,12 @@ import { useAuthStore } from "@/store/useAuthStore";
 
 export const Route = createFileRoute("/(setup)")({
   beforeLoad: async ({ context }) => {
-    const { isComplete } = await context.queryClient.ensureQueryData({
+    const { isSetupComplete } = await context.queryClient.ensureQueryData({
       queryKey: ["setup-status"],
       queryFn: setupApi.getSetupStatus,
     });
 
-    // If setup is already complete and user is authenticated, redirect to dashboard
-    if (isComplete) {
+    if (isSetupComplete) {
       const { refreshToken } = useAuthStore.getState();
       if (refreshToken) {
         throw redirect({ to: "/dashboard" });

@@ -1,10 +1,11 @@
+// lib/api/apiClient.ts
 import { useAuthStore } from "@/store/useAuthStore";
 import axios, { type AxiosRequestConfig, type InternalAxiosRequestConfig } from "axios";
 import { ApiError } from "./ApiError";
 import type { ApiResponse } from "./types";
 
 const client = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:5255/api",
+  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:5046/api/v1",
   headers: {
     "Content-Type": "application/json",
   },
@@ -71,11 +72,9 @@ client.interceptors.response.use(
 
       try {
         const refreshResponse = await axios.post(
-          `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5255/api"}/admin/refresh`,
+          `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5046/api/v1"}/admin/refresh`,
           { refreshToken }
         );
-
-        console.log("Refresh response: ", refreshResponse);
 
         const { accessToken: newAccessToken } = refreshResponse.data.data;
         updateAccessToken(newAccessToken);
@@ -89,7 +88,6 @@ client.interceptors.response.use(
 
         return client(originalRequest);
       } catch (refreshError) {
-        console.log(refreshError);
         processQueue(refreshError);
         isRefreshing = false;
         logout();
@@ -106,6 +104,7 @@ client.interceptors.response.use(
 export const apiClient = {
   get: async <T>(url: string, config?: AxiosRequestConfig): Promise<T> => {
     const res = (await client.get<ApiResponse<T>>(url, config)).data;
+    console.log(res);
     if (!res.success) throw new ApiError(res.error!);
     return res.data;
   },
