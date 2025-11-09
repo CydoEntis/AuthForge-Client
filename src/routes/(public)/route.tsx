@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
-import { setupApi } from "@/features/setup/api";
+import { setupApi } from "@/features/setup/setup.api";
 
 export const Route = createFileRoute("/(public)")({
   beforeLoad: async ({ context }) => {

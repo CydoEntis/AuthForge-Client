@@ -13,7 +13,7 @@ import ResendBlack from "@/assets/resend-icon-black.svg";
 import ResendWhite from "@/assets/resend-icon-white.svg";
 import { Mail } from "lucide-react";
 import type { UseFormReturn } from "react-hook-form";
-import { EMAIL_PROVIDERS } from "@/features/setup/types";
+import { EMAIL_PROVIDERS } from "@/features/setup/setup.types";
 
 type SelectAppEmailProviderProps = {
   form: UseFormReturn<any>;

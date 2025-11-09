@@ -14,7 +14,7 @@ import {
   type AdminConfig,
   DATABASES,
   EMAIL_PROVIDERS,
-} from "../types";
+} from "../setup.types";
 
 export default function SetupWizardLayout() {
   const [step, setStep] = useState<SetupWizardStep>("welcome");

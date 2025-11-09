@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SetupOptionCard from "../auth/components/SetupOptionCard";
-import { DATABASES } from "../types";
-import type { AllowedDatabases, PostgresConfig } from "../types";
+import { DATABASES } from "../setup.types";
+import type { AllowedDatabases, PostgresConfig } from "../setup.types";
 import ConfigureDatabase from "./ConfigureDatabase";
 
 type SelectDatabaseProps = {

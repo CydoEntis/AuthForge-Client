@@ -2,7 +2,7 @@ import { StarsBackground } from "@/components/animate-ui/components/backgrounds/
 import { cn } from "@/lib/utils";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { useTheme } from "next-themes";
-import { setupApi } from "@/features/setup/api";
+import { setupApi } from "@/features/setup/setup.api";
 import { useAuthStore } from "@/store/useAuthStore";
 
 export const Route = createFileRoute("/(setup)")({

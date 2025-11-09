@@ -2,7 +2,7 @@ import FormError from "@/components/shared/FormError";
 import { FormInput } from "@/components/shared/FormInput";
 import { LoadingButton } from "@/components/shared/LoadingButton";
 import { FormProvider } from "react-hook-form";
-import type { PostgresConfig, AllowedDatabases } from "../types";
+import type { PostgresConfig, AllowedDatabases } from "../setup.types";
 import { useConfigureDatabaseForm } from "../hooks/useConfigureDatabaseForm";
 import ConfigDialog from "../../../components/shared/Modal";
 import { useEffect } from "react";

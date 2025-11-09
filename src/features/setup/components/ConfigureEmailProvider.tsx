@@ -1,7 +1,7 @@
 import { FormProvider } from "react-hook-form";
 import { LoadingButton } from "@/components/shared/LoadingButton";
 import FormError from "@/components/shared/FormError";
-import { type EmailConfig, type AllowedEmailProviders } from "../types";
+import { type EmailConfig, type AllowedEmailProviders } from "../setup.types";
 import { useConfigureEmailForm } from "../hooks/useConfigureEmailProviderForm";
 import ConfigDialog from "../../../components/shared/Modal";
 import FadeSlide from "@/components/shared/animations/FadeSlide";

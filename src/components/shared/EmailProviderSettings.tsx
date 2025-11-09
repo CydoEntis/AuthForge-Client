@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Info } from "lucide-react";
 import { SMTP_PRESET_OPTIONS, SMTP_PRESETS, SmtpPresetKey } from "@/features/setup/constants/smtpPresets";
-import { EMAIL_PROVIDERS, type AllowedEmailProviders } from "@/features/setup/types";
+import { EMAIL_PROVIDERS, type AllowedEmailProviders } from "@/features/setup/setup.types";
 
 interface EmailProviderSettingsProps {
   form: any;

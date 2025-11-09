@@ -1,8 +1,9 @@
 import { useZodForm } from "@/hooks/useZodForm";
-import { postgresSchema } from "../schemas";
-import { DATABASES, type AllowedDatabases, type PostgresConfig, type TestDatabaseConnectionResponse } from "../types";
+import { type AllowedDatabases, type PostgresConfig, type TestDatabaseConnectionResponse } from "../setup.types";
 import { useFormMutation } from "@/hooks/useFormMutation";
-import { setupApi } from "../api";
+import { setupApi } from "../setup.api";
+import { DATABASES } from "../setup.constants";
+import { postgresSchema } from "../setup.schemas";
 
 export function useConfigureDatabaseForm(
   databaseType: AllowedDatabases,
@@ -18,7 +19,12 @@ export function useConfigureDatabaseForm(
           ? `Host=${values.host};Port=${values.port};Username=${values.user};Password=${values.password};Database=${values.database}`
           : null;
 
-      return setupApi.testDatabaseConnection(DATABASES.POSTGRESQL, connectionString);
+      const request = {
+        databaseType: DATABASES.POSTGRESQL,
+        connectionString,
+      };
+
+      return setupApi.testDatabaseConnection(request);
     },
     setError: form.setError,
     successMessage: "Database connection successful!",

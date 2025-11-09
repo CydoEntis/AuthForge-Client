@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { setupApi } from "../api";
+import { setupApi } from "../setup.api";
 
 export function useSetupStatus() {
   return useQuery({

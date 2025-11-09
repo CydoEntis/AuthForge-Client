@@ -1,8 +1,8 @@
 import { useZodForm } from "@/hooks/useZodForm";
 import { smtpSchema, resendSchema } from "../schemas";
-import { type EmailConfig, type AllowedEmailProviders, type TestEmailResponse, EMAIL_PROVIDERS } from "../types";
+import { type EmailConfig, type AllowedEmailProviders, type TestEmailResponse, EMAIL_PROVIDERS } from "../setup.types";
 import { useFormMutation } from "@/hooks/useFormMutation";
-import { setupApi } from "../api";
+import { setupApi } from "../setup.api";
 
 export function useConfigureEmailForm(
   provider: AllowedEmailProviders,

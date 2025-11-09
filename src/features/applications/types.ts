@@ -1,4 +1,4 @@
-import type { AllowedEmailProviders } from "../setup/types";
+import type { AllowedEmailProviders } from "../setup/setup.types";
 
 export type Application = {
   applicationId: string;

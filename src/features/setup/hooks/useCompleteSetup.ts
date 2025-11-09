@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { setupApi } from "../api";
-import type { CompleteSetupPayload, CompleteSetupResponse } from "../types";
+import { setupApi } from "../setup.api";
+import type { CompleteSetupPayload, CompleteSetupResponse } from "../setup.types";
 import { toast } from "sonner";
 
 export function useCompleteSetup() {

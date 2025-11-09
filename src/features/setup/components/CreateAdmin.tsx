@@ -4,7 +4,7 @@ import FormError from "@/components/shared/FormError";
 import { LoadingButton } from "@/components/shared/LoadingButton";
 import { useZodForm } from "@/hooks/useZodForm";
 import { setupAdminSchema } from "../schemas";
-import type { AdminConfig } from "../types";
+import type { AdminConfig } from "../setup.types";
 
 type CreateAdminProps = {
   adminConfig: AdminConfig;

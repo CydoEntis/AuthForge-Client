@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { setupApi } from "@/features/setup/api";
+import { setupApi } from "@/features/setup/setup.api";
 import { useAuthStore } from "@/store/useAuthStore";
 
 export const Route = createFileRoute("/")({

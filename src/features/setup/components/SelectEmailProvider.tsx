@@ -1,12 +1,12 @@
 import { useState } from "react";
 import SetupOptionCard from "../auth/components/SetupOptionCard";
 import ConfigureEmailProvider from "./ConfigureEmailProvider";
-import { EMAIL_PROVIDERS } from "../types";
+import { EMAIL_PROVIDERS } from "../setup.types";
 import { Mail } from "lucide-react";
 import ResendBlack from "@/assets/resend-icon-black.svg";
 import ResendWhite from "@/assets/resend-icon-white.svg";
 import { useTheme } from "@/features/theme/hooks/useTheme";
-import type { AllowedEmailProviders, EmailConfig } from "../types";
+import type { AllowedEmailProviders, EmailConfig } from "../setup.types";
 
 type SelectEmailProviderProps = {
   selectedProvider: AllowedEmailProviders;

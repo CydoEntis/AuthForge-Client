@@ -1,5 +1,8 @@
 import z from "zod";
 
+// ======================
+//          Setup
+// ======================
 export const setupAdminSchema = z
   .object({
     email: z.email({ message: "Please enter a valid email address." }),
@@ -16,7 +19,21 @@ export const setupAdminSchema = z
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
+// ======================
+//          Setup
+// ======================
 
+// ======================
+//        Database
+// ======================
+
+// ======================
+//        Email
+// ======================
+
+// ======================
+//      Admin Account
+// ======================
 export const postgresSchema = z.object({
   host: z
     .string()
