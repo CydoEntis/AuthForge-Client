@@ -1,5 +1,5 @@
 import type z from "zod";
-import type { postgresSchema, smtpSchema, resendSchema, setupAdminSchema } from "./setup.schemas";
+import type { smtpFormSchema, resendFormSchema, adminCredentialsSchema, databaseConfigSchema } from "./setup.schemas";
 import type { DATABASES, EMAIL_PROVIDERS, SETUP_WIZARD_STEPS } from "./setup.constants";
 
 // ======================
@@ -15,15 +15,14 @@ export type SetupStatusResponse = {
 export type CompleteSetupRequest = {
   databaseType: AllowedDatabases;
   connectionString: string | null;
-  emailProvider: AllowedEmailProviders;
-  resendApiKey: string | null;
-  smtpHost: string | null;
-  smtpPort: number | null;
-  smtpUsername: string | null;
-  smtpPassword: string | null;
-  smtpUseSsl: boolean | null;
   fromEmail: string;
-  fromName: string;
+  fromName?: string;
+  smtpHost?: string;
+  smtpPort?: number;
+  smtpUsername?: string;
+  smtpPassword?: string;
+  useSsl?: boolean;
+  resendApiKey?: string;
   adminEmail: string;
   adminPassword: string;
 };
@@ -31,7 +30,7 @@ export type CompleteSetupRequest = {
 export type CompleteSetupResponse = {
   databaseType: AllowedDatabases;
   connectionString: string;
-  emailProviderCofing: EmailProviderConfig;
+  emailProviderConfig: EmailConfig;
   adminCredentials: AdminCredentials;
 };
 
@@ -39,8 +38,7 @@ export type CompleteSetupResponse = {
 //        Database
 // ======================
 export type AllowedDatabases = (typeof DATABASES)[keyof typeof DATABASES];
-
-export type PostgresConfig = z.infer<typeof postgresSchema>;
+export type DatabaseConfig = z.infer<typeof databaseConfigSchema>;
 
 export type TestDatabaseConnectionRequest = {
   databaseType: AllowedDatabases;
@@ -55,26 +53,21 @@ export type TestDatabaseConnectionResponse = {
 // ======================
 //        Email
 // ======================
-export type SmtpConfig = z.infer<typeof smtpSchema>;
-export type ResendConfig = z.infer<typeof resendSchema>;
-
 export type AllowedEmailProviders = (typeof EMAIL_PROVIDERS)[keyof typeof EMAIL_PROVIDERS];
 
-export type EmailProviderConfig = {
-  emailProvider: AllowedEmailProviders;
-  resendingApiKey?: string;
+export type SmtpFormValues = z.infer<typeof smtpFormSchema>;
+export type ResendFormValues = z.infer<typeof resendFormSchema>;
+
+export type TestEmailConfigRequest = {
+  fromEmail: string;
+  fromName?: string;
+  testRecipient: string;
   smtpHost?: string;
   smtpPort?: number;
   smtpUsername?: string;
   smtpPassword?: string;
-  fromEmail?: string;
-  fromName?: string;
-  useSsl: boolean;
-};
-
-export type TestEmailConfigRequest = {
-  emailProviderConfig: EmailProviderConfig;
-  testRecipient: string;
+  useSsl?: boolean;
+  resendApiKey?: string;
 };
 
 export type TestEmailResponse = {
@@ -82,12 +75,25 @@ export type TestEmailResponse = {
   message: string;
 };
 
+export type SmtpConfig = {
+  fromEmail: string;
+  fromName?: string;
+  smtpHost: string;
+  smtpPort: number;
+  smtpUsername: string;
+  smtpPassword: string;
+  useSsl: boolean;
+};
+
+export type ResendConfig = {
+  fromEmail: string;
+  fromName?: string;
+  resendApiKey: string;
+};
+
+export type EmailConfig = SmtpConfig | ResendConfig;
+
 // ======================
 //      Admin Account
 // ======================
-export type AdminConfig = z.infer<typeof setupAdminSchema>;
-
-export type AdminCredentials = {
-  email: string;
-  password: string;
-};
+export type AdminCredentials = z.infer<typeof adminCredentialsSchema>;

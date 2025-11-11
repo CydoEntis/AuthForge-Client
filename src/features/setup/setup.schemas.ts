@@ -1,9 +1,64 @@
 import z from "zod";
+// ======================
+//        Database
+// ======================
+
+export const databaseConfigSchema = z.object({
+  host: z
+    .string()
+    .min(1, "Host is required.")
+    .refine(
+      (val) => /^([a-zA-Z0-9.-]+|\d{1,3}(\.\d{1,3}){3})$/.test(val),
+      "Host must be a valid hostname or IP address."
+    ),
+  port: z
+    .string()
+    .min(1, "Port is required.")
+    .refine((val) => /^\d+$/.test(val) && Number(val) > 0 && Number(val) <= 65535, "Port must be between 1 and 65535."),
+  user: z.string().min(1, "Database user is required."),
+  password: z.string().min(1, "Password is required.").max(128, "Password is too long."),
+  database: z
+    .string()
+    .min(1, "Database name is required.")
+    .regex(/^[a-zA-Z0-9_-]+$/, "Database name can only contain letters, numbers, underscores, or hyphens."),
+});
 
 // ======================
-//          Setup
+//        Email
 // ======================
-export const setupAdminSchema = z
+export const baseEmailFields = {
+  fromEmail: z.email({ message: "From email must be valid" }).optional(),
+  fromName: z.string().default("AuthForge"),
+};
+
+export const smtpFormSchema = z.object({
+  smtpHost: z.string().min(1, { message: "SMTP host is required" }),
+  smtpPort: z
+    .string()
+    .min(1, { message: "SMTP port is required" })
+    .refine((val) => !isNaN(Number(val)) && Number(val) > 0 && Number(val) <= 65535, {
+      message: "Port must be a number between 1 and 65535",
+    }),
+  smtpUsername: z.string().min(1, { message: "SMTP username is required" }),
+  smtpPassword: z.string().min(1, { message: "SMTP password is required" }),
+  useSsl: z.boolean().optional().default(true),
+  fromEmail: baseEmailFields.fromEmail,
+  fromName: baseEmailFields.fromName,
+  testRecipient: z.email({ message: "Test recipient must be a valid email" }),
+});
+
+export const resendFormSchema = z.object({
+  resendApiKey: z.string().min(1, { message: "Resend API key is required" }),
+  fromEmail: baseEmailFields.fromEmail,
+  fromName: baseEmailFields.fromName,
+  testRecipient: z.email({ message: "Test recipient must be a valid email" }),
+});
+
+// ======================
+//      Admin Account
+// ======================
+
+export const adminCredentialsSchema = z
   .object({
     email: z.email({ message: "Please enter a valid email address." }),
     password: z
@@ -19,58 +74,3 @@ export const setupAdminSchema = z
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
-// ======================
-//          Setup
-// ======================
-
-// ======================
-//        Database
-// ======================
-
-// ======================
-//        Email
-// ======================
-
-// ======================
-//      Admin Account
-// ======================
-export const postgresSchema = z.object({
-  host: z
-    .string()
-    .min(1, "Host is required.")
-    .refine(
-      (val) => /^([a-zA-Z0-9.-]+|\d{1,3}(\.\d{1,3}){3})$/.test(val),
-      "Host must be a valid hostname or IP address (e.g. localhost or 192.168.1.10)."
-    ),
-  port: z
-    .string()
-    .min(1, "Port is required.")
-    .refine(
-      (val) => /^\d+$/.test(val) && Number(val) > 0 && Number(val) <= 65535,
-      "Port must be a number between 1 and 65535."
-    ),
-  user: z.string().min(1, "Database user is required."),
-  password: z.string().min(1, "Password is required.").max(128, "Password is too long."),
-  database: z
-    .string()
-    .min(1, "Database name is required.")
-    .regex(/^[a-zA-Z0-9_-]+$/, "Database name can only contain letters, numbers, underscores, or hyphens."),
-});
-
-export const smtpSchema = z.object({
-  host: z.string().min(1, { message: "SMTP host is required" }),
-  port: z
-    .string()
-    .min(1, { message: "SMTP port is required" })
-    .refine((val) => !isNaN(Number(val)), { message: "Port must be a number" }),
-  username: z.string().min(1, { message: "SMTP username is required" }),
-  password: z.string().min(1, { message: "SMTP password is required" }),
-  from: z.email({ message: "From email must be valid" }),
-  to: z.email({ message: "To email must be valid" }),
-});
-
-export const resendSchema = z.object({
-  apiKey: z.string().min(1, { message: "Resend API key is required" }),
-  from: z.email({ message: "From email must be valid" }),
-  to: z.email({ message: "To email must be valid" }),
-});
