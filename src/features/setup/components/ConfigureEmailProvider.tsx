@@ -1,12 +1,13 @@
+import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 import { LoadingButton } from "@/components/shared/LoadingButton";
 import FormError from "@/components/shared/FormError";
-import { type EmailConfig, type AllowedEmailProviders } from "../setup.types";
-import { useConfigureEmailForm } from "../hooks/useConfigureEmailProviderForm";
-import ConfigDialog from "../../../components/shared/Modal";
+import ConfigDialog from "@/components/shared/Modal";
 import FadeSlide from "@/components/shared/animations/FadeSlide";
-
 import EmailProviderSettings from "@/components/shared/EmailProviderSettings";
+import type { AllowedEmailProviders, EmailConfig } from "../setup.types";
+import { useConfigureEmailProviderForm } from "../hooks/useConfigureEmailProviderForm";
+import { EMAIL_PROVIDERS } from "../setup.constants";
 
 export default function ConfigureEmailProvider({
   provider,
@@ -21,7 +22,28 @@ export default function ConfigureEmailProvider({
   onOpenChange: (open: boolean) => void;
   onConnectionSuccess: (cfg: EmailConfig) => void;
 }) {
-  const { form, handleSubmit, isLoading } = useConfigureEmailForm(provider, initialConfig, onConnectionSuccess);
+  const { form, handleSubmit, isLoading } = useConfigureEmailProviderForm(provider, initialConfig, (cfg) => {
+    onConnectionSuccess(cfg);
+    onOpenChange(false);
+  });
+
+  useEffect(() => {
+    if (open) {
+      if (initialConfig) {
+        form.reset(initialConfig);
+      } else {
+        form.reset({
+          fromEmail: provider === EMAIL_PROVIDERS.SMTP ? "noreply@example.com" : "noreply@resend.com",
+          smtpHost: "smtp.example.com",
+          smtpPort: 587,
+          smtpUsername: "",
+          smtpPassword: "",
+          useSsl: true,
+          resendApiKey: "",
+        });
+      }
+    }
+  }, [open, provider, initialConfig, form]);
 
   const rootError = form.formState.errors.root?.message;
 
@@ -38,12 +60,7 @@ export default function ConfigureEmailProvider({
           </div>
 
           <div className="flex justify-end gap-3">
-            <LoadingButton
-              type="submit"
-              isLoading={isLoading}
-              loadingText="Testing configuration..."
-              className="border border-primary/20 bg-primary/10 hover:bg-primary/30 text-primary"
-            >
+            <LoadingButton type="submit" isLoading={isLoading} loadingText="Testing configuration...">
               Test Connection
             </LoadingButton>
           </div>
