@@ -14,7 +14,7 @@ interface ModalProps {
 export default function Modal({ title, children, open, onOpenChange, className }: ModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={`sm:max-w-lg w-full ${className ?? ""}`}>
+      <DialogContent className={` border-black sm:max-w-lg w-full ${className ?? ""}`}>
         <DialogHeader>{title && <DialogTitle>{title}</DialogTitle>}</DialogHeader>
 
         {/* THIS motion.div wraps the content to smoothly animate height */}
