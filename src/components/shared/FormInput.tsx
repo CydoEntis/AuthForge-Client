@@ -42,12 +42,8 @@ export function FormInput({
             <FormDescription className="text-xs text-muted-foreground">{description}</FormDescription>
           )}
 
-          <div className="relative min-h-[.5rem]">
-            <AnimatePresence mode="wait" initial={false}>
-              <FadeSlide visible={!!error} className="absolute text-sm text-destructive">
-                <FormMessage />
-              </FadeSlide>
-            </AnimatePresence>
+          <div className="">
+            <FormMessage />
           </div>
         </FormItem>
       )}
