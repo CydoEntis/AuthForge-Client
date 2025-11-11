@@ -2,11 +2,12 @@ import FormError from "@/components/shared/FormError";
 import { FormInput } from "@/components/shared/FormInput";
 import { LoadingButton } from "@/components/shared/LoadingButton";
 import { FormProvider } from "react-hook-form";
-import type { PostgresConfig, AllowedDatabases } from "../setup.types";
+import type { DatabaseConfig, AllowedDatabases } from "../setup.types";
 import { useConfigureDatabaseForm } from "../hooks/useConfigureDatabaseForm";
 import ConfigDialog from "../../../components/shared/Modal";
 import { useEffect } from "react";
 import FadeSlide from "@/components/shared/animations/FadeSlide";
+import { DATABASE_DEFAULTS } from "../setup.constants";
 
 export default function ConfigureDatabase({
   databaseType,
@@ -16,8 +17,8 @@ export default function ConfigureDatabase({
   onOpenChange,
 }: {
   databaseType: AllowedDatabases;
-  initialConfig: PostgresConfig;
-  onConnectionSuccess: (cfg: PostgresConfig) => void;
+  initialConfig: DatabaseConfig | null;
+  onConnectionSuccess: (cfg: DatabaseConfig) => void;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
@@ -28,22 +29,60 @@ export default function ConfigureDatabase({
 
   useEffect(() => {
     if (open) {
-      form.reset(initialConfig);
+      const defaults = DATABASE_DEFAULTS[databaseType];
+
+      if (initialConfig) {
+        form.reset(initialConfig);
+      } else {
+        form.reset({
+          host: "localhost",
+          port: defaults.port,
+          user: defaults.defaultUser || "",
+          password: "",
+          database: defaults.defaultDatabase || "authforge",
+        });
+      }
     }
-  }, [open, initialConfig, form]);
+  }, [open, databaseType, initialConfig, form]);
 
   const rootError = form.formState.errors.root?.message;
 
   return (
-    <ConfigDialog title="Configure your database" open={open} onOpenChange={onOpenChange}>
+    <ConfigDialog title={`Configure ${databaseType}`} open={open} onOpenChange={onOpenChange} className="max-w-2xl">
       <FormProvider {...form}>
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
-            <FormInput form={form} name="host" label="Host" placeholder="localhost" />
-            <FormInput form={form} name="port" label="Port" placeholder="5432" />
-            <FormInput form={form} name="user" label="User" placeholder="postgres" />
-            <FormInput form={form} name="password" label="Password" placeholder="••••••" type="password" />
-            <FormInput form={form} name="database" label="Database" placeholder="authforge" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <FormInput form={form} name="host" label="Host" placeholder="localhost" isLoading={isLoading} />
+            <FormInput
+              form={form}
+              name="port"
+              label="Port"
+              placeholder={DATABASE_DEFAULTS[databaseType].port}
+              isLoading={isLoading}
+            />
+            <FormInput
+              form={form}
+              name="user"
+              label="User"
+              placeholder={DATABASE_DEFAULTS[databaseType].defaultUser || "user"}
+              isLoading={isLoading}
+            />
+            <FormInput
+              form={form}
+              name="password"
+              label="Password"
+              placeholder="••••••"
+              type="password"
+              isLoading={isLoading}
+            />
+            <FormInput
+              form={form}
+              name="database"
+              label="Database"
+              placeholder={DATABASE_DEFAULTS[databaseType].defaultDatabase || "authforge"}
+              className="col-span-2"
+              isLoading={isLoading}
+            />
           </div>
 
           <div className="min-h-[3rem]">

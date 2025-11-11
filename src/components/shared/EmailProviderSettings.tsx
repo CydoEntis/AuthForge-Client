@@ -2,10 +2,9 @@ import { FormInput } from "@/components/shared/FormInput";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Info } from "lucide-react";
 import { SMTP_PRESET_OPTIONS, SMTP_PRESETS, SmtpPresetKey } from "@/features/setup/constants/smtpPresets";
-import { EMAIL_PROVIDERS, type AllowedEmailProviders } from "@/features/setup/setup.types";
+import type { AllowedEmailProviders } from "@/features/setup/setup.types";
+import { EMAIL_PROVIDERS } from "@/features/setup/setup.constants";
 
 interface EmailProviderSettingsProps {
   form: any;
@@ -17,14 +16,19 @@ export default function EmailProviderSettings({ form, isLoading, provider }: Ema
   const [selectedPreset, setSelectedPreset] = useState<SmtpPresetKey>(SmtpPresetKey.GMAIL);
 
   useEffect(() => {
-    setSelectedPreset(SmtpPresetKey.GMAIL);
-  }, [provider]);
+    if (provider === EMAIL_PROVIDERS.SMTP) {
+      const preset = SMTP_PRESETS[SmtpPresetKey.GMAIL];
+      setSelectedPreset(SmtpPresetKey.GMAIL);
+      form.setValue("smtpHost", preset.host);
+      form.setValue("smtpPort", preset.port);
+    }
+  }, [provider, form]);
 
   const handlePresetChange = (presetKey: SmtpPresetKey) => {
-    setSelectedPreset(presetKey);
     const preset = SMTP_PRESETS[presetKey];
-    form.setValue("emailConfig.host", preset.host);
-    form.setValue("emailConfig.port", preset.port);
+    setSelectedPreset(presetKey);
+    form.setValue("smtpHost", preset.host);
+    form.setValue("smtpPort", preset.port);
   };
 
   return (
@@ -42,7 +46,7 @@ export default function EmailProviderSettings({ form, isLoading, provider }: Ema
           <div className="col-span-2 space-y-2">
             <label className="text-sm font-medium">SMTP Preset</label>
             <Select value={selectedPreset} onValueChange={handlePresetChange}>
-              <SelectTrigger>
+              <SelectTrigger className="rounded-xl">
                 <SelectValue placeholder="Select a provider" />
               </SelectTrigger>
               <SelectContent>
@@ -55,31 +59,18 @@ export default function EmailProviderSettings({ form, isLoading, provider }: Ema
             </Select>
           </div>
 
-          {SMTP_PRESETS[selectedPreset]?.note && (
-            <Alert className="bg-yellow-500/10 border-yellow-500/30 text-yellow-600 col-span-2">
-              <Info className="h-4 w-4" />
-              <AlertDescription>{SMTP_PRESETS[selectedPreset].note}</AlertDescription>
-            </Alert>
-          )}
-
+          <FormInput form={form} name="smtpHost" label="SMTP Host" placeholder="smtp.gmail.com" isLoading={isLoading} />
+          <FormInput form={form} name="smtpPort" label="Port" placeholder="587" isLoading={isLoading} />
           <FormInput
             form={form}
-            name="emailConfig.host"
-            label="SMTP Host"
-            placeholder="smtp.gmail.com"
-            isLoading={isLoading}
-          />
-          <FormInput form={form} name="emailConfig.port" label="Port" placeholder="587" isLoading={isLoading} />
-          <FormInput
-            form={form}
-            name="emailConfig.username"
+            name="smtpUsername"
             label="Username"
             placeholder="user@example.com"
             isLoading={isLoading}
           />
           <FormInput
             form={form}
-            name="emailConfig.password"
+            name="smtpPassword"
             label="Password"
             type="password"
             placeholder="••••••"
@@ -87,17 +78,19 @@ export default function EmailProviderSettings({ form, isLoading, provider }: Ema
           />
           <FormInput
             form={form}
-            name="emailConfig.from"
+            name="fromEmail"
             label="From Email"
             placeholder="noreply@example.com"
             isLoading={isLoading}
           />
+          <FormInput form={form} name="fromName" label="From Name" placeholder="AuthForge" isLoading={isLoading} />
           <FormInput
             form={form}
-            name="emailConfig.fromName"
-            label="From Name"
-            placeholder="My App"
+            name="testRecipient"
+            label="Test Recipient Email"
+            placeholder="test@example.com"
             isLoading={isLoading}
+            className="col-span-2"
           />
         </motion.div>
       )}
@@ -114,24 +107,27 @@ export default function EmailProviderSettings({ form, isLoading, provider }: Ema
         >
           <FormInput
             form={form}
-            name="emailConfig.apiKey"
+            name="resendApiKey"
             label="Resend API Key"
             placeholder="re_..."
             isLoading={isLoading}
+            className="col-span-2"
           />
           <FormInput
             form={form}
-            name="emailConfig.from"
+            name="fromEmail"
             label="From Email"
             placeholder="noreply@myapp.com"
             isLoading={isLoading}
           />
+          <FormInput form={form} name="fromName" label="From Name" placeholder="AuthForge" isLoading={isLoading} />
           <FormInput
             form={form}
-            name="emailConfig.fromName"
-            label="From Name"
-            placeholder="My App"
+            name="testRecipient"
+            label="Test Recipient Email"
+            placeholder="test@example.com"
             isLoading={isLoading}
+            className="col-span-2"
           />
         </motion.div>
       )}
