@@ -4,6 +4,8 @@ import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { useTheme } from "next-themes";
 import { setupApi } from "@/features/setup/setup.api";
 import { useAuthStore } from "@/store/useAuthStore";
+import { Anvil } from "lucide-react";
+import { ThemeToggle } from "@/features/theme/ThemeToggle";
 
 export const Route = createFileRoute("/(setup)")({
   beforeLoad: async ({ context }) => {
@@ -23,17 +25,21 @@ export const Route = createFileRoute("/(setup)")({
 });
 
 function RouteComponent() {
-  const { theme } = useTheme();
   return (
-    <div className="relative z-0 min-h-screen overflow-hidden">
-      <StarsBackground
-        starColor={theme === "dark" ? "#F59E0B" : "#F59E0B"}
-        className={cn(
-          "absolute inset-0 flex items-center justify-center rounded-xl",
-          "dark:bg-[radial-gradient(ellipse_at_bottom,#262626_0%,#000_100%)] bg-[radial-gradient(ellipse_at_bottom,#f5f5f5_0%,#fff_100%)]"
-        )}
-      />
-      <Outlet />
+    <div className="w-full min-h-screen bg-sidebar">
+      <main className=" max-w-5/6 mx-auto py-4 px-8">
+        <div className="p-4 inset-shadow-sm bg-linear-to-t from-card to-background rounded-lg flex justify-between items-center border dark:border-black border-[#c7c7c7]">
+          <div className="flex gap-2 items-center">
+            <div className="inset-shadow-sm rounded-lg bg-card p-2 border dark:border-black border-[#c7c7c7]">
+              <Anvil className="text-primary" size={22} />
+            </div>
+            <h3 className="font-bold text-lg text-muted-foreground">Auth Forge</h3>
+          </div>
+          <ThemeToggle />
+        </div>
+
+        <Outlet />
+      </main>
     </div>
   );
 }
