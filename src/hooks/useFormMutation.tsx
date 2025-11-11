@@ -22,12 +22,21 @@ export function useFormMutation<TFormValues extends FieldValues, TResponse>({
         return await mutationFn(values);
       } catch (error) {
         if (error instanceof ApiError) {
-          const fieldName = error.field || "root";
-          setError(fieldName as any, {
-            type: "server",
-            message: error.message,
-          });
-          toast.error(error.message);
+          if (error.fieldErrors && error.fieldErrors.length > 0) {
+            error.fieldErrors.forEach((fieldError) => {
+              setError(fieldError.field as any, {
+                type: "server",
+                message: fieldError.message,
+              });
+            });
+            toast.error(error.fieldErrors[0].message);
+          } else {
+            setError("root", {
+              type: "server",
+              message: error.message,
+            });
+            toast.error(error.message);
+          }
         } else {
           setError("root", {
             type: "server",

@@ -1,26 +1,29 @@
+// hooks/useConfigureDatabaseForm.ts
 import { useZodForm } from "@/hooks/useZodForm";
-import { type AllowedDatabases, type PostgresConfig, type TestDatabaseConnectionResponse } from "../setup.types";
 import { useFormMutation } from "@/hooks/useFormMutation";
 import { setupApi } from "../setup.api";
-import { DATABASES } from "../setup.constants";
-import { postgresSchema } from "../setup.schemas";
+import { databaseConfigSchema } from "../setup.schemas";
+import type {
+  DatabaseConfig,
+  TestDatabaseConnectionRequest,
+  TestDatabaseConnectionResponse,
+  AllowedDatabases,
+} from "../setup.types";
+import { buildConnectionString } from "../utils/buildConnectionString";
 
 export function useConfigureDatabaseForm(
   databaseType: AllowedDatabases,
-  initialConfig: PostgresConfig,
-  onSave: (cfg: PostgresConfig) => void
+  initialConfig: DatabaseConfig | null,
+  onSave: (cfg: DatabaseConfig) => void
 ) {
-  const form = useZodForm<PostgresConfig>(postgresSchema, initialConfig);
+  const form = useZodForm(databaseConfigSchema, initialConfig || {});
 
-  const mutation = useFormMutation<PostgresConfig, TestDatabaseConnectionResponse>({
+  const mutation = useFormMutation<DatabaseConfig, TestDatabaseConnectionResponse>({
     mutationFn: async (values) => {
-      const connectionString =
-        databaseType === DATABASES.POSTGRESQL
-          ? `Host=${values.host};Port=${values.port};Username=${values.user};Password=${values.password};Database=${values.database}`
-          : null;
+      const connectionString = buildConnectionString(databaseType, values);
 
-      const request = {
-        databaseType: DATABASES.POSTGRESQL,
+      const request: TestDatabaseConnectionRequest = {
+        databaseType,
         connectionString,
       };
 
@@ -28,9 +31,10 @@ export function useConfigureDatabaseForm(
     },
     setError: form.setError,
     successMessage: "Database connection successful!",
-    onSuccess: (response) => {
+    onSuccess: (response: TestDatabaseConnectionResponse) => {
       if (response.isSuccessful) {
-        onSave(form.getValues());
+        const values = form.getValues();
+        onSave(values);
       } else {
         form.setError("root", { type: "manual", message: response.message });
       }
