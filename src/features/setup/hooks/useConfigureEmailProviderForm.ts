@@ -1,78 +1,31 @@
 import { useZodForm } from "@/hooks/useZodForm";
 import { useFormMutation } from "@/hooks/useFormMutation";
 import { setupApi } from "../setup.api";
-import { EMAIL_PROVIDERS } from "../setup.constants";
-import { smtpFormSchema, resendFormSchema } from "../setup.schemas";
-import type {
-  EmailConfig,
-  TestEmailConfigRequest,
-  TestEmailResponse,
-  AllowedEmailProviders,
-  SmtpFormValues,
-  ResendFormValues,
-  SmtpConfig,
-  ResendConfig,
-} from "../setup.types";
+import type { TestEmailConfigRequest, TestEmailResponse } from "../setup.types";
+import { emailProviderSchema } from "../setup.schemas";
 
 export function useConfigureEmailProviderForm(
-  provider: AllowedEmailProviders,
-  initialConfig: Partial<EmailConfig>,
-  onSave: (cfg: EmailConfig) => void
+  initialConfig: Partial<TestEmailConfigRequest>,
+  onSave: (cfg: TestEmailConfigRequest) => void
 ) {
-  const schema = provider === EMAIL_PROVIDERS.SMTP ? smtpFormSchema : resendFormSchema;
-  const form = useZodForm(schema, initialConfig as any);
+  const form = useZodForm(emailProviderSchema, initialConfig);
 
-  let currentValues: SmtpFormValues | ResendFormValues;
-
-  const mutation = useFormMutation<SmtpFormValues | ResendFormValues, TestEmailResponse>({
+  const mutation = useFormMutation<TestEmailConfigRequest, TestEmailResponse>({
     mutationFn: async (values) => {
-      currentValues = values;
-
       const request: TestEmailConfigRequest = {
-        fromEmail: values.fromEmail || "",
-        fromName: values.fromName || "AuthForge",
-        testRecipient: values.testRecipient,
-        useSsl: true,
+        ...values,
+        fromName: values.fromName ?? "AuthForge",
+        useSsl: values.useSsl ?? true,
+        testRecipient: values.testRecipient!,
       };
-
-      if (provider === EMAIL_PROVIDERS.SMTP) {
-        const smtp = values as SmtpFormValues;
-        request.smtpHost = smtp.smtpHost;
-        request.smtpPort = Number(smtp.smtpPort);
-        request.smtpUsername = smtp.smtpUsername;
-        request.smtpPassword = smtp.smtpPassword;
-      } else {
-        const resend = values as ResendFormValues;
-        request.resendApiKey = resend.resendApiKey;
-      }
-
       return setupApi.testEmailProvider(request);
     },
     setError: form.setError,
     successMessage: "Email configuration successful!",
-    onSuccess: (response: TestEmailResponse) => {
+    onSuccess: (response) => {
       if (response.isSuccessful) {
-        const { testRecipient, ...rest } = currentValues;
-
-        if (provider === EMAIL_PROVIDERS.SMTP) {
-          const smtp = rest as Omit<SmtpFormValues, "testRecipient">;
-          onSave({
-            fromEmail: smtp.fromEmail || "",
-            fromName: smtp.fromName || "AuthForge",
-            smtpHost: smtp.smtpHost,
-            smtpPort: Number(smtp.smtpPort),
-            smtpUsername: smtp.smtpUsername,
-            smtpPassword: smtp.smtpPassword,
-            useSsl: smtp.useSsl ?? true,
-          } as SmtpConfig);
-        } else {
-          const resend = rest as Omit<ResendFormValues, "testRecipient">;
-          onSave({
-            fromEmail: resend.fromEmail || "",
-            fromName: resend.fromName || "AuthForge",
-            resendApiKey: resend.resendApiKey,
-          } as ResendConfig);
-        }
+        const cfg = form.getValues();
+        onSave(cfg);
       } else {
         form.setError("root", { type: "manual", message: response.message });
       }

@@ -1,5 +1,5 @@
 import type z from "zod";
-import type { smtpFormSchema, resendFormSchema, adminCredentialsSchema, databaseConfigSchema } from "./setup.schemas";
+import type { adminCredentialsSchema, databaseConfigSchema } from "./setup.schemas";
 import type { DATABASES, EMAIL_PROVIDERS, SETUP_WIZARD_STEPS } from "./setup.constants";
 
 // ======================
@@ -15,23 +15,12 @@ export type SetupStatusResponse = {
 export type CompleteSetupRequest = {
   databaseType: AllowedDatabases;
   connectionString: string | null;
-  fromEmail: string;
-  fromName?: string;
-  smtpHost?: string;
-  smtpPort?: number;
-  smtpUsername?: string;
-  smtpPassword?: string;
-  useSsl?: boolean;
-  resendApiKey?: string;
-  adminEmail: string;
-  adminPassword: string;
+  emailProviderConfig: EmailProviderConfig;
+  adminCredentials: AdminCredentials;
 };
 
 export type CompleteSetupResponse = {
-  databaseType: AllowedDatabases;
-  connectionString: string;
-  emailProviderConfig: EmailConfig;
-  adminCredentials: AdminCredentials;
+  message: string;
 };
 
 // ======================
@@ -55,13 +44,15 @@ export type TestDatabaseConnectionResponse = {
 // ======================
 export type AllowedEmailProviders = (typeof EMAIL_PROVIDERS)[keyof typeof EMAIL_PROVIDERS];
 
-export type SmtpFormValues = z.infer<typeof smtpFormSchema>;
-export type ResendFormValues = z.infer<typeof resendFormSchema>;
+export type TestEmailResponse = {
+  isSuccessful: boolean;
+  message: string;
+};
 
-export type TestEmailConfigRequest = {
+export type EmailProviderConfig = {
+  emailProvider: AllowedEmailProviders;
   fromEmail: string;
   fromName?: string;
-  testRecipient: string;
   smtpHost?: string;
   smtpPort?: number;
   smtpUsername?: string;
@@ -70,28 +61,9 @@ export type TestEmailConfigRequest = {
   resendApiKey?: string;
 };
 
-export type TestEmailResponse = {
-  isSuccessful: boolean;
-  message: string;
+export type TestEmailConfigRequest = EmailProviderConfig & {
+  testRecipient: string;
 };
-
-export type SmtpConfig = {
-  fromEmail: string;
-  fromName?: string;
-  smtpHost: string;
-  smtpPort: number;
-  smtpUsername: string;
-  smtpPassword: string;
-  useSsl: boolean;
-};
-
-export type ResendConfig = {
-  fromEmail: string;
-  fromName?: string;
-  resendApiKey: string;
-};
-
-export type EmailConfig = SmtpConfig | ResendConfig;
 
 // ======================
 //      Admin Account

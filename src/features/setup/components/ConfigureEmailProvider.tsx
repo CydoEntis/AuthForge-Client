@@ -5,7 +5,7 @@ import FormError from "@/components/shared/FormError";
 import ConfigDialog from "@/components/shared/Modal";
 import FadeSlide from "@/components/shared/animations/FadeSlide";
 import EmailProviderSettings from "@/components/shared/EmailProviderSettings";
-import type { AllowedEmailProviders, EmailConfig } from "../setup.types";
+import type { AllowedEmailProviders, TestEmailConfigRequest } from "../setup.types";
 import { useConfigureEmailProviderForm } from "../hooks/useConfigureEmailProviderForm";
 import { EMAIL_PROVIDERS } from "../setup.constants";
 
@@ -17,12 +17,12 @@ export default function ConfigureEmailProvider({
   onConnectionSuccess,
 }: {
   provider: AllowedEmailProviders;
-  initialConfig: EmailConfig;
+  initialConfig: TestEmailConfigRequest;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onConnectionSuccess: (cfg: EmailConfig) => void;
+  onConnectionSuccess: (cfg: TestEmailConfigRequest) => void;
 }) {
-  const { form, handleSubmit, isLoading } = useConfigureEmailProviderForm(provider, initialConfig, (cfg) => {
+  const { form, handleSubmit, isLoading } = useConfigureEmailProviderForm(initialConfig, (cfg) => {
     onConnectionSuccess(cfg);
     onOpenChange(false);
   });
@@ -40,6 +40,7 @@ export default function ConfigureEmailProvider({
           smtpPassword: "",
           useSsl: true,
           resendApiKey: "",
+          testRecipient: "",
         });
       }
     }

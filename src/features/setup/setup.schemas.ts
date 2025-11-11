@@ -1,8 +1,8 @@
 import z from "zod";
+
 // ======================
 //        Database
 // ======================
-
 export const databaseConfigSchema = z.object({
   host: z
     .string()
@@ -26,38 +26,24 @@ export const databaseConfigSchema = z.object({
 // ======================
 //        Email
 // ======================
-export const baseEmailFields = {
-  fromEmail: z.email({ message: "From email must be valid" }).optional(),
+export const emailProviderSchema = z.object({
+  fromEmail: z.email({ message: "From email must be valid" }),
   fromName: z.string().default("AuthForge"),
-};
-
-export const smtpFormSchema = z.object({
-  smtpHost: z.string().min(1, { message: "SMTP host is required" }),
+  testRecipient: z.email({ message: "Test recipient must be valid" }),
+  smtpHost: z.string().optional(),
   smtpPort: z
     .string()
-    .min(1, { message: "SMTP port is required" })
-    .refine((val) => !isNaN(Number(val)) && Number(val) > 0 && Number(val) <= 65535, {
-      message: "Port must be a number between 1 and 65535",
-    }),
-  smtpUsername: z.string().min(1, { message: "SMTP username is required" }),
-  smtpPassword: z.string().min(1, { message: "SMTP password is required" }),
+    .min(1, "Port is required.")
+    .refine((val) => /^\d+$/.test(val) && Number(val) > 0 && Number(val) <= 65535, "Port must be between 1 and 65535."),
+  smtpUsername: z.string().optional(),
+  smtpPassword: z.string().optional(),
   useSsl: z.boolean().optional().default(true),
-  fromEmail: baseEmailFields.fromEmail,
-  fromName: baseEmailFields.fromName,
-  testRecipient: z.email({ message: "Test recipient must be a valid email" }),
-});
-
-export const resendFormSchema = z.object({
-  resendApiKey: z.string().min(1, { message: "Resend API key is required" }),
-  fromEmail: baseEmailFields.fromEmail,
-  fromName: baseEmailFields.fromName,
-  testRecipient: z.email({ message: "Test recipient must be a valid email" }),
+  resendApiKey: z.string().optional(),
 });
 
 // ======================
 //      Admin Account
 // ======================
-
 export const adminCredentialsSchema = z
   .object({
     email: z.email({ message: "Please enter a valid email address." }),
