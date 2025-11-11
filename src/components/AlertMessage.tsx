@@ -26,13 +26,15 @@ export function AlertMessage({
   configureText = "Configure",
   className,
 }: AlertMessageProps) {
+  const shouldShowConfigButton = onConfigure && (type === "warning" || type === "failure");
+
   return (
     <div className={`${className} flex justify-center`}>
       <div
         className={`flex items-center justify-between gap-4 text-sm px-6 py-3 rounded-lg transition-all duration-300 font-semibold ${alertStyles[type]}`}
       >
         <span>{message}</span>
-        {onConfigure && (
+        {shouldShowConfigButton && (
           <Button size="sm" onClick={onConfigure} className="ml-4 rounded-md text-foreground">
             <Settings size={16} />
             {configureText && <span className="ml-1">{configureText}</span>}
