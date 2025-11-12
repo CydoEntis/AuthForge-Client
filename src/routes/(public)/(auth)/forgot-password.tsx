@@ -1,5 +1,5 @@
+import { ForgotPasswordAdmin } from "@/features/admin/components/ForgotPasswordAdmin";
 import { createFileRoute } from "@tanstack/react-router";
-import ForgotPasswordAdmin from "@/features/admin/components/ForgotPasswordAdmin";
 
 export const Route = createFileRoute("/(public)/(auth)/forgot-password")({
   component: RouteComponent,

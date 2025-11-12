@@ -13,9 +13,5 @@ export const Route = createFileRoute("/(public)/(auth)")({
 });
 
 function RouteComponent() {
-  return (
-    <div className="relative z-0 min-h-screen overflow-hidden">
-      <Outlet />
-    </div>
-  );
+  return <Outlet />;
 }

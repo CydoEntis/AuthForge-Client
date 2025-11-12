@@ -104,7 +104,6 @@ client.interceptors.response.use(
 export const apiClient = {
   get: async <T>(url: string, config?: AxiosRequestConfig): Promise<T> => {
     const res = (await client.get<ApiResponse<T>>(url, config)).data;
-    console.log(res);
     if (!res.success) throw new ApiError(res.error!);
     return res.data;
   },

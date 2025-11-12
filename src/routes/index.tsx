@@ -9,9 +9,11 @@ export const Route = createFileRoute("/")({
       queryFn: setupApi.getSetupStatus,
     });
 
-    if (!isSetupComplete) {
+    console.log("PARENT ROUTE: ", isSetupComplete);
+
+    if (isSetupComplete) {
       // ← Changed from isComplete
-      throw redirect({ to: "/setup" });
+      throw redirect({ to: "/login" });
     }
 
     const { isAuthenticated } = useAuthStore.getState();

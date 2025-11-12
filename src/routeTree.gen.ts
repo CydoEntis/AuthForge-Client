@@ -9,25 +9,20 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as setupRouteRouteImport } from './routes/(setup)/route'
 import { Route as publicRouteRouteImport } from './routes/(public)/route'
 import { Route as privateRouteRouteImport } from './routes/(private)/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PlaygroundIndexRouteImport } from './routes/playground/index'
-import { Route as setupSetupRouteImport } from './routes/(setup)/setup'
 import { Route as publicDashboardRouteRouteImport } from './routes/(public)/dashboard/route'
 import { Route as publicauthRouteRouteImport } from './routes/(public)/(auth)/route'
 import { Route as publicDashboardIndexRouteImport } from './routes/(public)/dashboard/index'
 import { Route as privateApplicationsIndexRouteImport } from './routes/(private)/applications/index'
+import { Route as publicsetupSetupRouteImport } from './routes/(public)/(setup)/setup'
 import { Route as publicauthLoginRouteImport } from './routes/(public)/(auth)/login'
 import { Route as publicauthForgotPasswordRouteImport } from './routes/(public)/(auth)/forgot-password'
 import { Route as privateApplicationsCreateRouteImport } from './routes/(private)/applications/create'
 import { Route as privateApplicationsIdRouteImport } from './routes/(private)/applications/$id'
 
-const setupRouteRoute = setupRouteRouteImport.update({
-  id: '/(setup)',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const publicRouteRoute = publicRouteRouteImport.update({
   id: '/(public)',
   getParentRoute: () => rootRouteImport,
@@ -45,11 +40,6 @@ const PlaygroundIndexRoute = PlaygroundIndexRouteImport.update({
   id: '/playground/',
   path: '/playground/',
   getParentRoute: () => rootRouteImport,
-} as any)
-const setupSetupRoute = setupSetupRouteImport.update({
-  id: '/setup',
-  path: '/setup',
-  getParentRoute: () => setupRouteRoute,
 } as any)
 const publicDashboardRouteRoute = publicDashboardRouteRouteImport.update({
   id: '/dashboard',
@@ -71,6 +61,11 @@ const privateApplicationsIndexRoute =
     path: '/applications/',
     getParentRoute: () => privateRouteRoute,
   } as any)
+const publicsetupSetupRoute = publicsetupSetupRouteImport.update({
+  id: '/(setup)/setup',
+  path: '/setup',
+  getParentRoute: () => publicRouteRoute,
+} as any)
 const publicauthLoginRoute = publicauthLoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -97,23 +92,23 @@ const privateApplicationsIdRoute = privateApplicationsIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof publicDashboardRouteRouteWithChildren
-  '/setup': typeof setupSetupRoute
   '/playground': typeof PlaygroundIndexRoute
   '/applications/$id': typeof privateApplicationsIdRoute
   '/applications/create': typeof privateApplicationsCreateRoute
   '/forgot-password': typeof publicauthForgotPasswordRoute
   '/login': typeof publicauthLoginRoute
+  '/setup': typeof publicsetupSetupRoute
   '/applications': typeof privateApplicationsIndexRoute
   '/dashboard/': typeof publicDashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/setup': typeof setupSetupRoute
   '/playground': typeof PlaygroundIndexRoute
   '/applications/$id': typeof privateApplicationsIdRoute
   '/applications/create': typeof privateApplicationsCreateRoute
   '/forgot-password': typeof publicauthForgotPasswordRoute
   '/login': typeof publicauthLoginRoute
+  '/setup': typeof publicsetupSetupRoute
   '/applications': typeof privateApplicationsIndexRoute
   '/dashboard': typeof publicDashboardIndexRoute
 }
@@ -122,15 +117,14 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/(private)': typeof privateRouteRouteWithChildren
   '/(public)': typeof publicRouteRouteWithChildren
-  '/(setup)': typeof setupRouteRouteWithChildren
   '/(public)/(auth)': typeof publicauthRouteRouteWithChildren
   '/(public)/dashboard': typeof publicDashboardRouteRouteWithChildren
-  '/(setup)/setup': typeof setupSetupRoute
   '/playground/': typeof PlaygroundIndexRoute
   '/(private)/applications/$id': typeof privateApplicationsIdRoute
   '/(private)/applications/create': typeof privateApplicationsCreateRoute
   '/(public)/(auth)/forgot-password': typeof publicauthForgotPasswordRoute
   '/(public)/(auth)/login': typeof publicauthLoginRoute
+  '/(public)/(setup)/setup': typeof publicsetupSetupRoute
   '/(private)/applications/': typeof privateApplicationsIndexRoute
   '/(public)/dashboard/': typeof publicDashboardIndexRoute
 }
@@ -139,23 +133,23 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dashboard'
-    | '/setup'
     | '/playground'
     | '/applications/$id'
     | '/applications/create'
     | '/forgot-password'
     | '/login'
+    | '/setup'
     | '/applications'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/setup'
     | '/playground'
     | '/applications/$id'
     | '/applications/create'
     | '/forgot-password'
     | '/login'
+    | '/setup'
     | '/applications'
     | '/dashboard'
   id:
@@ -163,15 +157,14 @@ export interface FileRouteTypes {
     | '/'
     | '/(private)'
     | '/(public)'
-    | '/(setup)'
     | '/(public)/(auth)'
     | '/(public)/dashboard'
-    | '/(setup)/setup'
     | '/playground/'
     | '/(private)/applications/$id'
     | '/(private)/applications/create'
     | '/(public)/(auth)/forgot-password'
     | '/(public)/(auth)/login'
+    | '/(public)/(setup)/setup'
     | '/(private)/applications/'
     | '/(public)/dashboard/'
   fileRoutesById: FileRoutesById
@@ -180,19 +173,11 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   privateRouteRoute: typeof privateRouteRouteWithChildren
   publicRouteRoute: typeof publicRouteRouteWithChildren
-  setupRouteRoute: typeof setupRouteRouteWithChildren
   PlaygroundIndexRoute: typeof PlaygroundIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/(setup)': {
-      id: '/(setup)'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof setupRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/(public)': {
       id: '/(public)'
       path: ''
@@ -221,13 +206,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlaygroundIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(setup)/setup': {
-      id: '/(setup)/setup'
-      path: '/setup'
-      fullPath: '/setup'
-      preLoaderRoute: typeof setupSetupRouteImport
-      parentRoute: typeof setupRouteRoute
-    }
     '/(public)/dashboard': {
       id: '/(public)/dashboard'
       path: '/dashboard'
@@ -255,6 +233,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/applications'
       preLoaderRoute: typeof privateApplicationsIndexRouteImport
       parentRoute: typeof privateRouteRoute
+    }
+    '/(public)/(setup)/setup': {
+      id: '/(public)/(setup)/setup'
+      path: '/setup'
+      fullPath: '/setup'
+      preLoaderRoute: typeof publicsetupSetupRouteImport
+      parentRoute: typeof publicRouteRoute
     }
     '/(public)/(auth)/login': {
       id: '/(public)/(auth)/login'
@@ -331,34 +316,23 @@ const publicDashboardRouteRouteWithChildren =
 interface publicRouteRouteChildren {
   publicauthRouteRoute: typeof publicauthRouteRouteWithChildren
   publicDashboardRouteRoute: typeof publicDashboardRouteRouteWithChildren
+  publicsetupSetupRoute: typeof publicsetupSetupRoute
 }
 
 const publicRouteRouteChildren: publicRouteRouteChildren = {
   publicauthRouteRoute: publicauthRouteRouteWithChildren,
   publicDashboardRouteRoute: publicDashboardRouteRouteWithChildren,
+  publicsetupSetupRoute: publicsetupSetupRoute,
 }
 
 const publicRouteRouteWithChildren = publicRouteRoute._addFileChildren(
   publicRouteRouteChildren,
 )
 
-interface setupRouteRouteChildren {
-  setupSetupRoute: typeof setupSetupRoute
-}
-
-const setupRouteRouteChildren: setupRouteRouteChildren = {
-  setupSetupRoute: setupSetupRoute,
-}
-
-const setupRouteRouteWithChildren = setupRouteRoute._addFileChildren(
-  setupRouteRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   privateRouteRoute: privateRouteRouteWithChildren,
   publicRouteRoute: publicRouteRouteWithChildren,
-  setupRouteRoute: setupRouteRouteWithChildren,
   PlaygroundIndexRoute: PlaygroundIndexRoute,
 }
 export const routeTree = rootRouteImport
