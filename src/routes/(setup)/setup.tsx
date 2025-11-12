@@ -1,18 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { LoadingButton } from "@/components/shared/LoadingButton";
 import type {
   DatabaseConfig,
-  EmailConfig,
   CompleteSetupRequest,
   AllowedDatabases,
-  AdminCredentials,
+  EmailProviderConfig,
 } from "@/features/setup/setup.types";
 import { SetupSidebar } from "@/features/setup/components/SetupSidebar";
 import { DatabaseStep } from "@/features/setup/components/steps/DatabaseStep";
-import { CreateAdminAccountStep } from "@/features/setup/components/steps/CreateAdminAccountStep";
-import { useCompleteSetup } from "@/features/setup/hooks/useCompleteSetup";
 import { EmailProviderStep } from "@/features/setup/components/steps/EmailProvderStep";
+import {
+  CreateAdminAccountStep,
+  type CreateAdminAccountStepRef,
+} from "@/features/setup/components/steps/CreateAdminAccountStep";
+import { useCompleteSetup } from "@/features/setup/hooks/useCompleteSetup";
 import { buildConnectionString } from "@/features/setup/utils/buildConnectionString";
 import { DATABASES } from "@/features/setup/setup.constants";
 import { Wizard } from "@/features/setup/components/Wizard";
@@ -25,37 +28,10 @@ export default function SetupWizard() {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedDbType, setSelectedDbType] = useState<AllowedDatabases>(DATABASES.SQLITE);
   const [dbConfig, setDbConfig] = useState<DatabaseConfig | null>(null);
-  const [emailConfig, setEmailConfig] = useState<EmailConfig | null>(null);
+  const [emailConfig, setEmailConfig] = useState<EmailProviderConfig | null>(null);
 
+  const adminStepRef = useRef<CreateAdminAccountStepRef>(null);
   const completeSetup = useCompleteSetup();
-
-  const handleFinish = (admin: AdminCredentials) => {
-    const connectionString =
-      selectedDbType === DATABASES.SQLITE ? null : buildConnectionString(selectedDbType, dbConfig!);
-
-    const payload: CompleteSetupRequest = {
-      databaseType: selectedDbType,
-      connectionString,
-      fromEmail: emailConfig!.fromEmail,
-      fromName: emailConfig?.fromName,
-      ...(emailConfig &&
-        "smtpHost" in emailConfig && {
-          smtpHost: emailConfig.smtpHost,
-          smtpPort: emailConfig.smtpPort,
-          smtpUsername: emailConfig.smtpUsername,
-          smtpPassword: emailConfig.smtpPassword,
-          useSsl: emailConfig.useSsl,
-        }),
-      ...(emailConfig &&
-        "resendApiKey" in emailConfig && {
-          resendApiKey: emailConfig.resendApiKey,
-        }),
-      adminEmail: admin.email,
-      adminPassword: admin.password,
-    };
-
-    completeSetup.mutate(payload);
-  };
 
   const canContinue = () => {
     if (currentStep === 1) {
@@ -63,6 +39,9 @@ export default function SetupWizard() {
     }
     if (currentStep === 2) {
       return emailConfig !== null;
+    }
+    if (currentStep === 3) {
+      return adminStepRef.current?.isValid() ?? false;
     }
     return true;
   };
@@ -75,10 +54,31 @@ export default function SetupWizard() {
 
   const handleBack = () => setCurrentStep((s) => Math.max(s - 1, 1));
 
+  const handleFinishSetup = () => {
+    if (!emailConfig || !adminStepRef.current) return;
+
+    adminStepRef.current.submit();
+
+    if (adminStepRef.current.isValid()) {
+      const adminCredentials = adminStepRef.current.getValues();
+
+      const connectionString =
+        selectedDbType === DATABASES.SQLITE ? null : buildConnectionString(selectedDbType, dbConfig!);
+
+      const payload: CompleteSetupRequest = {
+        databaseType: selectedDbType,
+        connectionString,
+        emailProviderConfig: emailConfig,
+        adminCredentials,
+      };
+
+      completeSetup.mutate(payload);
+    }
+  };
+
   return (
     <div className="flex gap-4 py-8 min-h-[90vh]">
       <SetupSidebar currentStep={currentStep} />
-
       <div className="w-3/4">
         <Wizard currentStep={currentStep}>
           <DatabaseStep
@@ -87,8 +87,8 @@ export default function SetupWizard() {
             onDbTypeChange={setSelectedDbType}
             onConfigChange={setDbConfig}
           />
-          <CreateAdminAccountStep onSubmit={handleFinish} isLoading={completeSetup.isPending} />
           <EmailProviderStep emailConfig={emailConfig} onConfigChange={setEmailConfig} />
+          <CreateAdminAccountStep ref={adminStepRef} onSubmit={() => {}} isLoading={completeSetup.isPending} />
         </Wizard>
 
         <div className="flex flex-col items-center gap-4 mt-8 pb-8">
@@ -100,6 +100,18 @@ export default function SetupWizard() {
             >
               Continue
             </Button>
+          )}
+
+          {currentStep === 3 && (
+            <LoadingButton
+              onClick={handleFinishSetup}
+              disabled={!canContinue() || completeSetup.isPending}
+              isLoading={completeSetup.isPending}
+              loadingText="Setting up..."
+              className="w-[250px] rounded-lg inset-shadow-lg bg-linear-to-t from-primary to-accent/75 font-semibold hover:to-accent/95 border border-background"
+            >
+              Finish Setup
+            </LoadingButton>
           )}
 
           {currentStep !== 1 && (
