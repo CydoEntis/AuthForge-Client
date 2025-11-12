@@ -8,7 +8,7 @@ export function useZodForm<T extends FieldValues = any>(
   options?: Omit<UseFormProps<T>, "resolver">
 ): UseFormReturn<T> {
   return useForm<T>({
-    ...options, // ← Spread options
+    ...options,
     resolver: zodResolver(schema) as any,
   });
 }

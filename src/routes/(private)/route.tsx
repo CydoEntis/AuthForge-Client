@@ -2,7 +2,7 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import AppShell from "@/components/layout/AppShell";
 import { setupApi } from "@/features/setup/setup.api";
 import { useAuthStore } from "@/store/useAuthStore";
-import { authApi } from "@/features/setup/auth/api";
+import { authApi } from "@/features/admin/api";
 
 export const Route = createFileRoute("/(private)")({
   beforeLoad: async ({ context }) => {

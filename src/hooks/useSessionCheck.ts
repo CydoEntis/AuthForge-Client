@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
-import { authApi } from "@/features/setup/auth/api";
+import { authApi } from "@/features/admin/api";
 
 export function useSessionCheck() {
   const { accessToken, refreshToken, updateAccessToken, logout } = useAuthStore();

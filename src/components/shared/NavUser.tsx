@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
-import { useLogoutMutation } from "@/features/setup/auth/hooks/useLogoutMutation";
+import { useLogoutMutation } from "@/features/admin/hooks/useLogoutMutation";
 
 export function NavUser({
   user,
@@ -88,10 +88,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => logoutMutation.mutate()}
-              disabled={logoutMutation.isPending}
-            >
+            <DropdownMenuItem onClick={() => logoutMutation.mutate()} disabled={logoutMutation.isPending}>
               <LogOut />
               {logoutMutation.isPending ? "Logging out..." : "Log out"}
             </DropdownMenuItem>

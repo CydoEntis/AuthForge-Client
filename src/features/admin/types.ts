@@ -3,7 +3,6 @@ import type { forgotPasswordAdminSchema, loginAdminSchema } from "./schemas";
 import type { TokenPair } from "@/lib/api/types";
 import type { AdminDetails } from "@/types/types";
 
-// export type SetupAdminValues = z.infer<typeof setupAdminSchema>;
 export type LoginAdminValues = z.infer<typeof loginAdminSchema>;
 export type ForgotPasswordAdminValues = z.infer<typeof forgotPasswordAdminSchema>;
 
@@ -16,12 +15,6 @@ export type LoginAdminResponse = {
   admin: AdminDetails;
 };
 
-export type SetupAdminResponse = {
-  message: string;
-  tokens: TokenPair;
-  admin: AdminDetails;
-};
-
 export type ForgotPasswordAdminResponse = {
   message: string;
 };
@@ -29,5 +22,5 @@ export type ForgotPasswordAdminResponse = {
 export interface RefreshTokenResponse {
   accessToken: string;
   refreshToken: string;
-  expiresAt: string; // ISO date string
+  expiresAt: string;
 }
