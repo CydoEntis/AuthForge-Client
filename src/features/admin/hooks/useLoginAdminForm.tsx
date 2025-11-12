@@ -8,8 +8,10 @@ import { useFormMutation } from "@/hooks/useFormMutation";
 
 export function useLoginAdminForm() {
   const form = useZodForm<LoginAdminValues>(loginAdminSchema, {
-    email: "",
-    password: "",
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
   const navigate = useNavigate();
