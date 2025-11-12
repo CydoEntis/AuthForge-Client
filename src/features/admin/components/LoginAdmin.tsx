@@ -1,18 +1,16 @@
-import AuthCard from "@/components/shared/AuthCard";
 import { Form } from "@/components/ui/form";
 import { FormInput } from "@/components/shared/FormInput";
 import FormError from "@/components/shared/FormError";
 import { LoadingButton } from "@/components/shared/LoadingButton";
 import { useLoginAdminForm } from "../hooks/useLoginAdminForm";
 import { Link } from "@tanstack/react-router";
+import { CardWithLogo } from "@/components/CardWithLogo";
 
-function LoginAdmin() {
+export function LoginAdmin() {
   const { form, handleSubmit, isLoading } = useLoginAdminForm();
 
-  console.log("🎨 LoginAdmin rendering, form errors:", form.formState.errors);
-
   return (
-    <AuthCard title="Welcome Back" subText="Log in to manage your apps.">
+    <CardWithLogo title="Welcome Back" subText="Log in to manage your apps.">
       <Form {...form}>
         <form onSubmit={handleSubmit} className="space-y-6">
           <FormInput form={form} name="email" label="Email" placeholder="example@email.com" isLoading={isLoading} />
@@ -40,8 +38,6 @@ function LoginAdmin() {
           </LoadingButton>
         </form>
       </Form>
-    </AuthCard>
+    </CardWithLogo>
   );
 }
-
-export default LoginAdmin;
