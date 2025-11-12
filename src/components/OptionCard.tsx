@@ -14,8 +14,8 @@ export default function OptionCard({ title, iconClass, imageSrc, icon, selected,
   return (
     <Card
       onClick={onSelect}
-      className={`group inset-shadow p-6 rounded-xl flex flex-col justify-center items-center bg-linear-to-t from-card to-background
-        border transition-all duration-300 cursor-pointer
+      className={`group  p-6  flex flex-col justify-center items-center 
+         transition-all duration-300 cursor-pointer
         w-[250px] h-[250px]
         ${selected ? "border-primary/60 from-primary/10 to-background" : "border-transparent hover:border-primary"}
         hover:scale-[1.02]`}
