@@ -11,6 +11,7 @@ export const adminForgotPasswordSchema = z.object({
 
 export const adminChangePasswordSchema = z
   .object({
+    currentPassword: z.string().min(1, { message: "Password cannot be empty" }),
     newPassword: z
       .string()
       .min(8, { message: "Password must be at least 8 characters." })

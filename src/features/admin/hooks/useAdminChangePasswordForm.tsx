@@ -6,6 +6,7 @@ import { useAdminChangePasswordMutation } from "./useAdminChangePasswordMutation
 export function useAdminChangePasswordForm() {
   const form = useZodForm<AdminChangePasswordRequest>(adminChangePasswordSchema, {
     defaultValues: {
+      currentPassword: "",
       newPassword: "",
       confirmNewPassword: "",
     },

@@ -8,11 +8,19 @@ import { useAdminForgotPasswordForm } from "../hooks/useAdminForgotPasswordForm"
 export function AdminChangePassword() {
   const { form, handleSubmit, isLoading } = useAdminForgotPasswordForm();
 
+  // Todo: This will prob get moved to a modal with all other admin update related content.
   return (
-    <CardWithLogo title="Welcome Back" subText="Log in to manage your apps.">
+    <CardWithLogo title="Change Password" subText="Update your password">
       <Form {...form}>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-1">
+            <FormInput
+              form={form}
+              name="newPassword"
+              label="New Password"
+              placeholder="********"
+              isLoading={isLoading}
+            />
             <FormInput
               form={form}
               name="newPassword"
