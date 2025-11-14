@@ -3,6 +3,14 @@ import z from "zod";
 // ======================
 //        Database
 // ======================
+export const domainSchema = z.object({
+  authForgeDomain: z
+    .url("Please enter a valid URL starting with http:// or https://")
+    .refine((url) => url.startsWith("http://") || url.startsWith("https://"), {
+      message: "URL must start with http:// or https://",
+    }),
+});
+
 export const databaseConfigSchema = z.object({
   host: z
     .string()

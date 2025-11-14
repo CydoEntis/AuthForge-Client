@@ -6,6 +6,7 @@ import type { AllowedDatabases } from "./setup.types";
 
 export const SETUP_WIZARD_STEPS = {
   WELCOME: "welcome",
+  DOMAIN: "domain",
   SELECT_DB: "selectDatabase",
   SELECT_EMAIL: "selectEmailProvider",
   CREATE_ADMIN: "createAdmin",

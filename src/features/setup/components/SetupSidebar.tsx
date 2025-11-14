@@ -1,12 +1,15 @@
+import { Card } from "@/components/ui/card";
+
 export function SetupSidebar({ currentStep }: { currentStep: number }) {
   const steps = [
+    { title: "Configure domain", description: "Where AuthForge is hosted" },
     { title: "Choose a database", description: "Where to store data" },
     { title: "Choose an email provider", description: "How to send notifications" },
     { title: "Create admin account", description: "Admin setup" },
   ];
 
   return (
-    <div className="w-1/4 border rounded-xl p-12 bg-linear-to-t from-card to-background">
+    <Card className="w-1/4 rounded-xl p-12">
       {steps.map((s, i) => (
         <div key={i}>
           <div className="flex items-center gap-4">
@@ -24,6 +27,6 @@ export function SetupSidebar({ currentStep }: { currentStep: number }) {
           </div>
         </div>
       ))}
-    </div>
+    </Card>
   );
 }
