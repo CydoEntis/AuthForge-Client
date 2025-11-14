@@ -6,19 +6,28 @@ import type {
   AdminForgotPasswordRequest,
   AdminLoginRequest,
   AdminChangePasswordRequest,
+  AdminResetPasswordRequest,
 } from "./admin.types";
 
 export const adminApi = {
-  login: async (values: AdminLoginRequest): Promise<AdminLoginResponse> => {
-    return apiClient.post<AdminLoginResponse>("/admin/login", values);
+  login: async (request: AdminLoginRequest): Promise<AdminLoginResponse> => {
+    return apiClient.post<AdminLoginResponse>("/admin/login", request);
   },
 
-  forgotPassword: async (values: AdminForgotPasswordRequest): Promise<AdminForgotPasswordResponse> => {
-    return apiClient.post<AdminForgotPasswordResponse>("/admin/forgot-password", values);
+  forgotPassword: async (request: AdminForgotPasswordRequest): Promise<AdminForgotPasswordResponse> => {
+    return apiClient.post<AdminForgotPasswordResponse>("/admin/forgot-password", request);
   },
 
-  changePassword: async (values: AdminChangePasswordRequest): Promise<AdminForgotPasswordResponse> => {
-    return apiClient.post<AdminForgotPasswordResponse>("/admin/change-password", values);
+  verifyPasswordResetToken: async (token: string): Promise<void> => {
+    return apiClient.post<void>("/admin/verify-password-reset-token", { token });
+  },
+
+  resetPassword: async (request: AdminResetPasswordRequest): Promise<void> => {
+    return apiClient.post<void>("/admin/verify-password-reset-token", request);
+  },
+
+  changePassword: async (request: AdminChangePasswordRequest): Promise<AdminForgotPasswordResponse> => {
+    return apiClient.post<AdminForgotPasswordResponse>("/admin/change-password", request);
   },
 
   refreshToken: async (refreshToken: string): Promise<AdminRefreshTokenResponse> => {
