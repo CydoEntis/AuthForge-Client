@@ -1,6 +1,11 @@
 import type z from "zod";
-import type { adminCredentialsSchema, databaseConfigSchema } from "./setup.schemas";
+import type { adminCredentialsSchema, databaseConfigSchema, domainSchema } from "./setup.schemas";
 import type { DATABASES, EMAIL_PROVIDERS, SETUP_WIZARD_STEPS } from "./setup.constants";
+
+// ======================
+//        Domain
+// ======================
+export type DomainConfig = z.infer<typeof domainSchema>;
 
 // ======================
 //        Setup
@@ -13,6 +18,7 @@ export type SetupStatusResponse = {
 };
 
 export type CompleteSetupRequest = {
+  authForgeDomain: string;
   databaseType: AllowedDatabases;
   connectionString: string | null;
   emailProviderConfig: EmailProviderConfig;
