@@ -1,4 +1,4 @@
-import { LoginAdmin } from "@/features/admin/components/LoginAdmin";
+import { AdminLogin } from "@/features/admin/components/AdminLogin";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(public)/(auth)/login")({
@@ -6,5 +6,5 @@ export const Route = createFileRoute("/(public)/(auth)/login")({
 });
 
 function RouteComponent() {
-  return <LoginAdmin />;
+  return <AdminLogin />;
 }
