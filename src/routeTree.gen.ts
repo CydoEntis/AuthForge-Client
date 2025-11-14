@@ -20,6 +20,7 @@ import { Route as privateApplicationsIndexRouteImport } from './routes/(private)
 import { Route as publicsetupSetupRouteImport } from './routes/(public)/(setup)/setup'
 import { Route as publicauthLoginRouteImport } from './routes/(public)/(auth)/login'
 import { Route as publicauthForgotPasswordRouteImport } from './routes/(public)/(auth)/forgot-password'
+import { Route as publicauthChangePasswordRouteImport } from './routes/(public)/(auth)/change-password'
 import { Route as privateApplicationsCreateRouteImport } from './routes/(private)/applications/create'
 import { Route as privateApplicationsIdRouteImport } from './routes/(private)/applications/$id'
 
@@ -77,6 +78,12 @@ const publicauthForgotPasswordRoute =
     path: '/forgot-password',
     getParentRoute: () => publicauthRouteRoute,
   } as any)
+const publicauthChangePasswordRoute =
+  publicauthChangePasswordRouteImport.update({
+    id: '/change-password',
+    path: '/change-password',
+    getParentRoute: () => publicauthRouteRoute,
+  } as any)
 const privateApplicationsCreateRoute =
   privateApplicationsCreateRouteImport.update({
     id: '/applications/create',
@@ -95,6 +102,7 @@ export interface FileRoutesByFullPath {
   '/playground': typeof PlaygroundIndexRoute
   '/applications/$id': typeof privateApplicationsIdRoute
   '/applications/create': typeof privateApplicationsCreateRoute
+  '/change-password': typeof publicauthChangePasswordRoute
   '/forgot-password': typeof publicauthForgotPasswordRoute
   '/login': typeof publicauthLoginRoute
   '/setup': typeof publicsetupSetupRoute
@@ -106,6 +114,7 @@ export interface FileRoutesByTo {
   '/playground': typeof PlaygroundIndexRoute
   '/applications/$id': typeof privateApplicationsIdRoute
   '/applications/create': typeof privateApplicationsCreateRoute
+  '/change-password': typeof publicauthChangePasswordRoute
   '/forgot-password': typeof publicauthForgotPasswordRoute
   '/login': typeof publicauthLoginRoute
   '/setup': typeof publicsetupSetupRoute
@@ -122,6 +131,7 @@ export interface FileRoutesById {
   '/playground/': typeof PlaygroundIndexRoute
   '/(private)/applications/$id': typeof privateApplicationsIdRoute
   '/(private)/applications/create': typeof privateApplicationsCreateRoute
+  '/(public)/(auth)/change-password': typeof publicauthChangePasswordRoute
   '/(public)/(auth)/forgot-password': typeof publicauthForgotPasswordRoute
   '/(public)/(auth)/login': typeof publicauthLoginRoute
   '/(public)/(setup)/setup': typeof publicsetupSetupRoute
@@ -136,6 +146,7 @@ export interface FileRouteTypes {
     | '/playground'
     | '/applications/$id'
     | '/applications/create'
+    | '/change-password'
     | '/forgot-password'
     | '/login'
     | '/setup'
@@ -147,6 +158,7 @@ export interface FileRouteTypes {
     | '/playground'
     | '/applications/$id'
     | '/applications/create'
+    | '/change-password'
     | '/forgot-password'
     | '/login'
     | '/setup'
@@ -162,6 +174,7 @@ export interface FileRouteTypes {
     | '/playground/'
     | '/(private)/applications/$id'
     | '/(private)/applications/create'
+    | '/(public)/(auth)/change-password'
     | '/(public)/(auth)/forgot-password'
     | '/(public)/(auth)/login'
     | '/(public)/(setup)/setup'
@@ -255,6 +268,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicauthForgotPasswordRouteImport
       parentRoute: typeof publicauthRouteRoute
     }
+    '/(public)/(auth)/change-password': {
+      id: '/(public)/(auth)/change-password'
+      path: '/change-password'
+      fullPath: '/change-password'
+      preLoaderRoute: typeof publicauthChangePasswordRouteImport
+      parentRoute: typeof publicauthRouteRoute
+    }
     '/(private)/applications/create': {
       id: '/(private)/applications/create'
       path: '/applications/create'
@@ -289,11 +309,13 @@ const privateRouteRouteWithChildren = privateRouteRoute._addFileChildren(
 )
 
 interface publicauthRouteRouteChildren {
+  publicauthChangePasswordRoute: typeof publicauthChangePasswordRoute
   publicauthForgotPasswordRoute: typeof publicauthForgotPasswordRoute
   publicauthLoginRoute: typeof publicauthLoginRoute
 }
 
 const publicauthRouteRouteChildren: publicauthRouteRouteChildren = {
+  publicauthChangePasswordRoute: publicauthChangePasswordRoute,
   publicauthForgotPasswordRoute: publicauthForgotPasswordRoute,
   publicauthLoginRoute: publicauthLoginRoute,
 }
