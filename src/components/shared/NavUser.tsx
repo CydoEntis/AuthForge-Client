@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
-import { useLogoutMutation } from "@/features/admin/hooks/useLogoutMutation";
+import { useAdminLogoutMutation } from "@/features/admin/hooks/useAdminLogoutMutation";
 
 export function NavUser({
   user,
@@ -25,7 +25,7 @@ export function NavUser({
   };
 }) {
   const { isMobile } = useSidebar();
-  const logoutMutation = useLogoutMutation();
+  const logoutMutation = useAdminLogoutMutation();
 
   return (
     <SidebarMenu>
