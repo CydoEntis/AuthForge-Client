@@ -5,6 +5,7 @@ import { authApi } from "../api";
 import { useNavigate } from "@tanstack/react-router";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useFormMutation } from "@/hooks/useFormMutation";
+import { useEffect } from "react";
 
 export function useLoginAdminForm() {
   const form = useZodForm<LoginAdminValues>(loginAdminSchema, {
@@ -28,6 +29,15 @@ export function useLoginAdminForm() {
       navigate({ to: "/applications" });
     },
   });
+
+  useEffect(() => {
+    const subscription = form.watch(() => {
+      if (form.formState.errors.root) {
+        form.clearErrors("root");
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [form]);
 
   const handleSubmit = form.handleSubmit((values) => mutation.mutate(values));
 

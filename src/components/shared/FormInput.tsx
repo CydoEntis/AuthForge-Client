@@ -1,7 +1,5 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { AnimatePresence } from "framer-motion";
-import FadeSlide from "./animations/FadeSlide";
 
 interface FormInputProps {
   form: any;
@@ -11,7 +9,7 @@ interface FormInputProps {
   type?: string;
   className?: string;
   isLoading?: boolean;
-  description?: string; // ✅ Add this
+  description?: string;
 }
 
 export function FormInput({
@@ -37,7 +35,6 @@ export function FormInput({
             <Input {...field} type={type} placeholder={placeholder} disabled={isLoading} />
           </FormControl>
 
-          {/* ✅ Add description if provided */}
           {description && !error && (
             <FormDescription className="text-xs text-muted-foreground">{description}</FormDescription>
           )}
