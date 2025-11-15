@@ -33,7 +33,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   };
 
   return (
-    <Sidebar variant="floating" {...props} className="">
+    <Sidebar variant="inset" {...props} className="">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
