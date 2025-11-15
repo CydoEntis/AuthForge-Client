@@ -1,4 +1,3 @@
-// src/features/applications/components/ApplicationsTable.tsx
 import { useMemo } from "react";
 import {
   flexRender,
@@ -10,8 +9,7 @@ import {
 } from "@tanstack/react-table";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { MoreHorizontal, Pencil, Trash2, Eye, ArrowUpDown, Plus } from "lucide-react";
+import { MoreHorizontal, Pencil, Trash2, Eye, ArrowUpDown, Calendar, User2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -49,76 +47,109 @@ export function ApplicationsTable({
       {
         accessorKey: "name",
         header: ({ column }) => (
-          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-            Name <ArrowUpDown className="ml-2 h-4 w-4" />
+          <Button
+            variant="ghost"
+            size="sm"
+            className="flex items-center gap-1"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Name <ArrowUpDown className="h-4 w-4" />
           </Button>
         ),
-        cell: ({ row }) => <div className="font-medium">{row.original.name}</div>,
+        cell: ({ row }) => <span className=" text-xs text-muted-foreground">{row.original.name}</span>,
       },
       {
         accessorKey: "slug",
         header: ({ column }) => (
-          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-            Slug <ArrowUpDown className="ml-2 h-4 w-4" />
+          <Button
+            variant="ghost"
+            size="sm"
+            className="flex items-center gap-1"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Slug <ArrowUpDown className="h-4 w-4" />
           </Button>
         ),
-        cell: ({ row }) => <code className="text-xs">{row.original.slug}</code>,
+        cell: ({ row }) => <code className=" text-xs text-muted-foreground">{row.original.slug}</code>,
       },
       {
         accessorKey: "publicKey",
         header: "Public Key",
-        cell: ({ row }) => <code className="rounded bg-muted px-2 py-1 text-xs">{row.original.publicKey}</code>,
+        cell: ({ row }) => <code className=" text-xs text-muted-foreground">{row.original.publicKey}</code>,
       },
       {
         accessorKey: "userCount",
         header: "Users",
-        cell: ({ row }) => <div>{row.original.userCount}</div>,
+        cell: ({ row }) => (
+          <span className="text-xs text-muted-foreground inline-flex gap-2 items-center">
+            <User2 size={16} /> {row.original.userCount}
+          </span>
+        ),
       },
       {
         accessorKey: "isActive",
         header: "Status",
         cell: ({ row }) => (
-          <Badge variant={row.original.isActive ? "default" : "secondary"}>
+          <div
+            className={`
+              ${row.original.isActive ? " text-emerald-500" : " text-rose-400"}
+            `}
+          >
             {row.original.isActive ? "Active" : "Inactive"}
-          </Badge>
+          </div>
         ),
       },
       {
         accessorKey: "createdAtUtc",
         header: ({ column }) => (
-          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-            Created <ArrowUpDown className="ml-2 h-4 w-4" />
+          <Button
+            variant="ghost"
+            size="sm"
+            className="flex items-center gap-1"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Created <ArrowUpDown className="h-4 w-4" />
           </Button>
         ),
-        cell: ({ row }) => new Date(row.original.createdAtUtc).toLocaleDateString(),
+        cell: ({ row }) => (
+          <span className="text-xs text-muted-foreground inline-flex gap-2 items-center">
+            <Calendar size={16} /> {new Date(row.original.createdAtUtc).toLocaleDateString()}
+          </span>
+        ),
       },
       {
         id: "actions",
         cell: ({ row }) => (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
+              <Button
+                className="bg-linear-to-t from-card to-background font-semibold hover:to-card! text-muted-foreground"
+                size="icon"
+              >
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem asChild>
+              <DropdownMenuItem asChild className="rounded hover:bg-sidebar!">
                 <Link to="/applications/$id" params={{ id: row.original.applicationId }}>
-                  <Eye className="mr-2 h-4 w-4" /> View Details
+                  <Eye className="mr-2 h-4 w-4 hover:text-sidebar-accent-foreground" /> View Details
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => onEdit(row.original.applicationId)}>
-                <Pencil className="mr-2 h-4 w-4" /> Edit
+              <DropdownMenuItem
+                className="rounded hover:bg-sidebar!"
+                onClick={() => onEdit(row.original.applicationId)}
+              >
+                <Pencil className="mr-2 h-4 w-4 hover:text-sidebar-accent-foreground" /> Edit
               </DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive">
-                <Trash2 className="mr-2 h-4 w-4" /> Delete
+              <DropdownMenuItem className="rounded hover:text-red-500! hover:bg-sidebar!">
+                <Trash2 className="mr-2 h-4 w-4 hover:text-red-500!" /> Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         ),
       },
     ],
-    []
+    [onEdit]
   );
 
   const table = useReactTable({
@@ -134,28 +165,37 @@ export function ApplicationsTable({
 
   if (isLoading) return <TableSkeleton />;
 
-  if (!data || data.items.length === 0) return null; // Handled in Dashboard
+  if (!data || data.items.length === 0) return null;
 
   return (
-    <>
-      <div className="rounded-lg border">
+    <div className="flex flex-col gap-4">
+      <div className="inset-shadow rounded-xl overflow-hidden border dark:border-black border-[#c7c7c7] p-1">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow
+                key={headerGroup.id}
+                className="hover:bg-linear-to-t hover:from-card hover:to-background font-semibold  text-muted-foreground border-b  shadow-bottom dark:border-black border-[#c7c7c7]"
+              >
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
+                  <TableHead key={header.id} className="text-foreground">
                     {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
                 ))}
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody>
             {table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
+              <TableRow
+                key={row.id}
+                className="hover:bg-linear-to-t hover:from-card hover:to-background font-semibold  text-muted-foreground border-b  shadow-bottom dark:border-black border-[#c7c7c7]"
+              >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                  <TableCell key={cell.id} className="py-2 px-4 text-sm ">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
                 ))}
               </TableRow>
             ))}
@@ -164,8 +204,8 @@ export function ApplicationsTable({
       </div>
 
       {/* Pagination */}
-      <div className="flex items-center justify-between mt-2">
-        <p className="text-sm text-muted-foreground">
+      <div className="flex items-center justify-between text-sm text-gray-600">
+        <p>
           Showing {(page - 1) * pageSize + 1} to {Math.min(page * pageSize, data.totalCount)} of {data.totalCount}
         </p>
         <div className="flex gap-2">
@@ -177,7 +217,7 @@ export function ApplicationsTable({
           </Button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
@@ -185,7 +225,7 @@ function TableSkeleton() {
   return (
     <div className="space-y-3">
       {Array.from({ length: 5 }).map((_, i) => (
-        <Skeleton key={i} className="h-16 w-full" />
+        <Skeleton key={i} className="h-16 w-full rounded-lg" />
       ))}
     </div>
   );
