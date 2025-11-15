@@ -14,6 +14,7 @@ import {
 import { NavUser } from "../shared/NavUser";
 import { NavMain } from "../shared/NavMain";
 import { ThemeToggle } from "@/features/theme/ThemeToggle";
+import { Link } from "@tanstack/react-router";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const data = {
@@ -25,7 +26,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     navMain: [
       {
         title: "Home",
-        url: "#",
+        url: "/applications",
         icon: Home,
         isActive: true,
       },
@@ -38,7 +39,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <a href="#">
+              <Link to="/applications">
                 <div className="bg-card  flex aspect-square size-8 items-center justify-center rounded-lg">
                   <Anvil className="text-orange-400" size={20} />
                 </div>
@@ -46,7 +47,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <span className="font-medium">Auth Forge</span>
                   <span className="">v0.0.1</span>
                 </div>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -57,9 +58,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarGroup>
         <SidebarContent>
           <NavMain items={data.navMain} />
-          {/* 
-          <NavProjects projects={data.projects} />
-          <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
         </SidebarContent>
         <SidebarFooter>
           <div className="px-2">
