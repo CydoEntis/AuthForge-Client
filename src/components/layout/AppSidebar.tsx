@@ -60,9 +60,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <NavMain items={data.navMain} />
         </SidebarContent>
         <SidebarFooter>
-          <div className="px-2">
+          {/* Currently we dont want to manage a light mode */}
+          {/* <div className="px-2">
             <ThemeToggle />
-          </div>
+          </div> */}
 
           <NavUser user={data.user} />
         </SidebarFooter>
