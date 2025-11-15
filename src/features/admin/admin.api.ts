@@ -7,6 +7,7 @@ import type {
   AdminLoginRequest,
   AdminChangePasswordRequest,
   AdminResetPasswordRequest,
+  AdminVerifyPasswordResetTokenResponse,
 } from "./admin.types";
 
 export const adminApi = {
@@ -18,12 +19,12 @@ export const adminApi = {
     return apiClient.post<AdminForgotPasswordResponse>("/admin/forgot-password", request);
   },
 
-  verifyPasswordResetToken: async (token: string): Promise<void> => {
-    return apiClient.post<void>("/admin/verify-password-reset-token", { token });
+  verifyPasswordResetToken: async (token: string): Promise<AdminVerifyPasswordResetTokenResponse> => {
+    return apiClient.post<AdminVerifyPasswordResetTokenResponse>("/admin/verify-password-reset-token", { token });
   },
 
   resetPassword: async (request: AdminResetPasswordRequest): Promise<void> => {
-    return apiClient.post<void>("/admin/verify-password-reset-token", request);
+    return apiClient.post<void>("/admin/reset-password", request);
   },
 
   changePassword: async (request: AdminChangePasswordRequest): Promise<AdminForgotPasswordResponse> => {

@@ -15,6 +15,7 @@ export const adminVerifyResetPasswordToken = z.object({
 
 export const adminResetPasswordSchema = z
   .object({
+    token: z.string().min(1, { message: "Please provide a token." }),
     newPassword: z
       .string()
       .min(8, { message: "Password must be at least 8 characters." })

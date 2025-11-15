@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { LoadingButton } from "@/components/shared/LoadingButton";
 import type {
@@ -40,7 +40,7 @@ export default function SetupWizard() {
   const [selectedDbType, setSelectedDbType] = useState<AllowedDatabases>(DATABASES.SQLITE);
   const [dbConfig, setDbConfig] = useState<DatabaseConfig | null>(null);
   const [emailConfig, setEmailConfig] = useState<EmailProviderConfig | null>(null);
-  const [adminCredentials, setAdminCredentials] = useState<AdminCredentials | null>(null); // ✅ Store data
+  const [adminCredentials, setAdminCredentials] = useState<AdminCredentials | null>(null);
   const [isAdminFormValid, setIsAdminFormValid] = useState(false);
 
   const completeSetup = useCompleteSetup();
