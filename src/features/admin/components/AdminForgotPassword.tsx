@@ -16,7 +16,7 @@ export function AdminForgotPassword() {
           <div className="space-y-1">
             <FormInput form={form} name="email" label="Email" placeholder="example@email.com" isLoading={isLoading} />
             <div className="w-full flex justify-end text-sm">
-              <Link to="/login" className="text-primary hover:underline">
+              <Link to="/login" className="text-primary hover:underline" viewTransition={{ types: ["slide-left"] }}>
                 Rembered your password? Log in
               </Link>
             </div>

@@ -9,9 +9,9 @@ function RouteComponent() {
   return (
     <main className="relative  max-w-5/6 mx-auto py-4 px-8">
       <PublicNavbar />
-      <div className="min-h-[70vh] flex justify-center items-center w-full">
+      <main className="min-h-[70vh] flex justify-center items-center w-full [view-transition-name:main-content]">
         <Outlet />
-      </div>
+      </main>
     </main>
   );
 }

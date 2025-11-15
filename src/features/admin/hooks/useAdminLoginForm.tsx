@@ -26,7 +26,7 @@ export function useAdminLoginForm() {
     onSuccess: (data) => {
       const { tokens } = data;
       setTokens(tokens.accessToken, tokens.refreshToken);
-      navigate({ to: "/applications" });
+      navigate({ to: "/applications", viewTransition: { types: ["slide-right"] } });
     },
   });
 

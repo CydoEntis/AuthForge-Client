@@ -25,7 +25,11 @@ export function AdminLogin() {
               isLoading={isLoading}
             />
             <div className="w-full flex justify-end text-sm">
-              <Link to="/forgot-password" className="text-primary hover:underline">
+              <Link
+                to="/forgot-password"
+                className="text-primary hover:underline"
+                viewTransition={{ types: ["slide-right"] }}
+              >
                 Forgot Password?
               </Link>
             </div>
