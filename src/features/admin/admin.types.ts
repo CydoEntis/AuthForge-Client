@@ -5,14 +5,17 @@ import type {
   adminForgotPasswordSchema,
   adminLoginSchema,
   adminResetPasswordSchema,
-  adminVerifyResetPasswordToken,
+  adminUpdateDomainSchema,
+  adminUpdateEmailSchema,
 } from "./admin.schemas";
 
 export type AdminLoginRequest = z.infer<typeof adminLoginSchema>;
 export type AdminForgotPasswordRequest = z.infer<typeof adminForgotPasswordSchema>;
-export type AdminChangePasswordRequest = z.infer<typeof adminChangePasswordSchema>;
 export type AdminResetPasswordRequest = z.infer<typeof adminResetPasswordSchema>;
-export type AdminVeryifyPasswordResetTokenRequest = z.infer<typeof adminVerifyResetPasswordToken>;
+export type AdminChangePasswordRequest = z.infer<typeof adminChangePasswordSchema>;
+export type AdminUpdateEmailRequest = z.infer<typeof adminUpdateEmailSchema>;
+export type AdminUpdateDomainRequest = z.infer<typeof adminUpdateDomainSchema>;
+export type AdminTestEmailProviderRequest = z.infer<typeof adminUpdateEmailSchema>;
 
 export type AdminLoginResponse = {
   tokens: TokenPair;
