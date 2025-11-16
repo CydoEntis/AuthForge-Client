@@ -21,6 +21,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import type { PagedResponse } from "@/lib/api/types";
 import type { ApplicationSummary } from "../types";
 
+type ColumnMeta = {
+  className?: string;
+};
+
 type ApplicationsTableProps = {
   data?: PagedResponse<ApplicationSummary>;
   isLoading: boolean;
@@ -42,11 +46,11 @@ export function ApplicationsTable({
   onPageChange,
   onEdit,
 }: ApplicationsTableProps) {
-  const columns = useMemo<ColumnDef<ApplicationSummary>[]>(
+  const columns = useMemo<ColumnDef<ApplicationSummary, any>[]>(
     () => [
       {
         accessorKey: "name",
-        header: ({ column }) => (
+        header: ({ column }: { column: any }) => (
           <Button
             variant="ghost"
             size="sm"
@@ -56,11 +60,12 @@ export function ApplicationsTable({
             Name <ArrowUpDown className="h-4 w-4" />
           </Button>
         ),
-        cell: ({ row }) => <span className=" text-xs text-muted-foreground">{row.original.name}</span>,
+        cell: ({ row }: any) => <span className="text-xs text-muted-foreground">{row.original.name}</span>,
+        meta: { className: "w-48" },
       },
       {
         accessorKey: "slug",
-        header: ({ column }) => (
+        header: ({ column }: { column: any }) => (
           <Button
             variant="ghost"
             size="sm"
@@ -70,38 +75,38 @@ export function ApplicationsTable({
             Slug <ArrowUpDown className="h-4 w-4" />
           </Button>
         ),
-        cell: ({ row }) => <code className=" text-xs text-muted-foreground">{row.original.slug}</code>,
+        cell: ({ row }: any) => <code className="text-xs text-muted-foreground">{row.original.slug}</code>,
+        meta: { className: "w-32" },
       },
       {
         accessorKey: "publicKey",
         header: "Public Key",
-        cell: ({ row }) => <code className=" text-xs text-muted-foreground">{row.original.publicKey}</code>,
+        cell: ({ row }: any) => <code className="text-xs text-muted-foreground">{row.original.publicKey}</code>,
+        meta: { className: "w-64" },
       },
       {
         accessorKey: "userCount",
         header: "Users",
-        cell: ({ row }) => (
+        cell: ({ row }: any) => (
           <span className="text-xs text-muted-foreground inline-flex gap-2 items-center">
             <User2 size={16} /> {row.original.userCount}
           </span>
         ),
+        meta: { className: "w-20" },
       },
       {
         accessorKey: "isActive",
         header: "Status",
-        cell: ({ row }) => (
-          <div
-            className={`
-              ${row.original.isActive ? " text-emerald-500" : " text-rose-400"}
-            `}
-          >
+        cell: ({ row }: any) => (
+          <div className={row.original.isActive ? "text-emerald-500" : "text-rose-400"}>
             {row.original.isActive ? "Active" : "Inactive"}
           </div>
         ),
+        meta: { className: "w-24" },
       },
       {
         accessorKey: "createdAtUtc",
-        header: ({ column }) => (
+        header: ({ column }: { column: any }) => (
           <Button
             variant="ghost"
             size="sm"
@@ -111,15 +116,16 @@ export function ApplicationsTable({
             Created <ArrowUpDown className="h-4 w-4" />
           </Button>
         ),
-        cell: ({ row }) => (
+        cell: ({ row }: any) => (
           <span className="text-xs text-muted-foreground inline-flex gap-2 items-center">
             <Calendar size={16} /> {new Date(row.original.createdAtUtc).toLocaleDateString()}
           </span>
         ),
+        meta: { className: "w-32" },
       },
       {
         id: "actions",
-        cell: ({ row }) => (
+        cell: ({ row }: any) => (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -147,6 +153,7 @@ export function ApplicationsTable({
             </DropdownMenuContent>
           </DropdownMenu>
         ),
+        meta: { className: "w-12" },
       },
     ],
     [onEdit]
@@ -164,21 +171,20 @@ export function ApplicationsTable({
   });
 
   if (isLoading) return <TableSkeleton />;
-
   if (!data || data.items.length === 0) return null;
 
   return (
     <div className="flex flex-col gap-4">
       <div className="inset-shadow rounded-xl overflow-hidden border dark:border-black border-[#c7c7c7] p-1">
-        <Table>
+        <Table className="table-fixed w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
                 key={headerGroup.id}
-                className="hover:bg-linear-to-t hover:from-card hover:to-background font-semibold  text-muted-foreground border-b  shadow-bottom dark:border-black border-[#c7c7c7]"
+                className="hover:bg-linear-to-t hover:from-card hover:to-background font-semibold text-muted-foreground border-b shadow-bottom dark:border-black border-[#c7c7c7]"
               >
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className="text-foreground">
+                  <TableHead key={header.id} className={(header.column.columnDef.meta as ColumnMeta)?.className ?? ""}>
                     {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
                 ))}
@@ -190,10 +196,13 @@ export function ApplicationsTable({
             {table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
-                className="hover:bg-linear-to-t hover:from-card hover:to-background font-semibold  text-muted-foreground border-b  shadow-bottom dark:border-black border-[#c7c7c7]"
+                className="hover:bg-card/50 font-semibold text-muted-foreground border-b shadow-bottom dark:border-black border-[#c7c7c7]"
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="py-2 px-4 text-sm ">
+                  <TableCell
+                    key={cell.id}
+                    className={`py-2 px-4 text-sm ${(cell.column.columnDef.meta as ColumnMeta)?.className ?? ""}`}
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
@@ -203,7 +212,6 @@ export function ApplicationsTable({
         </Table>
       </div>
 
-      {/* Pagination */}
       <div className="flex items-center justify-between text-sm text-gray-600">
         <p>
           Showing {(page - 1) * pageSize + 1} to {Math.min(page * pageSize, data.totalCount)} of {data.totalCount}
