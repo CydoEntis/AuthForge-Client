@@ -1,14 +1,30 @@
 import { useZodForm } from "@/hooks/useZodForm";
 import { useFormMutation } from "@/hooks/useFormMutation";
 import { setupApi } from "../setup.api";
-import type { TestEmailConfigRequest, TestEmailResponse } from "../setup.types";
+import type { TestEmailConfigRequest, TestEmailResponse, AllowedEmailProviders } from "../setup.types";
 import { emailProviderSchema } from "../setup.schemas";
 
 export function useConfigureEmailProviderForm(
-  initialConfig: Partial<TestEmailConfigRequest>,
+  initialConfig: Partial<TestEmailConfigRequest> | null,
   onSave: (cfg: TestEmailConfigRequest) => void
 ) {
-  const form = useZodForm(emailProviderSchema, initialConfig);
+  const defaultConfig: TestEmailConfigRequest = {
+    emailProvider: "Smtp" as AllowedEmailProviders,
+    fromEmail: "",
+    fromName: "AuthForge",
+    testRecipient: "",
+    smtpHost: "",
+    smtpPort: 587,
+    smtpUsername: "",
+    smtpPassword: "",
+    useSsl: true,
+    resendApiKey: "",
+    ...initialConfig,
+  };
+
+  const form = useZodForm(emailProviderSchema, {
+    defaultValues: defaultConfig,
+  });
 
   const mutation = useFormMutation<TestEmailConfigRequest, TestEmailResponse>({
     mutationFn: async (values) => {
@@ -24,8 +40,7 @@ export function useConfigureEmailProviderForm(
     successMessage: "Email configuration successful!",
     onSuccess: (response) => {
       if (response.isSuccessful) {
-        const cfg = form.getValues();
-        onSave(cfg);
+        onSave(form.getValues());
       } else {
         form.setError("root", { type: "manual", message: response.message });
       }

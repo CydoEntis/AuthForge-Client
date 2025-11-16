@@ -1,20 +1,21 @@
+// features/setup/components/steps/EmailProviderStep.tsx
 import { useState } from "react";
 import { AlertMessage } from "@/components/AlertMessage";
 import { EMAIL_PROVIDERS } from "@/features/setup/setup.constants";
-import type { AllowedEmailProviders, EmailConfig } from "@/features/setup/setup.types";
+import type { AllowedEmailProviders, TestEmailConfigRequest } from "@/features/setup/setup.types";
 import { Mail } from "lucide-react";
 import ResendWhite from "@/assets/resend-icon-white.svg";
 import ResendBlack from "@/assets/resend-icon-black.svg";
 import { useTheme } from "@/features/theme/hooks/useTheme";
 import OptionCard from "@/components/OptionCard";
-import ConfigureEmailProvider from "../ConfigureEmailProvider";
+import ConfigureEmailProviderModal from "../ConfigureEmailProviderModal";
 
 export function EmailProviderStep({
   emailConfig,
   onConfigChange,
 }: {
-  emailConfig: EmailConfig | null;
-  onConfigChange: (config: EmailConfig | null) => void;
+  emailConfig: TestEmailConfigRequest | null;
+  onConfigChange: (config: TestEmailConfigRequest | null) => void;
 }) {
   const { theme } = useTheme();
   const resendImg = theme === "dark" ? ResendWhite : ResendBlack;
@@ -71,12 +72,12 @@ export function EmailProviderStep({
       </div>
 
       {selectedEmail && (
-        <ConfigureEmailProvider
+        <ConfigureEmailProviderModal
           provider={selectedEmail}
-          initialConfig={emailConfig || ({} as EmailConfig)}
+          initialConfig={emailConfig}
           open={emailModalOpen}
           onOpenChange={setEmailModalOpen}
-          onConnectionSuccess={(config: EmailConfig) => {
+          onConnectionSuccess={(config: TestEmailConfigRequest) => {
             onConfigChange(config);
             setEmailModalOpen(false);
           }}
