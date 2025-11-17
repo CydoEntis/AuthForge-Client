@@ -8,6 +8,7 @@ import type {
   adminUpdateDomainSchema,
   adminUpdateEmailSchema,
 } from "./admin.schemas";
+import type { EmailProviderConfig } from "../setup/setup.types";
 
 export type AdminLoginRequest = z.infer<typeof adminLoginSchema>;
 export type AdminForgotPasswordRequest = z.infer<typeof adminForgotPasswordSchema>;
@@ -21,17 +22,31 @@ export type AdminLoginResponse = {
   tokens: TokenPair;
 };
 
-export interface AdminVerifyPasswordResetTokenResponse {
+export type AdminVerifyPasswordResetTokenResponse = {
   isValid: boolean;
   message?: string;
-}
+};
 
 export type AdminForgotPasswordResponse = {
   message: string;
 };
 
-export interface AdminRefreshTokenResponse {
+export type AdminRefreshTokenResponse = {
   accessToken: string;
   refreshToken: string;
   expiresAt: string;
-}
+};
+
+export type AdminUpdateEmailProviderRequest = {
+  emailProviderConfig: EmailProviderConfig;
+};
+
+export type TestEmailConfigResponse = {
+  isSuccessful: boolean;
+  message: string;
+};
+
+export type AdminRevokeAllSessionsResponse = {
+  message: string;
+  sessionsRevoked: number;
+};
