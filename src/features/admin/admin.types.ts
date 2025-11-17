@@ -50,3 +50,12 @@ export type AdminRevokeAllSessionsResponse = {
   message: string;
   sessionsRevoked: number;
 };
+
+export type GetAdminResponse = {
+  id: string;
+  email: string;
+  createdAtUtc: string;
+  updatedAtUtc: string | null;
+};
+
+export type AdminDetails = GetAdminResponse;

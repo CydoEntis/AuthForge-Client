@@ -14,6 +14,7 @@ import type {
   AdminUpdateEmailProviderRequest,
   TestEmailConfigResponse,
   AdminRevokeAllSessionsResponse,
+  GetAdminResponse,
 } from "./admin.types";
 import type { TestEmailConfigRequest } from "../setup/setup.types";
 
@@ -68,5 +69,9 @@ export const adminApi = {
 
   revokeAllSessions: async (): Promise<AdminRevokeAllSessionsResponse> => {
     return apiClient.post<AdminRevokeAllSessionsResponse>("/admin/sessions/revoke-all");
+  },
+
+  getAdmin: async (): Promise<GetAdminResponse> => {
+    return apiClient.get<GetAdminResponse>("/admin/me");
   },
 };
