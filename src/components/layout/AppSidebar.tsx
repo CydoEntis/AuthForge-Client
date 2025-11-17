@@ -13,16 +13,10 @@ import {
 } from "@/components/ui/sidebar";
 import { NavUser } from "../shared/NavUser";
 import { NavMain } from "../shared/NavMain";
-import { ThemeToggle } from "@/features/theme/ThemeToggle";
 import { Link } from "@tanstack/react-router";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const data = {
-    user: {
-      name: "DemoUser",
-      email: "demo@demo.com",
-      avatar: "/avatars/shadcn.jpg",
-    },
     navMain: [
       {
         title: "Home",
@@ -65,7 +59,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <ThemeToggle />
           </div> */}
 
-          <NavUser user={data.user} />
+          <NavUser />
         </SidebarFooter>
       </SidebarContent>
     </Sidebar>

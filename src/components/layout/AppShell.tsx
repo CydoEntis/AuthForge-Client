@@ -1,9 +1,9 @@
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "./AppSidebar";
 import { Outlet } from "@tanstack/react-router";
 import { useAuthStore } from "@/store/useAuthStore";
-import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "./AppSidebar";
+import { AppShellSkeleton } from "./AppShellSkeleton";
 import { useAdmin } from "@/features/admin/hooks/useAdminProfile";
 
 export default function AppShell() {
@@ -23,11 +23,7 @@ export default function AppShell() {
   }, [isError, logout]);
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
-    );
+    return <AppShellSkeleton />;
   }
 
   return (
