@@ -12,9 +12,9 @@ const buttonVariants = cva(
         default:
           "rounded-lg inset-shadow-sm bg-linear-to-t from-accent to-primary from-primary to-accent font-semibold hover:to-primary/10 dark:hover:to-accent/80 border dark:border-black border-[#c7c7c7] text-foreground",
         destructive:
-          "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
+          "rounded-lg inset-shadow-sm bg-linear-to-t from-destructive to-destructive/20 font-semibold hover:to-destructive/10 dark:hover:destructive/10 border dark:border-black border-[#c7c7c7] text-foreground",
         outline:
-          "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+          "rounded-lg inset-shadow-lg bg-linear-to-t from-card to-background font-semibold hover:to-sidebar text-muted-foreground border border-background",
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
