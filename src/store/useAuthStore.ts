@@ -1,4 +1,4 @@
-import type { AdminDetails } from "@/types/types";
+import type { AdminDetails } from "@/features/admin/admin.types";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
