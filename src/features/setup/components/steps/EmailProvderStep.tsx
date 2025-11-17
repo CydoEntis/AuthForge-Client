@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { AlertMessage } from "@/components/AlertMessage";
 import { EMAIL_PROVIDERS } from "@/features/setup/setup.constants";
-import type { AllowedEmailProviders, TestEmailConfigRequest } from "@/features/setup/setup.types";
+import type { AllowedEmailProviders, EmailProviderConfig } from "@/features/setup/setup.types"; // ✅ Changed
 import { Mail } from "lucide-react";
 import ResendWhite from "@/assets/resend-icon-white.svg";
 import ResendBlack from "@/assets/resend-icon-black.svg";
@@ -14,8 +14,8 @@ export function EmailProviderStep({
   emailConfig,
   onConfigChange,
 }: {
-  emailConfig: TestEmailConfigRequest | null;
-  onConfigChange: (config: TestEmailConfigRequest | null) => void;
+  emailConfig: EmailProviderConfig | null; // ✅ Changed
+  onConfigChange: (config: EmailProviderConfig | null) => void; // ✅ Changed
 }) {
   const { theme } = useTheme();
   const resendImg = theme === "dark" ? ResendWhite : ResendBlack;
@@ -77,7 +77,8 @@ export function EmailProviderStep({
           initialConfig={emailConfig}
           open={emailModalOpen}
           onOpenChange={setEmailModalOpen}
-          onConnectionSuccess={(config: TestEmailConfigRequest) => {
+          onConnectionSuccess={(config: EmailProviderConfig) => {
+            // ✅ Changed
             onConfigChange(config);
             setEmailModalOpen(false);
           }}
