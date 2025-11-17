@@ -38,7 +38,7 @@ export function AdminChangePassword() {
 
         {form.formState.errors.root && <FormError message={form.formState.errors.root.message as string} />}
 
-        <LoadingButton type="submit" className="w-full mt-8" isLoading={isLoading} loadingText="Sending Email...">
+        <LoadingButton type="submit" className="w-full" isLoading={isLoading} loadingText="Sending Email...">
           Change Password
         </LoadingButton>
       </form>
