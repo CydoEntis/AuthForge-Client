@@ -39,7 +39,7 @@ export default function SetupWizard() {
   const [authForgeDomain, setAuthForgeDomain] = useState("");
   const [selectedDbType, setSelectedDbType] = useState<AllowedDatabases>(DATABASES.SQLITE);
   const [dbConfig, setDbConfig] = useState<DatabaseConfig | null>(null);
-  const [emailConfig, setEmailConfig] = useState<EmailProviderConfig | null>(null);
+  const [emailConfig, setEmailConfig] = useState<EmailProviderConfig | null>(null); // ✅ Correct type
   const [adminCredentials, setAdminCredentials] = useState<AdminCredentials | null>(null);
   const [isAdminFormValid, setIsAdminFormValid] = useState(false);
 
@@ -102,7 +102,6 @@ export default function SetupWizard() {
     };
 
     console.log("Setup payload: ", payload);
-
     completeSetup.mutate(payload);
   };
 
