@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useZodForm } from "@/hooks/useZodForm";
 import { useFormMutation } from "@/hooks/useFormMutation";
 import { setupApi } from "../setup.api";
@@ -8,6 +9,8 @@ export function useConfigureEmailProviderForm(
   initialConfig: Partial<TestEmailConfigRequest> | null,
   onSave: (cfg: TestEmailConfigRequest) => void
 ) {
+  const [testSuccessful, setTestSuccessful] = useState(false);
+
   const defaultConfig: TestEmailConfigRequest = {
     emailProvider: "Smtp" as AllowedEmailProviders,
     fromEmail: "",
@@ -40,6 +43,7 @@ export function useConfigureEmailProviderForm(
     successMessage: "Email configuration successful!",
     onSuccess: (response) => {
       if (response.isSuccessful) {
+        setTestSuccessful(true);
         onSave(form.getValues());
       } else {
         form.setError("root", { type: "manual", message: response.message });
@@ -49,5 +53,10 @@ export function useConfigureEmailProviderForm(
 
   const handleSubmit = form.handleSubmit((values) => mutation.mutate(values));
 
-  return { form, handleSubmit, isLoading: mutation.isPending };
+  return {
+    form,
+    handleSubmit,
+    isLoading: mutation.isPending,
+    testSuccessful,
+  };
 }
