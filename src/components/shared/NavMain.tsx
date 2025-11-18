@@ -20,7 +20,7 @@ export function NavMain({
           <Collapsible key={item.title} asChild defaultOpen={item.isActive}>
             <SidebarMenuItem>
               <SidebarMenuButton asChild isActive={item.isActive}>
-                <Link to={item.url}>
+                <Link to={item.url} viewTransition={{ types: ["slide-down"] }}>
                   <item.icon />
                   <span>{item.title}</span>
                 </Link>

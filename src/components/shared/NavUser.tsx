@@ -60,7 +60,7 @@ export function NavUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <Link to="/settings">
+              <Link to="/settings" viewTransition={{ types: ["slide-down"] }}>
                 <DropdownMenuItem>
                   <Settings />
                   Settings

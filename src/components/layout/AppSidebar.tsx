@@ -33,7 +33,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <Link to="/applications">
+              <Link to="/applications" viewTransition={{ types: ["slide-down"] }}>
                 <div className="bg-card  flex aspect-square size-8 items-center justify-center rounded-lg">
                   <Anvil className="text-orange-400" size={20} />
                 </div>
