@@ -9,10 +9,7 @@ export const Route = createFileRoute("/")({
       queryFn: setupApi.getSetupStatus,
     });
 
-    console.log("PARENT ROUTE: ", isSetupComplete);
-
     if (isSetupComplete) {
-      // ← Changed from isComplete
       throw redirect({ to: "/login" });
     }
 
