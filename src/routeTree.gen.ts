@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as publicRouteRouteImport } from './routes/(public)/route'
 import { Route as privateRouteRouteImport } from './routes/(private)/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as PlaygroundIndexRouteImport } from './routes/playground/index'
 import { Route as publicDashboardRouteRouteImport } from './routes/(public)/dashboard/route'
 import { Route as publicauthRouteRouteImport } from './routes/(public)/(auth)/route'
 import { Route as publicDashboardIndexRouteImport } from './routes/(public)/dashboard/index'
@@ -37,11 +36,6 @@ const privateRouteRoute = privateRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PlaygroundIndexRoute = PlaygroundIndexRouteImport.update({
-  id: '/playground/',
-  path: '/playground/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const publicDashboardRouteRoute = publicDashboardRouteRouteImport.update({
@@ -111,7 +105,6 @@ const privateadminSettingsRoute = privateadminSettingsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof publicDashboardRouteRouteWithChildren
-  '/playground': typeof PlaygroundIndexRoute
   '/settings': typeof privateadminSettingsRoute
   '/applications/$id': typeof privateApplicationsIdRoute
   '/applications/create': typeof privateApplicationsCreateRoute
@@ -125,7 +118,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/playground': typeof PlaygroundIndexRoute
   '/settings': typeof privateadminSettingsRoute
   '/applications/$id': typeof privateApplicationsIdRoute
   '/applications/create': typeof privateApplicationsCreateRoute
@@ -144,7 +136,6 @@ export interface FileRoutesById {
   '/(public)': typeof publicRouteRouteWithChildren
   '/(public)/(auth)': typeof publicauthRouteRouteWithChildren
   '/(public)/dashboard': typeof publicDashboardRouteRouteWithChildren
-  '/playground/': typeof PlaygroundIndexRoute
   '/(private)/(admin)/settings': typeof privateadminSettingsRoute
   '/(private)/applications/$id': typeof privateApplicationsIdRoute
   '/(private)/applications/create': typeof privateApplicationsCreateRoute
@@ -161,7 +152,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dashboard'
-    | '/playground'
     | '/settings'
     | '/applications/$id'
     | '/applications/create'
@@ -175,7 +165,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/playground'
     | '/settings'
     | '/applications/$id'
     | '/applications/create'
@@ -193,7 +182,6 @@ export interface FileRouteTypes {
     | '/(public)'
     | '/(public)/(auth)'
     | '/(public)/dashboard'
-    | '/playground/'
     | '/(private)/(admin)/settings'
     | '/(private)/applications/$id'
     | '/(private)/applications/create'
@@ -210,7 +198,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   privateRouteRoute: typeof privateRouteRouteWithChildren
   publicRouteRoute: typeof publicRouteRouteWithChildren
-  PlaygroundIndexRoute: typeof PlaygroundIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -234,13 +221,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/playground/': {
-      id: '/playground/'
-      path: '/playground'
-      fullPath: '/playground'
-      preLoaderRoute: typeof PlaygroundIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(public)/dashboard': {
@@ -397,7 +377,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   privateRouteRoute: privateRouteRouteWithChildren,
   publicRouteRoute: publicRouteRouteWithChildren,
-  PlaygroundIndexRoute: PlaygroundIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
