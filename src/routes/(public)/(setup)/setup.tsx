@@ -1,3 +1,4 @@
+// routes/(public)/(setup)/setup.tsx
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useCallback, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -14,7 +15,7 @@ import { SetAppDomain } from "@/features/setup/components/steps/SetAppDomain";
 import { DatabaseStep } from "@/features/setup/components/steps/DatabaseStep";
 import { EmailProviderStep } from "@/features/setup/components/steps/EmailProvderStep";
 import { CreateAdminAccountStep } from "@/features/setup/components/steps/CreateAdminAccountStep";
-import { useCompleteSetup } from "@/features/setup/hooks/useCompleteSetup";
+import { useCompleteSetupMutation } from "@/features/setup/hooks/useCompleteSetupMutation";
 import { buildConnectionString } from "@/features/setup/utils/buildConnectionString";
 import { DATABASES } from "@/features/setup/setup.constants";
 import { Wizard } from "@/features/setup/components/Wizard";
@@ -39,11 +40,11 @@ export default function SetupWizard() {
   const [authForgeDomain, setAuthForgeDomain] = useState("");
   const [selectedDbType, setSelectedDbType] = useState<AllowedDatabases>(DATABASES.SQLITE);
   const [dbConfig, setDbConfig] = useState<DatabaseConfig | null>(null);
-  const [emailConfig, setEmailConfig] = useState<EmailProviderConfig | null>(null); // ✅ Correct type
+  const [emailConfig, setEmailConfig] = useState<EmailProviderConfig | null>(null);
   const [adminCredentials, setAdminCredentials] = useState<AdminCredentials | null>(null);
   const [isAdminFormValid, setIsAdminFormValid] = useState(false);
 
-  const completeSetup = useCompleteSetup();
+  const completeSetup = useCompleteSetupMutation();
 
   const handleDomainChange = useCallback((domain: string) => {
     setAuthForgeDomain(domain);
@@ -101,7 +102,6 @@ export default function SetupWizard() {
       adminCredentials,
     };
 
-    console.log("Setup payload: ", payload);
     completeSetup.mutate(payload);
   };
 
