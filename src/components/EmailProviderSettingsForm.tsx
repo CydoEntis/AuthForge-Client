@@ -1,4 +1,3 @@
-// components/EmailProviderSettingsForm.tsx
 import { FormInput } from "@/components/shared/FormInput";
 import { FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
@@ -19,7 +18,6 @@ export default function EmailProviderSettingsForm({
 }: EmailProviderSettingsFormProps) {
   return (
     <div className="space-y-4">
-      {/* Common Fields */}
       <FormInput
         form={form}
         name="fromEmail"
@@ -66,6 +64,7 @@ export default function EmailProviderSettingsForm({
             type="password"
             placeholder="••••••••"
             isLoading={isLoading}
+            autoComplete="off"
           />
 
           <FormField
@@ -95,6 +94,7 @@ export default function EmailProviderSettingsForm({
           type="password"
           placeholder="re_••••••••"
           isLoading={isLoading}
+          autoComplete="off"
         />
       )}
 

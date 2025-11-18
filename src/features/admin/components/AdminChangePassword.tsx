@@ -17,6 +17,7 @@ export function AdminChangePassword() {
             placeholder="********"
             type="password"
             isLoading={isLoading}
+            autoComplete="current-password"
           />
           <FormInput
             form={form}
@@ -25,6 +26,7 @@ export function AdminChangePassword() {
             placeholder="********"
             type="password"
             isLoading={isLoading}
+            autoComplete="new-password"
           />
           <FormInput
             form={form}
@@ -33,6 +35,7 @@ export function AdminChangePassword() {
             type="password"
             placeholder="********"
             isLoading={isLoading}
+            autoComplete="new-password"
           />
         </div>
 

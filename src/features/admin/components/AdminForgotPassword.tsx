@@ -14,7 +14,14 @@ export function AdminForgotPassword() {
       <Form {...form}>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-1">
-            <FormInput form={form} name="email" label="Email" placeholder="example@email.com" isLoading={isLoading} />
+            <FormInput
+              form={form}
+              name="email"
+              label="Email"
+              placeholder="example@email.com"
+              isLoading={isLoading}
+              autoComplete="email"
+            />
             <div className="w-full flex justify-end text-sm">
               <Link to="/login" className="text-primary hover:underline" viewTransition={{ types: ["slide-left"] }}>
                 Rembered your password? Log in

@@ -10,6 +10,7 @@ interface FormInputProps {
   className?: string;
   isLoading?: boolean;
   description?: string;
+  autoComplete?: string;
 }
 
 export function FormInput({
@@ -21,6 +22,7 @@ export function FormInput({
   className,
   isLoading = false,
   description,
+  autoComplete,
 }: FormInputProps) {
   const error = form.formState.errors?.[name]?.message as string | undefined;
 
@@ -32,7 +34,7 @@ export function FormInput({
         <FormItem className={className}>
           <FormLabel>{label}</FormLabel>
           <FormControl>
-            <Input {...field} type={type} placeholder={placeholder} disabled={isLoading} />
+            <Input {...field} type={type} placeholder={placeholder} disabled={isLoading} autoComplete={autoComplete} />
           </FormControl>
 
           {description && !error && (

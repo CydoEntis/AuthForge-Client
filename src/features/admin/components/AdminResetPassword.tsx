@@ -1,4 +1,3 @@
-// features/admin/components/AdminResetPassword.tsx
 import { CardWithLogo } from "@/components/CardWithLogo";
 import { Form } from "@/components/ui/form";
 import { FormInput } from "@/components/shared/FormInput";
@@ -20,6 +19,7 @@ export function AdminResetPassword() {
               type="password"
               placeholder="••••••••"
               isLoading={isLoading}
+              autoComplete="new-password"
             />
             <FormInput
               form={form}
@@ -28,6 +28,7 @@ export function AdminResetPassword() {
               type="password"
               placeholder="••••••••"
               isLoading={isLoading}
+              autoComplete="new-password"
             />
           </div>
 

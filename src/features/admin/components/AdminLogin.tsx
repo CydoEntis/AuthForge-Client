@@ -13,7 +13,14 @@ export function AdminLogin() {
     <CardWithLogo title="Welcome Back" subText="Log in to manage your apps.">
       <Form {...form}>
         <form onSubmit={handleSubmit} className="space-y-6">
-          <FormInput form={form} name="email" label="Email" placeholder="example@email.com" isLoading={isLoading} />
+          <FormInput
+            form={form}
+            name="email"
+            label="Email"
+            placeholder="example@email.com"
+            isLoading={isLoading}
+            autoComplete="email"
+          />
 
           <div className="space-y-1">
             <FormInput
@@ -23,6 +30,7 @@ export function AdminLogin() {
               placeholder="******"
               type="password"
               isLoading={isLoading}
+              autoComplete="current-password"
             />
             <div className="w-full flex justify-end text-sm">
               <Link

@@ -74,6 +74,7 @@ export default function ConfigureDatabase({
               placeholder="••••••"
               type="password"
               isLoading={isLoading}
+              autoComplete="off"
             />
             <FormInput
               form={form}
