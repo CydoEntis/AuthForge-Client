@@ -11,7 +11,6 @@ export function useAdminResetPasswordForm() {
     throw new Error("Missing reset token — should have been caught by beforeLoad");
   }
 
-  console.log(token);
   const form = useZodForm<AdminResetPasswordRequest>(adminResetPasswordSchema, {
     defaultValues: {
       token: token,
@@ -20,11 +19,9 @@ export function useAdminResetPasswordForm() {
     },
   });
 
-  const mutation = useAdminResetPasswordMutation();
+  const mutation = useAdminResetPasswordMutation(form.setError);
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    console.log("Resetting password");
-    console.log(values);
     await mutation.mutateAsync(values);
   });
 
@@ -32,6 +29,5 @@ export function useAdminResetPasswordForm() {
     form,
     handleSubmit,
     isLoading: mutation.isPending,
-    error: mutation.isError ? mutation.error : null,
   };
 }

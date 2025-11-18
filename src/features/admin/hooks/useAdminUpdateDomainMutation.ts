@@ -1,16 +1,12 @@
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { useFormMutation } from "@/hooks/useFormMutation";
 import { adminApi } from "../admin.api";
 import type { AdminUpdateDomainRequest } from "../admin.types";
+import type { UseFormSetError } from "react-hook-form";
 
-export function useAdminUpdateDomainMutation() {
-  return useMutation({
+export function useAdminUpdateDomainMutation(setError: UseFormSetError<AdminUpdateDomainRequest>) {
+  return useFormMutation({
     mutationFn: (values: AdminUpdateDomainRequest) => adminApi.updateDomain(values),
-    onSuccess: () => {
-      toast.success("Domain updated successfully");
-    },
-    onError: (error: any) => {
-      toast.error(error.message || "Failed to update domain");
-    },
+    setError,
+    successMessage: "Domain updated successfully",
   });
 }

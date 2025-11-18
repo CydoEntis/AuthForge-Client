@@ -1,16 +1,12 @@
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { useFormMutation } from "@/hooks/useFormMutation";
 import { adminApi } from "../admin.api";
 import type { TestEmailConfigRequest } from "@/features/setup/setup.types";
+import type { UseFormSetError } from "react-hook-form";
 
-export function useAdminTestEmailProviderMutation() {
-  return useMutation({
+export function useAdminTestEmailProviderMutation(setError: UseFormSetError<TestEmailConfigRequest>) {
+  return useFormMutation({
     mutationFn: (values: TestEmailConfigRequest) => adminApi.testEmailProvider(values),
-    onSuccess: () => {
-      toast.success("Email connection test successful!");
-    },
-    onError: (error: any) => {
-      toast.error(error.message || "Email connection test failed");
-    },
+    setError,
+    successMessage: "Email connection test successful!",
   });
 }

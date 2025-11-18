@@ -1,20 +1,17 @@
-import { useMutation } from "@tanstack/react-query";
+import { useFormMutation } from "@/hooks/useFormMutation";
 import { useNavigate } from "@tanstack/react-router";
-import { toast } from "sonner";
 import type { AdminResetPasswordRequest } from "../admin.types";
 import { adminApi } from "../admin.api";
+import type { UseFormSetError } from "react-hook-form";
 
-export function useAdminResetPasswordMutation() {
+export function useAdminResetPasswordMutation(setError: UseFormSetError<AdminResetPasswordRequest>) {
   const navigate = useNavigate();
 
-  return useMutation({
+  return useFormMutation({
     mutationFn: (values: AdminResetPasswordRequest) => adminApi.resetPassword(values),
-    onError: (error: any) => {
-      console.error("Password reset failed:", error.message);
-      toast.error("Failed to reset password. Please try again.");
-    },
+    setError,
+    successMessage: "Password reset successfully! Please log in.",
     onSuccess: () => {
-      toast.success("Password reset successfully! Please log in.");
       navigate({ to: "/login" });
     },
   });

@@ -1,17 +1,18 @@
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useNavigate } from "@tanstack/react-router";
+import { useAuthStore } from "@/store/useAuthStore";
 import { adminApi } from "../admin.api";
 
 export function useAdminRegenerateJwtMutation() {
   const navigate = useNavigate();
+  const { logout } = useAuthStore();
 
   return useMutation({
     mutationFn: () => adminApi.regenerateJwtSecret(),
     onSuccess: () => {
       toast.success("JWT secret regenerated. Please log in again.");
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
+      logout();
       navigate({ to: "/login" });
     },
     onError: (error: any) => {

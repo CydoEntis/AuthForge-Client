@@ -12,7 +12,7 @@ export function useAdminChangePasswordForm() {
     },
   });
 
-  const mutation = useAdminChangePasswordMutation();
+  const mutation = useAdminChangePasswordMutation(form.setError);
 
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutation.mutateAsync(values);

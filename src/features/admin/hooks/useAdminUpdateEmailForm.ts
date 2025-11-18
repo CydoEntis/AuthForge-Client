@@ -10,7 +10,7 @@ export function useAdminUpdateEmailForm() {
     },
   });
 
-  const mutation = useAdminUpdateEmailMutation();
+  const mutation = useAdminUpdateEmailMutation(form.setError);
 
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutation.mutateAsync(values);

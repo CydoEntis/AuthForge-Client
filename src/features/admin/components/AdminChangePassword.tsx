@@ -2,10 +2,10 @@ import { Form } from "@/components/ui/form";
 import { FormInput } from "@/components/shared/FormInput";
 import FormError from "@/components/shared/FormError";
 import { LoadingButton } from "@/components/shared/LoadingButton";
-import { useAdminForgotPasswordForm } from "../hooks/useAdminForgotPasswordForm";
+import { useAdminChangePasswordForm } from "../hooks/useAdminChangePasswordForm";
 
 export function AdminChangePassword() {
-  const { form, handleSubmit, isLoading } = useAdminForgotPasswordForm();
+  const { form, handleSubmit, isLoading } = useAdminChangePasswordForm();
   return (
     <Form {...form}>
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -28,7 +28,7 @@ export function AdminChangePassword() {
           />
           <FormInput
             form={form}
-            name="confrimNewPassword"
+            name="confirmNewPassword"
             label="Confirm New Password"
             type="password"
             placeholder="********"

@@ -1,4 +1,3 @@
-// hooks/useConfigureDatabaseForm.ts
 import { useZodForm } from "@/hooks/useZodForm";
 import { useFormMutation } from "@/hooks/useFormMutation";
 import { setupApi } from "../setup.api";
@@ -16,7 +15,15 @@ export function useConfigureDatabaseForm(
   initialConfig: DatabaseConfig | null,
   onSave: (cfg: DatabaseConfig) => void
 ) {
-  const form = useZodForm(databaseConfigSchema, initialConfig || {});
+  const form = useZodForm(databaseConfigSchema, {
+    defaultValues: initialConfig || {
+      host: "",
+      port: "",
+      user: "",
+      password: "",
+      database: "",
+    },
+  });
 
   const mutation = useFormMutation<DatabaseConfig, TestDatabaseConnectionResponse>({
     mutationFn: async (values) => {

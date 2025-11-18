@@ -1,4 +1,3 @@
-// features/admin/hooks/useAdminEmailProviderForm.ts
 import { useState } from "react";
 import { useZodForm } from "@/hooks/useZodForm";
 import { useAdminUpdateEmailProviderMutation } from "./useAdminUpdateEmailProviderMutation";
@@ -34,10 +33,10 @@ export function useAdminEmailProviderForm(provider: AllowedEmailProviders) {
     },
   });
 
-  const testMutation = useAdminTestEmailProviderMutation();
-  const updateMutation = useAdminUpdateEmailProviderMutation();
-
   const currentForm = provider === EMAIL_PROVIDERS.SMTP ? smtpForm : resendForm;
+
+  const testMutation = useAdminTestEmailProviderMutation(currentForm.setError as any);
+  const updateMutation = useAdminUpdateEmailProviderMutation(currentForm.setError as any);
 
   const handleTestConnection = currentForm.handleSubmit(async (values) => {
     await testMutation.mutateAsync(values, {
@@ -56,7 +55,7 @@ export function useAdminEmailProviderForm(provider: AllowedEmailProviders) {
       },
       {
         onSuccess: () => {
-          setTestSuccessful(false); // Reset after save
+          setTestSuccessful(false);
         },
       }
     );

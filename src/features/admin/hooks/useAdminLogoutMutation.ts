@@ -23,7 +23,7 @@ export function useAdminLogoutMutation() {
     onError: (error: Error) => {
       logout();
       navigate({ to: "/login" });
-      toast.success("Logged out successfully");
+      toast.warning("Logged out (token may still be active on server)");
       console.error("Logout error:", error);
     },
   });

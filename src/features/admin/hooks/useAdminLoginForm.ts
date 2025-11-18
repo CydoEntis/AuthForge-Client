@@ -1,9 +1,5 @@
 import { useZodForm } from "@/hooks/useZodForm";
-
-import { adminApi } from "../admin.api";
-import { useNavigate } from "@tanstack/react-router";
-import { useAuthStore } from "@/store/useAuthStore";
-import { useFormMutation } from "@/hooks/useFormMutation";
+import { useAdminLoginMutation } from "./useAdminLoginMutation";
 import { useEffect } from "react";
 import { adminLoginSchema } from "../admin.schemas";
 import type { AdminLoginRequest } from "../admin.types";
@@ -16,19 +12,7 @@ export function useAdminLoginForm() {
     },
   });
 
-  const navigate = useNavigate();
-  const { setTokens } = useAuthStore();
-
-  const mutation = useFormMutation({
-    mutationFn: adminApi.login,
-    setError: form.setError,
-    successMessage: "Login successful!",
-    onSuccess: (data) => {
-      const { tokens } = data;
-      setTokens(tokens.accessToken, tokens.refreshToken);
-      navigate({ to: "/applications", viewTransition: { types: ["slide-right"] } });
-    },
-  });
+  const mutation = useAdminLoginMutation(form.setError);
 
   useEffect(() => {
     const subscription = form.watch(() => {
@@ -45,6 +29,5 @@ export function useAdminLoginForm() {
     form,
     handleSubmit,
     isLoading: mutation.isPending,
-    error: mutation.isError ? mutation.error : null,
   };
 }

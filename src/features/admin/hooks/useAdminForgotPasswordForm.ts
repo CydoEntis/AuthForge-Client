@@ -10,7 +10,7 @@ export function useAdminForgotPasswordForm() {
     },
   });
 
-  const mutation = useAdminForgotPasswordMutation();
+  const mutation = useAdminForgotPasswordMutation(form.setError);
 
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutation.mutateAsync(values);
@@ -20,6 +20,5 @@ export function useAdminForgotPasswordForm() {
     form,
     handleSubmit,
     isLoading: mutation.isPending,
-    error: mutation.isError ? mutation.error : null,
   };
 }

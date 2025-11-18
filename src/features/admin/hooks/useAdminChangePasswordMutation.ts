@@ -1,16 +1,12 @@
-import { useMutation } from "@tanstack/react-query";
-import type { AdminChangePasswordRequest } from "../admin.types";
+import { useFormMutation } from "@/hooks/useFormMutation";
 import { adminApi } from "../admin.api";
+import type { AdminChangePasswordRequest } from "../admin.types";
+import type { UseFormSetError } from "react-hook-form";
 
-export function useAdminChangePasswordMutation() {
-  return useMutation({
+export function useAdminChangePasswordMutation(setError: UseFormSetError<AdminChangePasswordRequest>) {
+  return useFormMutation({
     mutationFn: (values: AdminChangePasswordRequest) => adminApi.changePassword(values),
-    onError: (error: any) => {
-      console.error("Login failed:", error.message);
-    },
-    onSuccess: (data) => {
-      console.log("Logged in successfully", data);
-      // Todo: Add toast + redirect
-    },
+    setError,
+    successMessage: "Password changed successfully",
   });
 }
