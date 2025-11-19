@@ -30,6 +30,24 @@ export default function EmailProviderSettingsForm({
 
   return (
     <div className="space-y-4">
+      {provider === EMAIL_PROVIDERS.SMTP && (
+        <div className="space-y-2">
+          <label className="text-sm font-medium">SMTP Preset</label>
+          <Select value={selectedPreset} onValueChange={handlePresetChange}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a provider" />
+            </SelectTrigger>
+            <SelectContent>
+              {SMTP_PRESET_OPTIONS.map((opt) => (
+                <SelectItem key={opt.value} value={opt.value}>
+                  {opt.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
+
       <FormInput
         form={form}
         name="fromEmail"
@@ -50,22 +68,6 @@ export default function EmailProviderSettingsForm({
       {/* SMTP-specific fields */}
       {provider === EMAIL_PROVIDERS.SMTP && (
         <>
-          <div className="space-y-2">
-            <label className="text-sm font-medium">SMTP Preset</label>
-            <Select value={selectedPreset} onValueChange={handlePresetChange}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a provider" />
-              </SelectTrigger>
-              <SelectContent>
-                {SMTP_PRESET_OPTIONS.map((opt) => (
-                  <SelectItem key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
           <FormInput form={form} name="smtpHost" label="SMTP Host" placeholder="smtp.gmail.com" isLoading={isLoading} />
 
           <FormInput
