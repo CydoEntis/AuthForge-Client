@@ -76,7 +76,11 @@ client.interceptors.response.use(
           { refreshToken }
         );
 
-        const { accessToken: newAccessToken } = refreshResponse.data.data;
+        const { tokens } = refreshResponse.data.data;
+        const newAccessToken = tokens.accessToken;
+
+        console.log("Refresh successful, new token:", newAccessToken.substring(0, 20));
+
         updateAccessToken(newAccessToken);
 
         if (originalRequest.headers) {
@@ -88,6 +92,7 @@ client.interceptors.response.use(
 
         return client(originalRequest);
       } catch (refreshError) {
+        console.error("Refresh failed:", refreshError);
         processQueue(refreshError);
         isRefreshing = false;
         logout();
