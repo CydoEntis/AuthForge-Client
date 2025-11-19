@@ -1,9 +1,12 @@
 import { FormInput } from "@/components/shared/FormInput";
 import { FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { SMTP_PRESET_OPTIONS, SMTP_PRESETS, SmtpPresetKey } from "@/features/setup/constants/smtpPresets";
 import { EMAIL_PROVIDERS } from "@/features/setup/setup.constants";
 import type { AllowedEmailProviders } from "@/features/setup/setup.types";
 import type { UseFormReturn } from "react-hook-form";
+import { useState } from "react";
 
 interface EmailProviderSettingsFormProps {
   provider: AllowedEmailProviders;
@@ -16,6 +19,15 @@ export default function EmailProviderSettingsForm({
   form,
   isLoading = false,
 }: EmailProviderSettingsFormProps) {
+  const [selectedPreset, setSelectedPreset] = useState<SmtpPresetKey>(SmtpPresetKey.GMAIL);
+
+  const handlePresetChange = (presetKey: SmtpPresetKey) => {
+    const preset = SMTP_PRESETS[presetKey];
+    setSelectedPreset(presetKey);
+    form.setValue("smtpHost", preset.host);
+    form.setValue("smtpPort", preset.port);
+  };
+
   return (
     <div className="space-y-4">
       <FormInput
@@ -38,6 +50,22 @@ export default function EmailProviderSettingsForm({
       {/* SMTP-specific fields */}
       {provider === EMAIL_PROVIDERS.SMTP && (
         <>
+          <div className="space-y-2">
+            <label className="text-sm font-medium">SMTP Preset</label>
+            <Select value={selectedPreset} onValueChange={handlePresetChange}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select a provider" />
+              </SelectTrigger>
+              <SelectContent>
+                {SMTP_PRESET_OPTIONS.map((opt) => (
+                  <SelectItem key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
           <FormInput form={form} name="smtpHost" label="SMTP Host" placeholder="smtp.gmail.com" isLoading={isLoading} />
 
           <FormInput
@@ -98,7 +126,7 @@ export default function EmailProviderSettingsForm({
         />
       )}
 
-      {/* Test recipient (for testing) */}
+      {/* Test recipient */}
       <FormInput
         form={form}
         name="testRecipient"

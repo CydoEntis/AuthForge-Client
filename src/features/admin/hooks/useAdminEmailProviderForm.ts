@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useZodForm } from "@/hooks/useZodForm";
 import { useAdminUpdateEmailProviderMutation } from "./useAdminUpdateEmailProviderMutation";
 import { adminTestEmailProviderRequest } from "../admin.schemas";
@@ -38,27 +38,79 @@ export function useAdminEmailProviderForm(provider: AllowedEmailProviders) {
   const testMutation = useAdminTestEmailProviderMutation(currentForm.setError as any);
   const updateMutation = useAdminUpdateEmailProviderMutation(currentForm.setError as any);
 
-  const handleTestConnection = currentForm.handleSubmit(async (values) => {
-    await testMutation.mutateAsync(values, {
-      onSuccess: () => {
-        setTestSuccessful(true);
-      },
+  useEffect(() => {
+    setTestSuccessful(false);
+    currentForm.clearErrors();
+  }, [provider]);
+
+  useEffect(() => {
+    const subscription = currentForm.watch(() => {
+      if (testSuccessful) {
+        setTestSuccessful(false);
+      }
+      if (currentForm.formState.errors.root) {
+        currentForm.clearErrors("root");
+      }
     });
+
+    return () => {
+      try {
+        (subscription as any)?.unsubscribe?.();
+      } catch (e) {
+        // Ignore unsubscribe errors
+      }
+    };
+  }, [currentForm, testSuccessful]);
+
+  const handleTestConnection = currentForm.handleSubmit(async (values) => {
+    setTestSuccessful(false);
+    currentForm.clearErrors();
+
+    try {
+      await testMutation.mutateAsync(values);
+      setTestSuccessful(true);
+    } catch (error) {
+      console.error("Test failed:", error);
+    }
   });
 
   const handleSaveConfig = currentForm.handleSubmit(async (values) => {
-    if (!testSuccessful) return;
+    if (!testSuccessful) {
+      currentForm.setError("root", {
+        type: "manual",
+        message: "Please test the connection first",
+      });
+      return;
+    }
 
-    await updateMutation.mutateAsync(
-      {
-        emailProviderConfig: values,
-      },
-      {
-        onSuccess: () => {
-          setTestSuccessful(false);
-        },
-      }
-    );
+    try {
+      const emailProviderConfig =
+        provider === EMAIL_PROVIDERS.SMTP
+          ? {
+              emailProvider: values.emailProvider as "Smtp",
+              fromEmail: values.fromEmail,
+              fromName: values.fromName,
+              smtpHost: (values as any).smtpHost,
+              smtpPort: (values as any).smtpPort,
+              smtpUsername: (values as any).smtpUsername,
+              smtpPassword: (values as any).smtpPassword,
+              useSsl: (values as any).useSsl,
+            }
+          : {
+              emailProvider: values.emailProvider as "Resend",
+              fromEmail: values.fromEmail,
+              fromName: values.fromName,
+              resendApiKey: (values as any).resendApiKey,
+            };
+
+      await updateMutation.mutateAsync({
+        emailProviderConfig,
+      });
+
+      setTestSuccessful(false);
+    } catch (error) {
+      console.error("Save failed:", error);
+    }
   });
 
   return {

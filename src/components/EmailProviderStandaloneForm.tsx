@@ -5,7 +5,6 @@ import FadeSlide from "@/components/shared/animations/FadeSlide";
 import EmailProviderSettingsForm from "./EmailProviderSettingsForm";
 import type { AllowedEmailProviders } from "@/features/setup/setup.types";
 import type { UseFormReturn } from "react-hook-form";
-import { CheckCircle2 } from "lucide-react";
 
 interface EmailProviderStandaloneFormProps {
   provider: AllowedEmailProviders;
@@ -44,11 +43,12 @@ export default function EmailProviderStandaloneForm({
 
           {testSuccessful && (
             <FadeSlide visible={true} direction="down" className="flex items-center gap-2 text-sm text-green-600">
-              <CheckCircle2 className="h-4 w-4" />
-              <span>
-                Connection test successful!
-                {showSaveButton ? " You can now save your configuration." : ""}
-              </span>
+              <div className="inset-shadow-success bg-linear-to-t from-green-400/10 to-green-400/40 text-green-500 border border-green-500/30 p-2 text-center w-full rounded-lg mb-3">
+                <div className="flex flex-col">
+                  <p>Connection successful</p>
+                  <p>{showSaveButton ? " You can now save your configuration." : ""}</p>
+                </div>
+              </div>
             </FadeSlide>
           )}
         </div>

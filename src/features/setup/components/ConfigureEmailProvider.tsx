@@ -4,7 +4,7 @@ import { LoadingButton } from "@/components/shared/LoadingButton";
 import FormError from "@/components/shared/FormError";
 import ConfigDialog from "@/components/shared/Modal";
 import FadeSlide from "@/components/shared/animations/FadeSlide";
-import EmailProviderSettings from "@/components/shared/EmailProviderSettings";
+import EmailProviderSettingsForm from "@/components/EmailProviderSettingsForm";
 import type { AllowedEmailProviders, TestEmailConfigRequest } from "../setup.types";
 import { useConfigureEmailProviderForm } from "../hooks/useConfigureEmailProviderForm";
 import { EMAIL_PROVIDERS } from "../setup.constants";
@@ -52,14 +52,13 @@ export default function ConfigureEmailProvider({
     <ConfigDialog title={`Configure ${provider}`} open={open} onOpenChange={onOpenChange} className="max-w-2xl">
       <FormProvider {...form}>
         <form onSubmit={handleSubmit} className="space-y-6">
-          <EmailProviderSettings provider={provider} form={form} isLoading={isLoading} />
-
+          <EmailProviderSettingsForm provider={provider} form={form} isLoading={isLoading} />{" "}
+          {/* ✅ Updated component name */}
           <div className="min-h-[3rem]">
             <FadeSlide visible={!!rootError} direction="down" className="text-sm text-destructive">
               <FormError message={rootError!} />
             </FadeSlide>
           </div>
-
           <div className="flex justify-end gap-3">
             <LoadingButton type="submit" isLoading={isLoading} loadingText="Testing configuration...">
               Test Connection

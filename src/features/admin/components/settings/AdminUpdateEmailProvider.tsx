@@ -1,4 +1,3 @@
-// components/settings/AdminUpdateEmailProvider.tsx
 import { useState } from "react";
 import OptionCard from "@/components/OptionCard";
 import EmailProviderStandaloneForm from "@/components/EmailProviderStandaloneForm";
