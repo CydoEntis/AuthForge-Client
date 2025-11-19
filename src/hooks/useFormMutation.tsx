@@ -1,3 +1,4 @@
+// hooks/useFormMutation.ts
 import { useMutation } from "@tanstack/react-query";
 import type { FieldValues, UseFormSetError } from "react-hook-form";
 import { toast } from "sonner";
@@ -29,20 +30,26 @@ export function useFormMutation<TFormValues extends FieldValues, TResponse>({
                 message: fieldError.message,
               });
             });
-            toast.error(error.fieldErrors[0].message);
+            toast.error(error.message || "Validation failed");
           } else {
             setError("root", {
               type: "server",
-              message: error.message,
+              message: error.message || "Operation failed",
             });
-            toast.error(error.message);
+            toast.error(error.message || "Operation failed");
           }
+        } else if (error instanceof Error) {
+          setError("root", {
+            type: "server",
+            message: error.message,
+          });
+          toast.error(error.message);
         } else {
           setError("root", {
             type: "server",
-            message: "Something went wrong",
+            message: "An unexpected error occurred",
           });
-          toast.error("Something went wrong");
+          toast.error("An unexpected error occurred");
         }
         throw error;
       }
