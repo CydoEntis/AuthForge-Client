@@ -4,10 +4,10 @@ import { useEffect } from "react";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "./AppSidebar";
 import { AppShellSkeleton } from "./AppShellSkeleton";
-import { useAdmin } from "@/features/admin/hooks/useAdminProfile";
+import { useAdminQuery } from "@/features/admin/hooks/useAdminQuery";
 
 export default function AppShell() {
-  const { data: admin, isLoading, isError } = useAdmin();
+  const { data: admin, isLoading, isError } = useAdminQuery();
   const { setAdmin, logout } = useAuthStore();
 
   useEffect(() => {

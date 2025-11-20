@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { adminApi } from "../admin.api";
 import { useAuthStore } from "@/store/useAuthStore";
 
-export function useAdmin() {
+export function useAdminQuery() {
   const { isAuthenticated } = useAuthStore();
 
   return useQuery({
