@@ -15,6 +15,7 @@ import type {
   TestEmailConfigResponse,
   AdminRevokeAllSessionsResponse,
   GetAdminResponse,
+  AdminSettingsResponse,
 } from "./admin.types";
 import type { TestEmailConfigRequest } from "../setup/setup.types";
 
@@ -73,5 +74,9 @@ export const adminApi = {
 
   getAdmin: async (): Promise<GetAdminResponse> => {
     return apiClient.get<GetAdminResponse>("/admin/me");
+  },
+
+  getSettings: async (): Promise<AdminSettingsResponse> => {
+    return apiClient.get<AdminSettingsResponse>("/admin/settings");
   },
 };

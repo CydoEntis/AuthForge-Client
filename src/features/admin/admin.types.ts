@@ -8,7 +8,7 @@ import type {
   adminUpdateDomainSchema,
   adminUpdateEmailSchema,
 } from "./admin.schemas";
-import type { EmailProviderConfig } from "../setup/setup.types";
+import type { EmailProviderConfig } from "@/types/email.types";
 
 export type AdminLoginRequest = z.infer<typeof adminLoginSchema>;
 export type AdminForgotPasswordRequest = z.infer<typeof adminForgotPasswordSchema>;
@@ -59,3 +59,9 @@ export type GetAdminResponse = {
 };
 
 export type AdminDetails = GetAdminResponse;
+
+export type AdminSettingsResponse = {
+  email: string;
+  authForgeDomain: string;
+  emailProvider: EmailProviderConfig;
+};

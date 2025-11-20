@@ -1,6 +1,7 @@
 import type z from "zod";
 import type { adminCredentialsSchema, databaseConfigSchema, domainSchema } from "./setup.schemas";
 import type { DATABASES, EMAIL_PROVIDERS, SETUP_WIZARD_STEPS } from "./setup.constants";
+import type { EmailProviderConfig } from "@/types/email.types";
 
 // ======================
 //        Domain
@@ -48,23 +49,9 @@ export type TestDatabaseConnectionResponse = {
 // ======================
 //        Email
 // ======================
-export type AllowedEmailProviders = (typeof EMAIL_PROVIDERS)[keyof typeof EMAIL_PROVIDERS];
-
 export type TestEmailResponse = {
   isSuccessful: boolean;
   message: string;
-};
-
-export type EmailProviderConfig = {
-  emailProvider: AllowedEmailProviders;
-  fromEmail: string;
-  fromName?: string;
-  smtpHost?: string;
-  smtpPort?: number;
-  smtpUsername?: string;
-  smtpPassword?: string;
-  useSsl?: boolean;
-  resendApiKey?: string;
 };
 
 export type TestEmailConfigRequest = EmailProviderConfig & {
