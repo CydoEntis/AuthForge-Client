@@ -62,7 +62,7 @@ client.interceptors.response.use(
       originalRequest._retry = true;
       isRefreshing = true;
 
-      const { refreshToken, updateAccessToken, logout } = useAuthStore.getState();
+      const { refreshToken, logout } = useAuthStore.getState();
 
       if (!refreshToken) {
         logout();
@@ -78,10 +78,12 @@ client.interceptors.response.use(
 
         const { tokens } = refreshResponse.data.data;
         const newAccessToken = tokens.accessToken;
+        const newRefreshToken = tokens.refreshToken;
 
         console.log("Refresh successful, new token:", newAccessToken.substring(0, 20));
 
-        updateAccessToken(newAccessToken);
+        const { setTokens } = useAuthStore.getState();
+        setTokens(newAccessToken, newRefreshToken);
 
         if (originalRequest.headers) {
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
