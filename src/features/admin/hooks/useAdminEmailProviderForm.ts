@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import { useZodForm } from "@/hooks/useZodForm";
 import { useAdminUpdateEmailProviderMutation } from "./useAdminUpdateEmailProviderMutation";
 import { adminTestEmailProviderRequest } from "../admin.schemas";
-import { EMAIL_PROVIDERS } from "@/features/setup/setup.constants";
-import type { AllowedEmailProviders } from "@/features/setup/setup.types";
+import { EMAIL_PROVIDERS } from "@/types/email.types";
 import { useAdminTestEmailProviderMutation } from "./useAdminTestEmailProviderMutation";
+import type { AllowedEmailProviders, EmailProviderConfig } from "@/types/email.types";
 
-export function useAdminEmailProviderForm(provider: AllowedEmailProviders) {
+export function useAdminEmailProviderForm(provider: AllowedEmailProviders, existingConfig?: EmailProviderConfig) {
   const [testSuccessful, setTestSuccessful] = useState(false);
 
   const smtpForm = useZodForm(adminTestEmailProviderRequest, {
@@ -33,6 +33,32 @@ export function useAdminEmailProviderForm(provider: AllowedEmailProviders) {
     },
   });
 
+  useEffect(() => {
+    if (existingConfig) {
+      if (existingConfig.emailProvider === EMAIL_PROVIDERS.SMTP) {
+        smtpForm.reset({
+          emailProvider: EMAIL_PROVIDERS.SMTP,
+          fromEmail: existingConfig.fromEmail,
+          fromName: existingConfig.fromName || "",
+          smtpHost: existingConfig.smtpHost || "",
+          smtpPort: existingConfig.smtpPort || 587,
+          smtpUsername: existingConfig.smtpUsername || "",
+          smtpPassword: "",
+          useSsl: existingConfig.useSsl ?? true,
+          testRecipient: "",
+        });
+      } else if (existingConfig.emailProvider === EMAIL_PROVIDERS.RESEND) {
+        resendForm.reset({
+          emailProvider: EMAIL_PROVIDERS.RESEND,
+          fromEmail: existingConfig.fromEmail,
+          fromName: existingConfig.fromName || "",
+          resendApiKey: "",
+          testRecipient: "",
+        });
+      }
+    }
+  }, [existingConfig, smtpForm, resendForm]);
+
   const currentForm = provider === EMAIL_PROVIDERS.SMTP ? smtpForm : resendForm;
 
   const testMutation = useAdminTestEmailProviderMutation(currentForm.setError as any);
@@ -56,9 +82,7 @@ export function useAdminEmailProviderForm(provider: AllowedEmailProviders) {
     return () => {
       try {
         (subscription as any)?.unsubscribe?.();
-      } catch (e) {
-        // Ignore unsubscribe errors
-      }
+      } catch (e) {}
     };
   }, [currentForm, testSuccessful]);
 

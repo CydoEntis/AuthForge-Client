@@ -3,8 +3,8 @@ import { LoadingButton } from "@/components/shared/LoadingButton";
 import { Form } from "@/components/ui/form";
 import { useAdminUpdateDomainForm } from "../../hooks/useAdminUpdateDomainForm";
 
-export function AdminUpdateDomain() {
-  const { form, handleSubmit, isLoading } = useAdminUpdateDomainForm();
+export function AdminUpdateDomain({ currentDomain }: { currentDomain?: string }) {
+  const { form, handleSubmit, isLoading } = useAdminUpdateDomainForm(currentDomain);
 
   return (
     <Form {...form}>
@@ -13,7 +13,7 @@ export function AdminUpdateDomain() {
           form={form}
           name="authForgeDomain"
           label="Domain"
-          placeholder="https://auth.example.com"
+          placeholder={currentDomain || "https://auth.example.com"}
           className="flex-1"
           isLoading={isLoading}
         />

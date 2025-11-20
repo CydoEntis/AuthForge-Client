@@ -3,8 +3,8 @@ import { LoadingButton } from "@/components/shared/LoadingButton";
 import { Form } from "@/components/ui/form";
 import { useAdminUpdateEmailForm } from "@/features/admin/hooks/useAdminUpdateEmailForm";
 
-export function AdminUpdateEmail() {
-  const { form, handleSubmit, isLoading } = useAdminUpdateEmailForm();
+export function AdminUpdateEmail({ currentEmail }: { currentEmail?: string }) {
+  const { form, handleSubmit, isLoading } = useAdminUpdateEmailForm(currentEmail);
 
   return (
     <Form {...form}>
@@ -14,7 +14,7 @@ export function AdminUpdateEmail() {
           name="email"
           label="Email"
           type="email"
-          placeholder="admin@authforge.com"
+          placeholder={currentEmail || "admin@authforge.com"}
           className="flex-1"
           isLoading={isLoading}
         />

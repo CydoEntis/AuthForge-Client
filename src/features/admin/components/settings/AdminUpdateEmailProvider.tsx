@@ -1,18 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import OptionCard from "@/components/OptionCard";
 import EmailProviderStandaloneForm from "@/components/EmailProviderStandaloneForm";
-import { EMAIL_PROVIDERS } from "@/features/setup/setup.constants";
-import type { AllowedEmailProviders } from "@/features/setup/setup.types";
+import { EMAIL_PROVIDERS } from "@/types/email.types";
+import type { AllowedEmailProviders, EmailProviderConfig } from "@/types/email.types";
 import { useTheme } from "@/features/theme/hooks/useTheme";
 import { Mail } from "lucide-react";
 import ResendWhite from "@/assets/resend-icon-white.svg";
 import ResendBlack from "@/assets/resend-icon-black.svg";
 import { useAdminEmailProviderForm } from "../../hooks/useAdminEmailProviderForm";
 
-export function AdminUpdateEmailProvider() {
+export function AdminUpdateEmailProvider({ emailProviderSettings }: { emailProviderSettings?: EmailProviderConfig }) {
   const { theme } = useTheme();
   const resendImg = theme === "dark" ? ResendWhite : ResendBlack;
-  const [selectedEmail, setSelectedEmail] = useState<AllowedEmailProviders>(EMAIL_PROVIDERS.SMTP);
+  const [selectedEmail, setSelectedEmail] = useState<AllowedEmailProviders>(
+    emailProviderSettings?.emailProvider || EMAIL_PROVIDERS.SMTP
+  );
+
+  useEffect(() => {
+    if (emailProviderSettings?.emailProvider) {
+      setSelectedEmail(emailProviderSettings.emailProvider);
+    }
+  }, [emailProviderSettings]);
 
   const {
     smtpForm,
@@ -22,7 +30,7 @@ export function AdminUpdateEmailProvider() {
     isTestingConnection,
     isSavingConfig,
     testSuccessful,
-  } = useAdminEmailProviderForm(selectedEmail);
+  } = useAdminEmailProviderForm(selectedEmail, emailProviderSettings);
 
   const emailProviders = [
     { icon: <Mail size={52} />, name: EMAIL_PROVIDERS.SMTP, description: "Standard SMTP provider" },
