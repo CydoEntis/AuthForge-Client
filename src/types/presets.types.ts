@@ -18,7 +18,6 @@ export type SmtpPreset = {
   note: string;
 };
 
-// Use the enum keys for the record
 export const SMTP_PRESETS: Record<SmtpPresetKey, SmtpPreset> = {
   [SmtpPresetKey.GMAIL]: {
     name: "Gmail",

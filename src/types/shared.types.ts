@@ -1,3 +1,15 @@
+import type { domainSchema } from "@/schemas/shared.schemas";
+import type z from "zod";
+
+// ======================
+//        Domain
+// ======================
+export type DomainConfig = z.infer<typeof domainSchema>;
+
+// ======================
+//        Email
+// ======================
+
 export const EMAIL_PROVIDERS = {
   SMTP: "Smtp",
   RESEND: "Resend",
@@ -25,3 +37,7 @@ export type TestEmailConfigResponse = {
   isSuccessful: boolean;
   message: string;
 };
+
+// ======================
+//        Stuff
+// ======================

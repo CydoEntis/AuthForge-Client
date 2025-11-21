@@ -1,12 +1,7 @@
 import type z from "zod";
-import type { adminCredentialsSchema, databaseConfigSchema, domainSchema } from "./setup.schemas";
-import type { DATABASES, EMAIL_PROVIDERS, SETUP_WIZARD_STEPS } from "./setup.constants";
-import type { EmailProviderConfig } from "@/types/email.types";
-
-// ======================
-//        Domain
-// ======================
-export type DomainConfig = z.infer<typeof domainSchema>;
+import type { adminCredentialsSchema, databaseConfigSchema } from "./setup.schemas";
+import type { DATABASES, SETUP_WIZARD_STEPS } from "./setup.constants";
+import type { EmailProviderConfig } from "@/types/shared.types";
 
 // ======================
 //        Setup
@@ -44,18 +39,6 @@ export type TestDatabaseConnectionRequest = {
 export type TestDatabaseConnectionResponse = {
   isSuccessful: boolean;
   message: string;
-};
-
-// ======================
-//        Email
-// ======================
-export type TestEmailResponse = {
-  isSuccessful: boolean;
-  message: string;
-};
-
-export type TestEmailConfigRequest = EmailProviderConfig & {
-  testRecipient: string;
 };
 
 // ======================

@@ -80,16 +80,3 @@ export const DATABASE_META: Record<
     description: "Microsoft SQL Server",
   },
 } as const;
-
-// ======================
-//        Email
-// ======================
-
-export const EMAIL_PROVIDERS = {
-  SMTP: "Smtp",
-  RESEND: "Resend",
-} as const;
-
-// ======================
-//      Admin Account
-// ======================
