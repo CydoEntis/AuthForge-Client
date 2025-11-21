@@ -40,9 +40,11 @@ export const emailProviderSchema = z.object({
   testRecipient: z.email({ message: "Test recipient must be valid" }),
   smtpHost: z.string().optional(),
   smtpPort: z
-    .string()
-    .min(1, "Port is required.")
-    .refine((val) => /^\d+$/.test(val) && Number(val) > 0 && Number(val) <= 65535, "Port must be between 1 and 65535."),
+    .number("Port must be a number")
+    .int("Port must be an integer")
+    .min(1, "Port must be at least 1")
+    .max(65535, "Port must be at most 65535")
+    .optional(),
   smtpUsername: z.string().optional(),
   smtpPassword: z.string().optional(),
   useSsl: z.boolean().optional().default(true),

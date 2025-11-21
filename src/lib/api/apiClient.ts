@@ -1,4 +1,3 @@
-// lib/api/apiClient.ts
 import { useAuthStore } from "@/store/useAuthStore";
 import axios, { type AxiosRequestConfig, type InternalAxiosRequestConfig } from "axios";
 import { ApiError } from "./ApiError";
@@ -13,21 +12,7 @@ const client = axios.create({
 });
 
 let isRefreshing = false;
-let failedQueue: Array<{
-  resolve: (value?: unknown) => void;
-  reject: (reason?: any) => void;
-}> = [];
-
-const processQueue = (error: any = null) => {
-  failedQueue.forEach((prom) => {
-    if (error) {
-      prom.reject(error);
-    } else {
-      prom.resolve();
-    }
-  });
-  failedQueue = [];
-};
+let refreshPromise: Promise<string> | null = null;
 
 client.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
@@ -46,60 +31,66 @@ client.interceptors.response.use(
       response.config.url?.includes("/login") ||
       response.config.url?.includes("/setup") ||
       response.config.url?.includes("/forgot-password") ||
-      response.config.url?.includes("/refresh-token");
+      response.config.url?.includes("/refresh");
 
     if (response.status === 401 && !isAuthEndpoint && !(response.config as any)._retry) {
       const originalRequest = response.config as any;
+      originalRequest._retry = true;
 
-      if (isRefreshing) {
-        return new Promise((resolve, reject) => {
-          failedQueue.push({ resolve, reject });
-        })
-          .then(() => client(originalRequest))
-          .catch((err) => Promise.reject(err));
+      if (isRefreshing && refreshPromise) {
+        try {
+          const newAccessToken = await refreshPromise;
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          return client(originalRequest);
+        } catch (error) {
+          return Promise.reject(error);
+        }
       }
 
-      originalRequest._retry = true;
       isRefreshing = true;
-
       const { refreshToken, logout } = useAuthStore.getState();
 
       if (!refreshToken) {
+        isRefreshing = false;
         logout();
         window.location.href = "/login";
         return Promise.reject(new Error("No refresh token"));
       }
 
-      try {
-        const refreshResponse = await axios.post(
-          `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5046/api/v1"}/admin/refresh`,
-          { refreshToken }
-        );
+      refreshPromise = (async () => {
+        try {
+          const refreshResponse = await axios.post(
+            `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5046/api/v1"}/admin/refresh`,
+            { refreshToken }
+          );
 
-        const { tokens } = refreshResponse.data.data;
-        const newAccessToken = tokens.accessToken;
-        const newRefreshToken = tokens.refreshToken;
+          const { tokens } = refreshResponse.data.data;
+          const newAccessToken = tokens.accessToken;
+          const newRefreshToken = tokens.refreshToken;
 
-        console.log("Refresh successful, new token:", newAccessToken.substring(0, 20));
+          const { setTokens } = useAuthStore.getState();
+          setTokens(newAccessToken, newRefreshToken);
 
-        const { setTokens } = useAuthStore.getState();
-        setTokens(newAccessToken, newRefreshToken);
+          console.log("Refresh successful");
 
-        if (originalRequest.headers) {
-          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          return newAccessToken;
+        } catch (error) {
+          console.error("Refresh failed:", error);
+          logout();
+          window.location.href = "/login";
+          throw error;
+        } finally {
+          isRefreshing = false;
+          refreshPromise = null;
         }
+      })();
 
-        processQueue();
-        isRefreshing = false;
-
+      try {
+        const newAccessToken = await refreshPromise;
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return client(originalRequest);
-      } catch (refreshError) {
-        console.error("Refresh failed:", refreshError);
-        processQueue(refreshError);
-        isRefreshing = false;
-        logout();
-        window.location.href = "/login";
-        return Promise.reject(refreshError);
+      } catch (error) {
+        return Promise.reject(error);
       }
     }
 
