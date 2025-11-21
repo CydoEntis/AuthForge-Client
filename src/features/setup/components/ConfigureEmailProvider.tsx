@@ -5,9 +5,8 @@ import FormError from "@/components/shared/FormError";
 import ConfigDialog from "@/components/shared/Modal";
 import FadeSlide from "@/components/shared/animations/FadeSlide";
 import EmailProviderSettingsForm from "@/components/EmailProviderSettingsForm";
-import type { AllowedEmailProviders, TestEmailConfigRequest } from "../setup.types";
 import { useConfigureEmailProviderForm } from "../hooks/useConfigureEmailProviderForm";
-import { EMAIL_PROVIDERS } from "../setup.constants";
+import { type AllowedEmailProviders, type TestEmailConfigRequest, EMAIL_PROVIDERS } from "@/types/shared.types";
 
 export default function ConfigureEmailProvider({
   provider,

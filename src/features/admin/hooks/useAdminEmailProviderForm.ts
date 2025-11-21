@@ -2,9 +2,8 @@ import { useState, useEffect } from "react";
 import { useZodForm } from "@/hooks/useZodForm";
 import { useAdminUpdateEmailProviderMutation } from "./useAdminUpdateEmailProviderMutation";
 import { adminTestEmailProviderRequest } from "../admin.schemas";
-import { EMAIL_PROVIDERS } from "@/types/email.types";
 import { useAdminTestEmailProviderMutation } from "./useAdminTestEmailProviderMutation";
-import type { AllowedEmailProviders, EmailProviderConfig } from "@/types/email.types";
+import { type AllowedEmailProviders, type EmailProviderConfig, EMAIL_PROVIDERS } from "@/types/shared.types";
 
 export function useAdminEmailProviderForm(provider: AllowedEmailProviders, existingConfig?: EmailProviderConfig) {
   const [testSuccessful, setTestSuccessful] = useState(false);

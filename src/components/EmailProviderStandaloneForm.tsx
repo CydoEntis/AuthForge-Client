@@ -4,7 +4,7 @@ import FormError from "@/components/shared/FormError";
 import FadeSlide from "@/components/shared/animations/FadeSlide";
 import EmailProviderSettingsForm from "./EmailProviderSettingsForm";
 import type { UseFormReturn } from "react-hook-form";
-import type { AllowedEmailProviders } from "@/types/email.types";
+import type { AllowedEmailProviders } from "@/types/shared.types";
 
 interface EmailProviderStandaloneFormProps {
   provider: AllowedEmailProviders;

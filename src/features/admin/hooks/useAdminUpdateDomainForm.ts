@@ -1,10 +1,10 @@
 import { useZodForm } from "@/hooks/useZodForm";
 import { useAdminUpdateDomainMutation } from "./useAdminUpdateDomainMutation";
-import { adminUpdateDomainSchema } from "../admin.schemas";
 import { useEffect } from "react";
+import { domainSchema } from "@/schemas/shared.schemas";
 
 export function useAdminUpdateDomainForm(currentDomain?: string) {
-  const form = useZodForm(adminUpdateDomainSchema, {
+  const form = useZodForm(domainSchema, {
     defaultValues: {
       authForgeDomain: "",
     },

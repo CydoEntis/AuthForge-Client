@@ -3,40 +3,41 @@ import { Info } from "lucide-react";
 import { Form } from "@/components/ui/form";
 import { FormInput } from "@/components/shared/FormInput";
 import { useZodForm } from "@/hooks/useZodForm";
-import type { DomainConfig } from "../../setup.types";
-import { domainSchema } from "../../setup.schemas";
+
 import { Card } from "@/components/ui/card";
+import type { DomainConfig } from "@/types/shared.types";
+import { domainSchema } from "@/schemas/shared.schemas";
 
 type SetAppDomainProps = {
-  authForgeDomain: string;
+  domain: string;
   onDomainChange: (domain: string) => void;
 };
 
-export function SetAppDomain({ authForgeDomain, onDomainChange }: SetAppDomainProps) {
+export function SetAppDomain({ domain, onDomainChange }: SetAppDomainProps) {
   const form = useZodForm<DomainConfig>(domainSchema, {
     mode: "onChange",
     defaultValues: {
-      authForgeDomain: authForgeDomain || "",
+      domain: domain || "",
     },
   });
 
   useEffect(() => {
-    if (!authForgeDomain) {
+    if (!domain) {
       const detected = `${window.location.protocol}//${window.location.host}`;
-      form.setValue("authForgeDomain", detected);
+      form.setValue("domain", detected);
       onDomainChange(detected);
     }
   }, []);
 
-  const watchedDomain = form.watch("authForgeDomain");
+  const watchedDomain = form.watch("domain");
 
   useEffect(() => {
-    if (watchedDomain !== authForgeDomain) {
+    if (watchedDomain !== domain) {
       onDomainChange(watchedDomain);
     }
-  }, [watchedDomain, authForgeDomain, onDomainChange]);
+  }, [watchedDomain, domain, onDomainChange]);
 
-  const isValid = domainSchema.safeParse({ authForgeDomain: watchedDomain }).success;
+  const isValid = domainSchema.safeParse({ domain: watchedDomain }).success;
 
   return (
     <div className="flex flex-col h-full">
@@ -53,7 +54,7 @@ export function SetAppDomain({ authForgeDomain, onDomainChange }: SetAppDomainPr
             <form className="space-y-4">
               <FormInput
                 form={form}
-                name="authForgeDomain"
+                name="domain"
                 label="AuthForge Public URL"
                 placeholder="https://auth.mycompany.com"
                 description="Auto-detected. Edit if needed (e.g., if using a reverse proxy)."

@@ -7,7 +7,6 @@ import type {
   DatabaseConfig,
   CompleteSetupRequest,
   AllowedDatabases,
-  EmailProviderConfig,
   AdminCredentials,
 } from "@/features/setup/setup.types";
 import { SetupSidebar } from "@/features/setup/components/SetupSidebar";
@@ -20,6 +19,7 @@ import { buildConnectionString } from "@/features/setup/utils/buildConnectionStr
 import { DATABASES } from "@/features/setup/setup.constants";
 import { Wizard } from "@/features/setup/components/Wizard";
 import { setupApi } from "@/features/setup/setup.api";
+import type { EmailProviderConfig } from "@/types/shared.types";
 
 export const Route = createFileRoute("/(public)/(setup)/setup")({
   beforeLoad: async ({ context }) => {
@@ -110,7 +110,7 @@ export default function SetupWizard() {
       <SetupSidebar currentStep={currentStep} />
       <div className="w-3/4">
         <Wizard currentStep={currentStep}>
-          <SetAppDomain authForgeDomain={authForgeDomain} onDomainChange={handleDomainChange} />
+          <SetAppDomain domain={authForgeDomain} onDomainChange={handleDomainChange} />
           <DatabaseStep
             selectedDbType={selectedDbType}
             dbConfig={dbConfig}

@@ -1,10 +1,10 @@
 import { useZodForm } from "@/hooks/useZodForm";
 import { useAdminForgotPasswordMutation } from "./useAdminForgotPasswordMutation";
 import type { AdminForgotPasswordRequest } from "../admin.types";
-import { adminForgotPasswordSchema } from "../admin.schemas";
+import { forgotPasswordSchema } from "@/schemas/shared.schemas";
 
 export function useAdminForgotPasswordForm() {
-  const form = useZodForm<AdminForgotPasswordRequest>(adminForgotPasswordSchema, {
+  const form = useZodForm<AdminForgotPasswordRequest>(forgotPasswordSchema, {
     defaultValues: {
       email: "",
     },

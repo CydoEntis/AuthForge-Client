@@ -2,11 +2,10 @@ import { FormInput } from "@/components/shared/FormInput";
 import { FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { SMTP_PRESET_OPTIONS, SMTP_PRESETS, SmtpPresetKey } from "@/features/setup/constants/smtpPresets";
-import { EMAIL_PROVIDERS } from "@/features/setup/setup.constants";
 import type { UseFormReturn } from "react-hook-form";
 import { useState } from "react";
-import type { AllowedEmailProviders } from "@/types/email.types";
+import { EMAIL_PROVIDERS, type AllowedEmailProviders } from "@/types/shared.types";
+import { SMTP_PRESET_OPTIONS, SMTP_PRESETS, SmtpPresetKey } from "@/types/presets.types";
 
 interface EmailProviderSettingsFormProps {
   provider: AllowedEmailProviders;

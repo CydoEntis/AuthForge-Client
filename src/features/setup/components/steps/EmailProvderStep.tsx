@@ -1,21 +1,20 @@
-// features/setup/components/steps/EmailProviderStep.tsx
 import { useState } from "react";
 import { AlertMessage } from "@/components/AlertMessage";
-import { EMAIL_PROVIDERS } from "@/features/setup/setup.constants";
-import type { AllowedEmailProviders, EmailProviderConfig } from "@/features/setup/setup.types"; // ✅ Changed
+
 import { Mail } from "lucide-react";
 import ResendWhite from "@/assets/resend-icon-white.svg";
 import ResendBlack from "@/assets/resend-icon-black.svg";
 import { useTheme } from "@/features/theme/hooks/useTheme";
 import OptionCard from "@/components/OptionCard";
 import ConfigureEmailProviderModal from "../ConfigureEmailProviderModal";
+import { EMAIL_PROVIDERS, type AllowedEmailProviders, type EmailProviderConfig } from "@/types/shared.types";
 
 export function EmailProviderStep({
   emailConfig,
   onConfigChange,
 }: {
-  emailConfig: EmailProviderConfig | null; // ✅ Changed
-  onConfigChange: (config: EmailProviderConfig | null) => void; // ✅ Changed
+  emailConfig: EmailProviderConfig | null;
+  onConfigChange: (config: EmailProviderConfig | null) => void;
 }) {
   const { theme } = useTheme();
   const resendImg = theme === "dark" ? ResendWhite : ResendBlack;
@@ -78,7 +77,6 @@ export function EmailProviderStep({
           open={emailModalOpen}
           onOpenChange={setEmailModalOpen}
           onConnectionSuccess={(config: EmailProviderConfig) => {
-            // ✅ Changed
             onConfigChange(config);
             setEmailModalOpen(false);
           }}

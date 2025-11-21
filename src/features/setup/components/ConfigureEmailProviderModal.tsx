@@ -5,10 +5,14 @@ import FormError from "@/components/shared/FormError";
 import ConfigDialog from "@/components/shared/Modal";
 import FadeSlide from "@/components/shared/animations/FadeSlide";
 import EmailProviderSettingsForm from "@/components/EmailProviderSettingsForm";
-import type { AllowedEmailProviders, EmailProviderConfig, TestEmailConfigRequest } from "@/features/setup/setup.types";
 import { useConfigureEmailProviderForm } from "@/features/setup/hooks/useConfigureEmailProviderForm";
-import { EMAIL_PROVIDERS } from "@/features/setup/setup.constants";
 import { CheckCircle2 } from "lucide-react";
+import {
+  type AllowedEmailProviders,
+  type EmailProviderConfig,
+  type TestEmailConfigRequest,
+  EMAIL_PROVIDERS,
+} from "@/types/shared.types";
 
 type ConfigureEmailProviderModalProps = {
   provider: AllowedEmailProviders;

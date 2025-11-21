@@ -1,10 +1,10 @@
 import { useZodForm } from "@/hooks/useZodForm";
-import { adminChangePasswordSchema } from "../admin.schemas";
 import type { AdminChangePasswordRequest } from "../admin.types";
 import { useAdminChangePasswordMutation } from "./useAdminChangePasswordMutation";
+import { changePasswordSchema } from "@/schemas/shared.schemas";
 
 export function useAdminChangePasswordForm() {
-  const form = useZodForm<AdminChangePasswordRequest>(adminChangePasswordSchema, {
+  const form = useZodForm<AdminChangePasswordRequest>(changePasswordSchema, {
     defaultValues: {
       currentPassword: "",
       newPassword: "",
