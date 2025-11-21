@@ -3,8 +3,8 @@ import { LoadingButton } from "@/components/shared/LoadingButton";
 import FormError from "@/components/shared/FormError";
 import FadeSlide from "@/components/shared/animations/FadeSlide";
 import EmailProviderSettingsForm from "./EmailProviderSettingsForm";
-import type { AllowedEmailProviders } from "@/features/setup/setup.types";
 import type { UseFormReturn } from "react-hook-form";
+import type { AllowedEmailProviders } from "@/types/email.types";
 
 interface EmailProviderStandaloneFormProps {
   provider: AllowedEmailProviders;
@@ -33,7 +33,7 @@ export default function EmailProviderStandaloneForm({
 
   return (
     <Form {...form}>
-      <div>
+      <form>
         <EmailProviderSettingsForm provider={provider} form={form} isLoading={isLoading} />
 
         <div className="min-h-[3rem]">
@@ -78,7 +78,7 @@ export default function EmailProviderStandaloneForm({
             </LoadingButton>
           )}
         </div>
-      </div>
+      </form>
     </Form>
   );
 }

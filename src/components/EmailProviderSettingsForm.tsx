@@ -4,9 +4,9 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SMTP_PRESET_OPTIONS, SMTP_PRESETS, SmtpPresetKey } from "@/features/setup/constants/smtpPresets";
 import { EMAIL_PROVIDERS } from "@/features/setup/setup.constants";
-import type { AllowedEmailProviders } from "@/features/setup/setup.types";
 import type { UseFormReturn } from "react-hook-form";
 import { useState } from "react";
+import type { AllowedEmailProviders } from "@/types/email.types";
 
 interface EmailProviderSettingsFormProps {
   provider: AllowedEmailProviders;
@@ -57,13 +57,7 @@ export default function EmailProviderSettingsForm({
         isLoading={isLoading}
       />
 
-      <FormInput
-        form={form}
-        name="fromName"
-        label="From Name (Optional)"
-        placeholder="My Company"
-        isLoading={isLoading}
-      />
+      <FormInput form={form} name="fromName" label="From Name" placeholder="My Company" isLoading={isLoading} />
 
       {/* SMTP-specific fields */}
       {provider === EMAIL_PROVIDERS.SMTP && (
