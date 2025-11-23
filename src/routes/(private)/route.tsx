@@ -9,7 +9,6 @@ export const Route = createFileRoute("/(private)")({
       queryKey: ["setup-status"],
       queryFn: setupApi.getSetupStatus,
     });
-
     if (!isSetupComplete) {
       throw redirect({ to: "/setup" });
     }

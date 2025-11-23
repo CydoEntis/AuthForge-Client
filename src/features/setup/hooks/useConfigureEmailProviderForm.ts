@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useZodForm } from "@/hooks/useZodForm";
 import { useFormMutation } from "@/hooks/useFormMutation";
 import { setupApi } from "../setup.api";
-import type { TestEmailConfigRequest, TestEmailResponse, AllowedEmailProviders } from "../setup.types";
-import { emailProviderSchema } from "../setup.schemas";
+import { emailProviderSchema } from "@/schemas/shared.schemas";
+import type { AllowedEmailProviders, TestEmailConfigRequest, TestEmailConfigResponse } from "@/types/shared.types";
 
 export function useConfigureEmailProviderForm(
   initialConfig: Partial<TestEmailConfigRequest> | null,
@@ -29,7 +29,7 @@ export function useConfigureEmailProviderForm(
     defaultValues: defaultConfig,
   });
 
-  const mutation = useFormMutation<TestEmailConfigRequest, TestEmailResponse>({
+  const mutation = useFormMutation<TestEmailConfigRequest, TestEmailConfigResponse>({
     mutationFn: async (values) => {
       const request: TestEmailConfigRequest = {
         ...values,
