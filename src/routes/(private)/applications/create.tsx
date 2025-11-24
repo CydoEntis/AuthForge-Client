@@ -19,6 +19,8 @@ import type { CreateApplication } from "@/features/applications/types";
 import ManageOrigins from "@/features/applications/components/ManageOrigins";
 import SelectAppEmailProvider from "@/features/applications/components/SelectAppEmailProvider";
 import EmailProviderSettingsForm from "@/components/EmailProviderSettingsForm";
+import { ContentSection } from "@/features/admin/components/SettingsSection";
+import { PageHeader } from "@/components/PageHeader";
 
 export const Route = createFileRoute("/(private)/applications/create")({
   component: CreateApplicationPage,
@@ -146,224 +148,192 @@ function CreateApplicationPage() {
   const githubEnabled = form.watch("githubEnabled");
 
   return (
-    <div className="container max-w-4xl py-6 space-y-6">
+    <div className="">
       {/* Header */}
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" onClick={() => navigate({ to: "/applications" })}>
-          <ArrowLeft className="h-4 w-4" />
-        </Button>
-        <div>
-          <h1 className="text-3xl font-bold">Create Application</h1>
-          <p className="text-muted-foreground">Set up a new application with authentication</p>
-        </div>
-      </div>
+      <PageHeader
+        title="Create Application"
+        description="Set up a new application"
+        onBack={() => navigate({ to: "/applications" })}
+      />
 
-      {/* Form */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit((values) => mutation.mutate(values))} className="space-y-8">
-          {/* Application Details */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Application Details</CardTitle>
-              <CardDescription>Basic information about your application</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <FormInput form={form} name="name" label="Application Name" placeholder="My Awesome App" />
-              <FormInput
-                form={form}
-                name="description"
-                label="Description (Optional)"
-                placeholder="What does this application do?"
-              />
-            </CardContent>
-          </Card>
-
-          {/* Allowed Origins */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Allowed Origins</CardTitle>
-              <CardDescription>Domains that can authenticate with this application</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ManageOrigins name="allowedOrigins" />
-            </CardContent>
-          </Card>
+          <ContentSection title={"Application Details"} description={"Basic information about your application"}>
+            <FormInput form={form} name="name" label="Application Name" placeholder="My Awesome App" />
+            <FormInput
+              form={form}
+              name="description"
+              label="Description (Optional)"
+              placeholder="What does this application do?"
+            />
+          </ContentSection>
+          <ContentSection title={"Allowed Origins"} description={"Domains that can authenticate with this application"}>
+            <ManageOrigins name="allowedOrigins" />
+          </ContentSection>
 
           {/* Email Provider */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Email Provider</CardTitle>
-              <CardDescription>Configure email settings for authentication emails</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <SelectAppEmailProvider form={form} />
-              <EmailProviderSettingsForm form={form} provider={emailProvider} />
-            </CardContent>
-          </Card>
+          <ContentSection title={"Email Provider"} description={"Configure email settings for this application"}>
+            <SelectAppEmailProvider form={form} />
+            <EmailProviderSettingsForm form={form} provider={emailProvider} />
+          </ContentSection>
 
-          {/* OAuth Providers */}
-          <Card>
-            <CardHeader>
-              <CardTitle>OAuth Providers (Optional)</CardTitle>
-              <CardDescription>Allow users to sign in with their existing accounts</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Google OAuth */}
-              <div className="space-y-4 p-4 border rounded-lg">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-1">
-                    <Label className="text-base font-semibold">Google OAuth</Label>
-                    <p className="text-sm text-muted-foreground">Allow users to sign in with Google</p>
-                  </div>
-                  <Switch
-                    checked={googleEnabled}
-                    onCheckedChange={(checked) => form.setValue("googleEnabled", checked)}
-                  />
+          {/* Google OAuth */}
+          <ContentSection title={"Google OAuth"} description={"Allow users to sign in with Google"}>
+            <div className="space-y-4 p-4 border rounded-lg">
+              <div className="flex items-center justify-between">
+                <div className="space-y-1">
+                  <Label className="text-base font-semibold">Google OAuth</Label>
+                  <p className="text-sm text-muted-foreground">Allow users to sign in with Google</p>
                 </div>
-
-                {googleEnabled && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    className="space-y-4 pt-4 border-t"
-                  >
-                    <FormInput
-                      form={form}
-                      name="googleClientId"
-                      label="Client ID"
-                      placeholder="123456789-abc.apps.googleusercontent.com"
-                    />
-
-                    <div className="space-y-2">
-                      <Label>Client Secret</Label>
-                      <div className="flex gap-2">
-                        <FormInput
-                          form={form}
-                          name="googleClientSecret"
-                          type={showGoogleSecret ? "text" : "password"}
-                          placeholder="GOCSPX-..."
-                          label={"Client Secret"}
-                        />
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="icon"
-                          onClick={() => setShowGoogleSecret(!showGoogleSecret)}
-                        >
-                          {showGoogleSecret ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                        </Button>
-                      </div>
-                    </div>
-
-                    <div className="bg-muted p-3 rounded-md text-sm">
-                      <p className="font-medium mb-2">Setup Instructions:</p>
-                      <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
-                        <li>
-                          <a
-                            href="https://console.cloud.google.com/apis/credentials"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-primary hover:underline inline-flex items-center gap-1"
-                          >
-                            Google Cloud Console
-                            <ExternalLink className="h-3 w-3" />
-                          </a>
-                        </li>
-                        <li>Create a new OAuth 2.0 Client ID</li>
-                        <li>Set application type to "Web application"</li>
-                        <li>Add your redirect URI (you'll get this after creating the app)</li>
-                        <li>Copy Client ID and Client Secret above</li>
-                      </ol>
-                    </div>
-                  </motion.div>
-                )}
+                <Switch
+                  checked={googleEnabled}
+                  onCheckedChange={(checked) => form.setValue("googleEnabled", checked)}
+                />
               </div>
 
-              {/* GitHub OAuth */}
-              <div className="space-y-4 p-4 border rounded-lg">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-1">
-                    <Label className="text-base font-semibold">GitHub OAuth</Label>
-                    <p className="text-sm text-muted-foreground">Allow users to sign in with GitHub</p>
-                  </div>
-                  <Switch
-                    checked={githubEnabled}
-                    onCheckedChange={(checked) => form.setValue("githubEnabled", checked)}
+              {googleEnabled && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  className="space-y-4 pt-4 border-t"
+                >
+                  <FormInput
+                    form={form}
+                    name="googleClientId"
+                    label="Client ID"
+                    placeholder="123456789-abc.apps.googleusercontent.com"
                   />
-                </div>
 
-                {githubEnabled && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    className="space-y-4 pt-4 border-t"
-                  >
-                    <FormInput form={form} name="githubClientId" label="Client ID" placeholder="Iv1.abc123def456" />
+                  <div className="space-y-2">
+                    <Label>Client Secret</Label>
+                    <div className="flex gap-2">
+                      <FormInput
+                        form={form}
+                        name="googleClientSecret"
+                        type={showGoogleSecret ? "text" : "password"}
+                        placeholder="GOCSPX-..."
+                        label={"Client Secret"}
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        onClick={() => setShowGoogleSecret(!showGoogleSecret)}
+                      >
+                        {showGoogleSecret ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </Button>
+                    </div>
+                  </div>
 
-                    <div className="space-y-2">
-                      <Label>Client Secret</Label>
-                      <div className="flex gap-2">
-                        <FormInput
-                          form={form}
-                          name="githubClientSecret"
-                          type={showGithubSecret ? "text" : "password"}
-                          placeholder="ghp_..."
-                          label="Client Secret"
-                        />
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="icon"
-                          onClick={() => setShowGithubSecret(!showGithubSecret)}
+                  <div className="bg-muted p-3 rounded-md text-sm">
+                    <p className="font-medium mb-2">Setup Instructions:</p>
+                    <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
+                      <li>
+                        <a
+                          href="https://console.cloud.google.com/apis/credentials"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary hover:underline inline-flex items-center gap-1"
                         >
-                          {showGithubSecret ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                        </Button>
-                      </div>
-                    </div>
+                          Google Cloud Console
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
+                      </li>
+                      <li>Create a new OAuth 2.0 Client ID</li>
+                      <li>Set application type to "Web application"</li>
+                      <li>Add your redirect URI (you'll get this after creating the app)</li>
+                      <li>Copy Client ID and Client Secret above</li>
+                    </ol>
+                  </div>
+                </motion.div>
+              )}
+            </div>
 
-                    <div className="bg-muted p-3 rounded-md text-sm">
-                      <p className="font-medium mb-2">Setup Instructions:</p>
-                      <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
-                        <li>
-                          <a
-                            href="https://github.com/settings/developers"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-primary hover:underline inline-flex items-center gap-1"
-                          >
-                            GitHub Developer Settings
-                            <ExternalLink className="h-3 w-3" />
-                          </a>
-                        </li>
-                        <li>Click "New OAuth App"</li>
-                        <li>Add your redirect URI (you'll get this after creating the app)</li>
-                        <li>Copy Client ID and generate Client Secret</li>
-                      </ol>
-                    </div>
-                  </motion.div>
-                )}
+            {/* GitHub OAuth */}
+            <div className="space-y-4 p-4 border rounded-lg">
+              <div className="flex items-center justify-between">
+                <div className="space-y-1">
+                  <Label className="text-base font-semibold">GitHub OAuth</Label>
+                  <p className="text-sm text-muted-foreground">Allow users to sign in with GitHub</p>
+                </div>
+                <Switch
+                  checked={githubEnabled}
+                  onCheckedChange={(checked) => form.setValue("githubEnabled", checked)}
+                />
               </div>
 
-              <p className="text-sm text-muted-foreground">
-                💡 You can skip OAuth now and configure it later in application settings
-              </p>
-            </CardContent>
-          </Card>
+              {githubEnabled && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  className="space-y-4 pt-4 border-t"
+                >
+                  <FormInput form={form} name="githubClientId" label="Client ID" placeholder="Iv1.abc123def456" />
 
-          {/* Actions */}
-          <div className="flex justify-end gap-3">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => navigate({ to: "/applications" })}
-              disabled={mutation.isPending}
-            >
-              Cancel
-            </Button>
-            <LoadingButton type="submit" isLoading={mutation.isPending}>
-              Create Application
-            </LoadingButton>
-          </div>
+                  <div className="space-y-2">
+                    <Label>Client Secret</Label>
+                    <div className="flex gap-2">
+                      <FormInput
+                        form={form}
+                        name="githubClientSecret"
+                        type={showGithubSecret ? "text" : "password"}
+                        placeholder="ghp_..."
+                        label="Client Secret"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        onClick={() => setShowGithubSecret(!showGithubSecret)}
+                      >
+                        {showGithubSecret ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="bg-muted p-3 rounded-md text-sm">
+                    <p className="font-medium mb-2">Setup Instructions:</p>
+                    <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
+                      <li>
+                        <a
+                          href="https://github.com/settings/developers"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary hover:underline inline-flex items-center gap-1"
+                        >
+                          GitHub Developer Settings
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
+                      </li>
+                      <li>Click "New OAuth App"</li>
+                      <li>Add your redirect URI (you'll get this after creating the app)</li>
+                      <li>Copy Client ID and generate Client Secret</li>
+                    </ol>
+                  </div>
+                </motion.div>
+              )}
+            </div>
+
+            <p className="text-sm text-muted-foreground">
+              💡 You can skip OAuth now and configure it later in application settings
+            </p>
+          </ContentSection>
+
+          <ContentSection title={""} description={""}>
+            <div className="flex justify-end gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => navigate({ to: "/applications" })}
+                disabled={mutation.isPending}
+              >
+                Cancel
+              </Button>
+              <LoadingButton type="submit" isLoading={mutation.isPending}>
+                Create Application
+              </LoadingButton>
+            </div>
+          </ContentSection>
         </form>
       </Form>
     </div>

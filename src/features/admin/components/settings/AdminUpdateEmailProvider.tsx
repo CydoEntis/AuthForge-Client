@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import OptionCard from "@/components/OptionCard";
 import EmailProviderStandaloneForm from "@/components/EmailProviderStandaloneForm";
-import { EMAIL_PROVIDERS } from "@/types/email.types";
-import type { AllowedEmailProviders, EmailProviderConfig } from "@/types/email.types";
+
 import { useTheme } from "@/features/theme/hooks/useTheme";
 import { Mail } from "lucide-react";
 import ResendWhite from "@/assets/resend-icon-white.svg";
 import ResendBlack from "@/assets/resend-icon-black.svg";
 import { useAdminEmailProviderForm } from "../../hooks/useAdminEmailProviderForm";
+import { EMAIL_PROVIDERS, type AllowedEmailProviders, type EmailProviderConfig } from "@/types/shared.types";
 
 export function AdminUpdateEmailProvider({ emailProviderSettings }: { emailProviderSettings?: EmailProviderConfig }) {
   const { theme } = useTheme();
