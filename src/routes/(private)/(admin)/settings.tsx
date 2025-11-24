@@ -4,10 +4,11 @@ import { AdminUpdateEmail } from "@/features/admin/components/settings/AdminUpda
 import { AdminUpdateEmailProvider } from "@/features/admin/components/settings/AdminUpdateEmailProvider";
 import { AdminRevokeAllSessions } from "@/features/admin/components/settings/AdminRevokeAllSessions";
 import { AdminRegenerateJwt } from "@/features/admin/components/settings/AdminRegenerateJwt";
-import { SettingsSection } from "@/features/admin/components/SettingsSection";
+import { ContentSection } from "@/features/admin/components/SettingsSection";
 import { useAdminSettingsQuery } from "@/features/admin/hooks/useAdminSettingsQuery";
 import { createFileRoute } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
+import { PageHeader } from "@/components/PageHeader";
 
 export const Route = createFileRoute("/(private)/(admin)/settings")({
   component: RouteComponent,
@@ -26,40 +27,31 @@ function RouteComponent() {
 
   return (
     <div>
-      <div className="flex flex-col gap-2 py-4 w-full border-b-2 border-black shadow-bottom-sm">
-        <h1 className="text-4xl font-semibold py-1.25">Settings</h1>
-        <p className="text-muted-foreground">Manage your account settings</p>
-      </div>
+      <PageHeader title="Admin Settings" description="Manage your Auth Forge instance settings" />
 
-      {/* Account */}
-      <SettingsSection title="Account" description="Modify account details">
+      <ContentSection title="Account" description="Modify account details">
         <AdminUpdateEmail currentEmail={settings?.email} />
-      </SettingsSection>
+      </ContentSection>
 
-      {/* Domain */}
-      <SettingsSection title="Domain" description="The domain where Auth Forge is hosted.">
+      <ContentSection title="Domain" description="The domain where Auth Forge is hosted.">
         <AdminUpdateDomain currentDomain={settings?.authForgeDomain} />
-      </SettingsSection>
+      </ContentSection>
 
-      {/* Security - Password */}
-      <SettingsSection title="Security" description="Manage your password">
+      <ContentSection title="Security" description="Manage your password">
         <AdminChangePassword />
-      </SettingsSection>
+      </ContentSection>
 
-      {/* Security - Sessions */}
-      <SettingsSection title="Active Sessions" description="Manage your active sessions">
+      <ContentSection title="Active Sessions" description="Manage your active sessions">
         <AdminRevokeAllSessions />
-      </SettingsSection>
+      </ContentSection>
 
-      {/* Security - JWT */}
-      <SettingsSection title="JWT Secret" description="Regenerate the JWT signing secret (nuclear option)">
+      <ContentSection title="JWT Secret" description="Regenerate the JWT signing secret (nuclear option)">
         <AdminRegenerateJwt />
-      </SettingsSection>
+      </ContentSection>
 
-      {/* Email Provider */}
-      <SettingsSection title="Email Provider" description="Configure your email service">
+      <ContentSection title="Email Provider" description="Configure your email service">
         <AdminUpdateEmailProvider emailProviderSettings={settings?.emailProvider} />
-      </SettingsSection>
+      </ContentSection>
     </div>
   );
 }
