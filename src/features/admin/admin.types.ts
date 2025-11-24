@@ -1,21 +1,21 @@
 import { z } from "zod";
 import type { TokenPair } from "@/lib/api/types";
+import type { adminUpdateEmailSchema } from "./admin.schemas";
 import type {
-  adminChangePasswordSchema,
-  adminForgotPasswordSchema,
-  adminLoginSchema,
-  adminResetPasswordSchema,
-  adminUpdateDomainSchema,
-  adminUpdateEmailSchema,
-} from "./admin.schemas";
-import type { EmailProviderConfig } from "@/types/email.types";
+  changePasswordSchema,
+  domainSchema,
+  forgotPasswordSchema,
+  loginSchema,
+  resetPasswordSchema,
+} from "@/schemas/shared.schemas";
+import type { EmailProviderConfig } from "@/types/shared.types";
 
-export type AdminLoginRequest = z.infer<typeof adminLoginSchema>;
-export type AdminForgotPasswordRequest = z.infer<typeof adminForgotPasswordSchema>;
-export type AdminResetPasswordRequest = z.infer<typeof adminResetPasswordSchema>;
-export type AdminChangePasswordRequest = z.infer<typeof adminChangePasswordSchema>;
+export type AdminLoginRequest = z.infer<typeof loginSchema>;
+export type AdminForgotPasswordRequest = z.infer<typeof forgotPasswordSchema>;
+export type AdminResetPasswordRequest = z.infer<typeof resetPasswordSchema>;
+export type AdminChangePasswordRequest = z.infer<typeof changePasswordSchema>;
 export type AdminUpdateEmailRequest = z.infer<typeof adminUpdateEmailSchema>;
-export type AdminUpdateDomainRequest = z.infer<typeof adminUpdateDomainSchema>;
+export type AdminUpdateDomainRequest = z.infer<typeof domainSchema>;
 export type AdminTestEmailProviderRequest = z.infer<typeof adminUpdateEmailSchema>;
 
 export type AdminLoginResponse = {

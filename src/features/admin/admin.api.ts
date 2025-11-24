@@ -17,7 +17,7 @@ import type {
   GetAdminResponse,
   AdminSettingsResponse,
 } from "./admin.types";
-import type { TestEmailConfigRequest } from "../setup/setup.types";
+import type { TestEmailConfigRequest } from "@/types/shared.types";
 
 export const adminApi = {
   login: async (request: AdminLoginRequest): Promise<AdminLoginResponse> => {

@@ -6,8 +6,8 @@ import { Input } from "@/components/ui/input";
 import type { SortingState, OnChangeFn } from "@tanstack/react-table";
 import { ApplicationsTable } from "@/features/applications/components/ApplicationsTable";
 import type { ApplicationSummary } from "@/features/applications/types";
+import { CreateApplicationModal } from "@/features/applications/components/CreateApplicationModal";
 
-// Generate fake applications
 function generateFakeApplications(count: number): ApplicationSummary[] {
   return Array.from({ length: count }).map((_, i) => ({
     applicationId: `app-${i + 1}`,
@@ -29,9 +29,8 @@ export function ApplicationsDashboard() {
   const [page, setPage] = useState(1);
   const pageSize = 10;
 
-  // Use fake data for testing
   const data = useMemo(() => {
-    const items = generateFakeApplications(50); // generate 50 fake entries
+    const items = generateFakeApplications(50);
     return {
       items,
       totalCount: items.length,
@@ -54,10 +53,10 @@ export function ApplicationsDashboard() {
           <h1 className="text-3xl font-bold tracking-tight">Applications</h1>
           <p className="text-muted-foreground">Manage your OAuth applications and API clients</p>
         </div>
-        <Link to={"/applications/create"}>
-          <Button className="">
-            <Plus className="w-4 h-4 mr-2" />
-            New Application
+        <Link to="/applications/create">
+          <Button>
+            <Plus className="h-4 w-4 mr-2" />
+            Create Application
           </Button>
         </Link>
       </div>

@@ -1,19 +1,11 @@
-import {
-  Field,
-  FieldContent,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-  FieldSet,
-  FieldTitle,
-} from "@/components/ui/field";
+import { Field, FieldContent, FieldGroup, FieldLabel, FieldSet, FieldTitle } from "@/components/ui/field";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useTheme } from "@/features/theme/hooks/useTheme";
 import ResendBlack from "@/assets/resend-icon-black.svg";
 import ResendWhite from "@/assets/resend-icon-white.svg";
 import { Mail } from "lucide-react";
 import type { UseFormReturn } from "react-hook-form";
-import { EMAIL_PROVIDERS } from "@/features/setup/setup.types";
+import { EMAIL_PROVIDERS } from "@/types/shared.types";
 
 type SelectAppEmailProviderProps = {
   form: UseFormReturn<any>;
