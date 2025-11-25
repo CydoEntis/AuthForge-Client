@@ -1,16 +1,21 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 
 interface FormInputProps {
   form: any;
   name: string;
-  label: string;
+  label?: string;
   placeholder?: string;
   type?: string;
   className?: string;
   isLoading?: boolean;
   description?: string;
   autoComplete?: string;
+  hideLabel?: boolean;
+  showPasswordToggle?: boolean; // New prop
 }
 
 export function FormInput({
@@ -23,8 +28,14 @@ export function FormInput({
   isLoading = false,
   description,
   autoComplete,
+  hideLabel = false,
+  showPasswordToggle = false,
 }: FormInputProps) {
+  const [showPassword, setShowPassword] = useState(false);
   const error = form.formState.errors?.[name]?.message as string | undefined;
+
+  // Determine actual input type
+  const inputType = showPasswordToggle ? (showPassword ? "text" : "password") : type;
 
   return (
     <FormField
@@ -32,9 +43,34 @@ export function FormInput({
       name={name}
       render={({ field }) => (
         <FormItem className={className}>
-          <FormLabel>{label}</FormLabel>
+          {!hideLabel && label && <FormLabel>{label}</FormLabel>}
           <FormControl>
-            <Input {...field} type={type} placeholder={placeholder} disabled={isLoading} autoComplete={autoComplete} />
+            <div className="relative">
+              <Input
+                {...field}
+                type={inputType}
+                placeholder={placeholder}
+                disabled={isLoading}
+                autoComplete={autoComplete}
+                className={showPasswordToggle ? "pr-10" : ""}
+              />
+              {showPasswordToggle && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
+                  onClick={() => setShowPassword(!showPassword)}
+                  disabled={isLoading}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4 text-muted-foreground" />
+                  ) : (
+                    <Eye className="h-4 w-4 text-muted-foreground" />
+                  )}
+                </Button>
+              )}
+            </div>
           </FormControl>
 
           {description && !error && (

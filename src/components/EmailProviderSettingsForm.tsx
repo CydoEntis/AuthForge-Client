@@ -94,7 +94,7 @@ export default function EmailProviderSettingsForm({
             control={form.control}
             name="useSsl"
             render={({ field }) => (
-              <FormItem className="flex items-center justify-between rounded-lg border p-4">
+              <FormItem className="flex items-center justify-between  p-4 inset-shadow rounded-xl bg-linear-to-t from-card to-background border  dark:border-black border-[#c7c7c7]">
                 <div className="space-y-0.5">
                   <FormLabel className="text-base">Use SSL/TLS</FormLabel>
                   <div className="text-sm text-muted-foreground">Enable secure connection (recommended)</div>

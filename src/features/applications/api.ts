@@ -24,7 +24,6 @@ export const applicationsApi = {
     return await apiClient.get<PagedResponse<ApplicationSummary>>(`/applications${query ? `?${query}` : ""}`);
   },
 
-  // ✅ Single item (not paginated)
   getById: async (id: string): Promise<Application> => {
     return await apiClient.get<Application>(`/applications/${id}`);
   },
@@ -42,6 +41,10 @@ export const applicationsApi = {
   },
 
   regenerateKeys: async (id: string): Promise<PrivateAndPublicKeys> => {
+    return await apiClient.post<PrivateAndPublicKeys>(`/applications/${id}/regenerate-keys`, {});
+  },
+
+  updateOAuth: async (id: string): Promise<PrivateAndPublicKeys> => {
     return await apiClient.post<PrivateAndPublicKeys>(`/applications/${id}/regenerate-keys`, {});
   },
 };
