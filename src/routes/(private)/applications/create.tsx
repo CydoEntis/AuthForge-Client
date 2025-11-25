@@ -8,7 +8,7 @@ import { LoadingButton } from "@/components/shared/LoadingButton";
 import { Button } from "@/components/ui/button";
 import { useZodForm } from "@/hooks/useZodForm";
 import { useFormMutation } from "@/hooks/useFormMutation";
-import { applicationsApi } from "@/features/applications/api";
+import { applicationsApi } from "@/features/applications/application.api";
 import type { CreateApplication } from "@/features/applications/types";
 import ManageOrigins from "@/features/applications/components/ManageOrigins";
 import SelectAppEmailProvider from "@/features/applications/components/SelectAppEmailProvider";

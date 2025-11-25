@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { applicationsApi } from "@/features/applications/api";
+import { applicationsApi } from "@/features/applications/application.api";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Settings } from "lucide-react";
