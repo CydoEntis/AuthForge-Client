@@ -19,7 +19,6 @@ type OptionCardProps = {
   icon?: ReactNode;
   selected: boolean;
   onSelect: () => void;
-
   size?: OptionCardSize;
   customSize?: CustomSize;
   orientation?: "vertical" | "horizontal";
@@ -99,6 +98,7 @@ export default function OptionCard({
       : "flex-row justify-start items-center text-left";
 
   const dynamicHeight = orientation === "horizontal" ? "h-auto" : height;
+  const dynamicWidth = orientation === "horizontal" ? "flex-1" : width;
 
   return (
     <Card
@@ -106,7 +106,7 @@ export default function OptionCard({
       className={`
         group flex ${layout} ${gap}
         transition-all duration-300 cursor-pointer
-        ${width} ${dynamicHeight} ${padding}
+        ${dynamicWidth} ${dynamicHeight} ${padding}
         ${selected ? "border-primary/60 from-primary/10 to-background" : "border-transparent hover:border-primary"}
         hover:scale-[1.02]
       `}
