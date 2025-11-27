@@ -11,7 +11,7 @@ import { useFormMutation } from "@/hooks/useFormMutation";
 import { applicationsApi } from "@/features/applications/application.api";
 import type { CreateApplication } from "@/features/applications/application.types";
 import ManageOrigins from "@/features/applications/components/ManageOrigins";
-import SelectAppEmailProvider from "@/features/applications/components/SelectAppEmailProvider";
+import SelectAppEmailProvider from "@/features/email/components/EmailProviderSelector";
 import EmailProviderSettingsForm from "@/components/EmailProviderSettingsForm";
 import { OAuthProviderCard } from "@/components/OAuthProviderCard";
 import { ContentSection } from "@/features/admin/components/SettingsSection";

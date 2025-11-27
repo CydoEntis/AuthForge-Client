@@ -2,11 +2,12 @@ import { Form } from "@/components/ui/form";
 import { LoadingButton } from "@/components/shared/LoadingButton";
 import FormError from "@/components/shared/FormError";
 import FadeSlide from "@/components/shared/animations/FadeSlide";
-import EmailProviderSettingsForm from "./EmailProviderSettingsForm";
+import EmailProviderSettingsForm from "@/components/EmailProviderSettingsForm";
+import { CheckCircle2 } from "lucide-react";
 import type { UseFormReturn } from "react-hook-form";
-import type { AllowedEmailProviders } from "@/types/shared.types";
+import type { AllowedEmailProviders } from "@/features/email/email.constants";
 
-interface EmailProviderStandaloneFormProps {
+interface EmailProviderFormProps {
   provider: AllowedEmailProviders;
   form: UseFormReturn<any>;
   isLoading: boolean;
@@ -16,9 +17,10 @@ interface EmailProviderStandaloneFormProps {
   testButtonText?: string;
   saveButtonText?: string;
   showSaveButton?: boolean;
+  successMessage?: string;
 }
 
-export default function EmailProviderStandaloneForm({
+export default function EmailProviderForm({
   provider,
   form,
   isLoading,
@@ -26,14 +28,19 @@ export default function EmailProviderStandaloneForm({
   onSave,
   testSuccessful,
   testButtonText = "Test Connection",
-  saveButtonText = "Save",
+  saveButtonText = "Save Configuration",
   showSaveButton = true,
-}: EmailProviderStandaloneFormProps) {
+  successMessage,
+}: EmailProviderFormProps) {
   const rootError = form.formState.errors.root?.message;
+
+  const defaultSuccessMessage = showSaveButton
+    ? "Connection successful! You can now save your configuration."
+    : "Connection test successful! Click 'Continue' to proceed.";
 
   return (
     <Form {...form}>
-      <form>
+      <form className="space-y-6">
         <EmailProviderSettingsForm provider={provider} form={form} isLoading={isLoading} />
 
         <div className="min-h-[3rem]">
@@ -42,11 +49,11 @@ export default function EmailProviderStandaloneForm({
           </FadeSlide>
 
           {testSuccessful && (
-            <FadeSlide visible={true} direction="down" className="flex items-center gap-2 text-sm text-green-600">
-              <div className="inset-shadow-success bg-linear-to-t from-green-400/10 to-green-400/40 text-green-500 border border-green-500/30 p-2 text-center w-full rounded-lg mb-3">
-                <div className="flex flex-col">
-                  <p>Connection successful</p>
-                  <p>{showSaveButton ? " You can now save your configuration." : ""}</p>
+            <FadeSlide visible={true} direction="down">
+              <div className="inset-shadow-success bg-linear-to-t from-green-400/10 to-green-400/40 text-green-500 border border-green-500/30 p-3 text-center rounded-lg">
+                <div className="flex items-center justify-center gap-2">
+                  <CheckCircle2 className="h-4 w-4" />
+                  <p className="font-medium">{successMessage || defaultSuccessMessage}</p>
                 </div>
               </div>
             </FadeSlide>
