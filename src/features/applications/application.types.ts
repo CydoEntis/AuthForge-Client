@@ -1,72 +1,28 @@
-import type { AllowedEmailProviders } from "../email/email.constants";
-import type { EmailProviderConfig } from "../email/email.types";
+import type { z } from "zod";
+import type {
+  createApplicationRequestSchema,
+  createApplicationResponseSchema,
+  oauthSettingsSchema,
+  applicationListItemSchema,
+  getApplicationResponseSchema,
+  applicationResponseSchema,
+  updateApplicationEmailProviderRequestSchema,
+  updateApplicationOAuthRequestSchema,
+  updateApplicationOriginsRequestSchema,
+  regenerateKeysResponseSchema,
+  listApplicationsResponseSchema,
+} from "./application.schemas";
 
-export type Application = {
-  applicationId: string;
-  name: string;
-  slug: string;
-  description: string | null;
-  publicKey: string;
-  secretKey: string;
-  jwtSecret: string;
-  allowedOrigins: string[];
-  isActive: boolean;
-  createdAtUtc: string;
-  emailSettings?: EmailSettings | null;
-  oauthSettings?: OAuthSettings | null;
-};
+export type CreateApplicationRequest = z.infer<typeof createApplicationRequestSchema>;
+export type UpdateApplicationEmailProviderRequest = z.infer<typeof updateApplicationEmailProviderRequestSchema>;
+export type UpdateApplicationOAuthRequest = z.infer<typeof updateApplicationOAuthRequestSchema>;
+export type UpdateApplicationOriginsRequest = z.infer<typeof updateApplicationOriginsRequestSchema>;
 
-export type ApplicationSummary = {
-  applicationId: string;
-  name: string;
-  slug: string;
-  publicKey: string;
-  isActive: boolean;
-  userCount: number;
-  createdAtUtc: string;
-};
+export type CreateApplicationResponse = z.infer<typeof createApplicationResponseSchema>;
+export type ApplicationListItem = z.infer<typeof applicationListItemSchema>;
+export type GetApplicationResponse = z.infer<typeof getApplicationResponseSchema>;
+export type ApplicationResponse = z.infer<typeof applicationResponseSchema>;
+export type RegenerateKeysResponse = z.infer<typeof regenerateKeysResponseSchema>;
+export type ListApplicationsResponse = z.infer<typeof listApplicationsResponseSchema>;
 
-export type ApplicationFilterParameters = {
-  pageNumber?: number;
-  pageSize?: number;
-  searchTerm?: string;
-  isActive?: boolean;
-  sortBy?: "Name" | "Slug" | "CreatedAt" | "UpdatedAt";
-  sortOrder?: "Asc" | "Desc";
-};
-
-export type CreateApplication = {
-  name: string;
-  description?: string;
-  allowedOrigins: string[];
-  jwtSecret?: string | null;
-  emailSettings: EmailSettings;
-  oauthSettings?: OAuthSettings | null;
-};
-
-export type EmailSettings = {
-  provider: AllowedEmailProviders;
-  apiKey: string;
-  fromEmail: string;
-  fromName: string;
-  passwordResetCallbackUrl?: string | null;
-  emailVerificationCallbackUrl?: string | null;
-};
-
-export type UpdateApplicationEmailProviderRequest = {
-  useGlobalEmailSettings: boolean;
-  emailProviderConfig?: EmailProviderConfig | null;
-  passwordResetCallbackUrl?: string | null;
-  emailVerificationCallbackUrl?: string | null;
-};
-
-export type OAuthSettings = {
-  googleEnabled: boolean;
-  googleClientId?: string | null;
-  googleClientSecret?: string | null;
-  githubEnabled: boolean;
-  githubClientId?: string | null;
-  githubClientSecret?: string | null;
-};
-
-export type PrivateAndPublicKeys = { publicKey: string; secretKey: string };
+export type OAuthSettings = z.infer<typeof oauthSettingsSchema>;

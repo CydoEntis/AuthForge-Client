@@ -1,56 +1,85 @@
 import { apiClient } from "@/lib/api/apiClient";
-import type { PagedResponse } from "@/lib/api/types";
+import {
+  createApplicationResponseSchema,
+  listApplicationsResponseSchema,
+  getApplicationResponseSchema,
+  applicationResponseSchema,
+  regenerateKeysResponseSchema,
+} from "./application.schemas";
 import type {
-  Application,
-  ApplicationFilterParameters,
-  ApplicationSummary,
-  CreateApplication,
-  PrivateAndPublicKeys,
+  CreateApplicationRequest,
+  CreateApplicationResponse,
   UpdateApplicationEmailProviderRequest,
+  UpdateApplicationOAuthRequest,
+  UpdateApplicationOriginsRequest,
+  ListApplicationsResponse,
+  GetApplicationResponse,
+  ApplicationResponse,
+  RegenerateKeysResponse,
 } from "./application.types";
 
 export const applicationsApi = {
-  getAll: async (params: ApplicationFilterParameters): Promise<PagedResponse<ApplicationSummary>> => {
+  getAll: async (params?: {
+    search?: string;
+    isActive?: boolean;
+    sortBy?: "Name" | "Slug" | "CreatedAt" | "UpdatedAt" | "IsActive";
+    sortOrder?: "Asc" | "Desc";
+    page?: number;
+    pageSize?: number;
+  }): Promise<ListApplicationsResponse> => {
     const queryParams = new URLSearchParams();
-    if (params.pageNumber) queryParams.append("pageNumber", params.pageNumber.toString());
-    if (params.pageSize) queryParams.append("pageSize", params.pageSize.toString());
-    if (params.searchTerm) queryParams.append("searchTerm", params.searchTerm);
-    if (params.isActive !== undefined) queryParams.append("isActive", params.isActive.toString());
-    if (params.sortBy) queryParams.append("sortBy", params.sortBy);
-    if (params.sortOrder) queryParams.append("sortOrder", params.sortOrder);
+
+    if (params?.search) queryParams.append("search", params.search);
+    if (params?.isActive !== undefined) queryParams.append("isActive", params.isActive.toString());
+    if (params?.sortBy) queryParams.append("sortBy", params.sortBy);
+    if (params?.sortOrder) queryParams.append("sortOrder", params.sortOrder);
+    if (params?.page) queryParams.append("page", params.page.toString());
+    if (params?.pageSize) queryParams.append("pageSize", params.pageSize.toString());
+
     const query = queryParams.toString();
-    return await apiClient.get<PagedResponse<ApplicationSummary>>(`/applications${query ? `?${query}` : ""}`);
+    const response = await apiClient.get<ListApplicationsResponse>(`/applications${query ? `?${query}` : ""}`);
+    return listApplicationsResponseSchema.parse(response);
   },
 
-  getById: async (id: string): Promise<Application> => {
-    return await apiClient.get<Application>(`/applications/${id}`);
+  getById: async (id: string): Promise<GetApplicationResponse> => {
+    const response = await apiClient.get<GetApplicationResponse>(`/applications/${id}`);
+    return getApplicationResponseSchema.parse(response);
   },
 
-  create: async (data: CreateApplication): Promise<Application> => {
-    return await apiClient.post<Application>("/applications", data);
+  create: async (request: CreateApplicationRequest): Promise<CreateApplicationResponse> => {
+    const response = await apiClient.post<CreateApplicationResponse>("/applications", request);
+    return createApplicationResponseSchema.parse(response);
   },
 
-  update: async (id: string, data: Partial<CreateApplication>): Promise<Application> => {
-    return await apiClient.put<Application>(`/applications/${id}`, data);
+  update: async (id: string, request: Partial<CreateApplicationRequest>): Promise<ApplicationResponse> => {
+    const response = await apiClient.put<ApplicationResponse>(`/applications/${id}`, request);
+    return applicationResponseSchema.parse(response);
   },
 
   delete: async (id: string): Promise<void> => {
-    return await apiClient.delete<void>(`/applications/${id}`);
+    await apiClient.delete<void>(`/applications/${id}`);
   },
 
-  regenerateKeys: async (id: string): Promise<PrivateAndPublicKeys> => {
-    return await apiClient.post<PrivateAndPublicKeys>(`/applications/${id}/regenerate-keys`, {});
+  regenerateKeys: async (id: string): Promise<RegenerateKeysResponse> => {
+    const response = await apiClient.post<RegenerateKeysResponse>(`/applications/${id}/regenerate-secret`, {});
+    return regenerateKeysResponseSchema.parse(response);
   },
 
-  updateEmailProvider: async (id: string, data: UpdateApplicationEmailProviderRequest): Promise<Application> => {
-    return await apiClient.put<Application>(`/applications/${id}/email`, data);
+  updateEmailProvider: async (
+    id: string,
+    request: UpdateApplicationEmailProviderRequest
+  ): Promise<ApplicationResponse> => {
+    const response = await apiClient.put<ApplicationResponse>(`/applications/${id}/email`, request);
+    return applicationResponseSchema.parse(response);
   },
 
-  updateOAuth: async (id: string, data: any): Promise<Application> => {
-    return await apiClient.put<Application>(`/applications/${id}/oauth`, data);
+  updateOAuth: async (id: string, request: UpdateApplicationOAuthRequest): Promise<ApplicationResponse> => {
+    const response = await apiClient.put<ApplicationResponse>(`/applications/${id}/oauth`, request);
+    return applicationResponseSchema.parse(response);
   },
 
-  updateOrigins: async (id: string, data: { allowedOrigins: string[] }): Promise<Application> => {
-    return await apiClient.put<Application>(`/applications/${id}/origins`, data);
+  updateOrigins: async (id: string, request: UpdateApplicationOriginsRequest): Promise<ApplicationResponse> => {
+    const response = await apiClient.put<ApplicationResponse>(`/applications/${id}/origins`, request);
+    return applicationResponseSchema.parse(response);
   },
 };

@@ -1,4 +1,13 @@
 import { apiClient } from "@/lib/api/apiClient";
+import {
+  adminLoginResponseSchema,
+  adminForgotPasswordResponseSchema,
+  adminVerifyPasswordResetTokenResponseSchema,
+  adminRefreshTokenResponseSchema,
+  adminRevokeAllSessionsResponseSchema,
+  getAdminResponseSchema,
+  adminSettingsResponseSchema,
+} from "./admin.schemas";
 import type {
   AdminLoginResponse,
   AdminForgotPasswordResponse,
@@ -18,58 +27,68 @@ import type {
 
 export const adminApi = {
   login: async (request: AdminLoginRequest): Promise<AdminLoginResponse> => {
-    return apiClient.post<AdminLoginResponse>("/admin/login", request);
+    const data = await apiClient.post<AdminLoginResponse>("/admin/login", request);
+    return adminLoginResponseSchema.parse(data);
   },
 
   forgotPassword: async (request: AdminForgotPasswordRequest): Promise<AdminForgotPasswordResponse> => {
-    return apiClient.post<AdminForgotPasswordResponse>("/admin/forgot-password", request);
+    const data = await apiClient.post<AdminForgotPasswordResponse>("/admin/forgot-password", request);
+    return adminForgotPasswordResponseSchema.parse(data);
   },
 
   verifyPasswordResetToken: async (token: string): Promise<AdminVerifyPasswordResetTokenResponse> => {
-    return apiClient.post<AdminVerifyPasswordResetTokenResponse>("/admin/verify-password-reset-token", { token });
+    const data = await apiClient.post<AdminVerifyPasswordResetTokenResponse>("/admin/verify-password-reset-token", {
+      token,
+    });
+    return adminVerifyPasswordResetTokenResponseSchema.parse(data);
   },
 
   resetPassword: async (request: AdminResetPasswordRequest): Promise<void> => {
-    return apiClient.post<void>("/admin/reset-password", request);
+    await apiClient.post<void>("/admin/reset-password", request);
   },
 
   changePassword: async (request: AdminChangePasswordRequest): Promise<AdminForgotPasswordResponse> => {
-    return apiClient.post<AdminForgotPasswordResponse>("/admin/change-password", request);
+    const data = await apiClient.post<AdminForgotPasswordResponse>("/admin/change-password", request);
+    return adminForgotPasswordResponseSchema.parse(data);
   },
 
   refreshToken: async (refreshToken: string): Promise<AdminRefreshTokenResponse> => {
-    return apiClient.post<AdminRefreshTokenResponse>("/admin/refresh", { refreshToken });
+    const data = await apiClient.post<AdminRefreshTokenResponse>("/admin/refresh", { refreshToken });
+    return adminRefreshTokenResponseSchema.parse(data);
   },
 
   logout: async (refreshToken: string): Promise<void> => {
-    return apiClient.post<void>("/admin/logout", { refreshToken });
+    await apiClient.post<void>("/admin/logout", { refreshToken });
   },
 
   updateEmail: async (request: AdminUpdateEmailRequest): Promise<void> => {
-    return apiClient.put<void>("/admin/email", request);
+    await apiClient.put<void>("/admin/email", request);
   },
 
   updateDomain: async (request: AdminUpdateDomainRequest): Promise<void> => {
-    return apiClient.put<void>("/admin/logout", request);
+    await apiClient.put<void>("/admin/domain", request);
   },
 
   updateEmailProvider: async (request: AdminUpdateEmailProviderRequest): Promise<void> => {
-    return apiClient.put<void>("/admin/email-provider", request);
+    await apiClient.put<void>("/admin/email-provider", request);
   },
 
   regenerateJwtSecret: async (): Promise<void> => {
-    return apiClient.post<void>("/admin/jwt/regenerate");
+    await apiClient.post<void>("/admin/jwt/regenerate");
   },
 
   revokeAllSessions: async (): Promise<AdminRevokeAllSessionsResponse> => {
-    return apiClient.post<AdminRevokeAllSessionsResponse>("/admin/sessions/revoke-all");
+    const data = await apiClient.post<AdminRevokeAllSessionsResponse>("/admin/sessions/revoke-all");
+    return adminRevokeAllSessionsResponseSchema.parse(data);
   },
 
   getAdmin: async (): Promise<GetAdminResponse> => {
-    return apiClient.get<GetAdminResponse>("/admin/me");
+    const data = await apiClient.get<GetAdminResponse>("/admin/me");
+    return getAdminResponseSchema.parse(data);
   },
 
   getSettings: async (): Promise<AdminSettingsResponse> => {
-    return apiClient.get<AdminSettingsResponse>("/admin/settings");
+    const data = await apiClient.get<AdminSettingsResponse>("/admin/settings");
+    return adminSettingsResponseSchema.parse(data);
   },
 };

@@ -1,8 +1,10 @@
 import z from "zod";
 import { EMAIL_PROVIDERS } from "./email.constants";
 
+export const allowedEmailProvidersEnum = z.enum([EMAIL_PROVIDERS.SMTP, EMAIL_PROVIDERS.RESEND]);
+
 export const emailProviderConfigSchema = z.object({
-  emailProvider: z.enum([EMAIL_PROVIDERS.SMTP, EMAIL_PROVIDERS.RESEND]),
+  emailProvider: allowedEmailProvidersEnum,
   fromEmail: z.email("From email must be valid"),
   fromName: z.string().optional(),
   smtpHost: z.string().optional(),
@@ -15,4 +17,9 @@ export const emailProviderConfigSchema = z.object({
 
 export const testEmailConfigSchema = emailProviderConfigSchema.extend({
   testRecipient: z.email("Test recipient must be valid"),
+});
+
+export const testEmailConfigResponseSchema = z.object({
+  isSuccessful: z.boolean(),
+  message: z.string(),
 });

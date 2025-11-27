@@ -1,8 +1,9 @@
 import z from "zod";
+import { emailProviderConfigSchema } from "../email/email.schemas";
+import { DATABASES } from "./setup.constants";
 
-// ======================
-//        Database
-// ======================
+export const allowedDatabasesEnum = z.enum([DATABASES.SQLITE, DATABASES.POSTGRESQL, DATABASES.MYSQL, DATABASES.MSSQL]);
+
 export const databaseConfigSchema = z.object({
   host: z
     .string()
@@ -23,12 +24,9 @@ export const databaseConfigSchema = z.object({
     .regex(/^[a-zA-Z0-9_-]+$/, "Database name can only contain letters, numbers, underscores, or hyphens."),
 });
 
-// ======================
-//      Admin Account
-// ======================
 export const adminCredentialsSchema = z
   .object({
-    email: z.email({ message: "Please enter a valid email address." }),
+    email: z.string().email({ message: "Please enter a valid email address." }),
     password: z
       .string()
       .min(8, { message: "Password must be at least 8 characters." })
@@ -42,3 +40,30 @@ export const adminCredentialsSchema = z
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
+
+export const testDatabaseConnectionRequestSchema = z.object({
+  databaseType: allowedDatabasesEnum,
+  connectionString: z.string().nullable(),
+});
+
+export const completeSetupRequestSchema = z.object({
+  authForgeDomain: z.string().url("Must be a valid URL"),
+  databaseType: allowedDatabasesEnum,
+  connectionString: z.string().nullable(),
+  emailProviderConfig: emailProviderConfigSchema,
+  adminCredentials: adminCredentialsSchema,
+});
+
+export const setupStatusResponseSchema = z.object({
+  isSetupComplete: z.boolean(),
+  message: z.string(),
+});
+
+export const testDatabaseConnectionResponseSchema = z.object({
+  isSuccessful: z.boolean(),
+  message: z.string(),
+});
+
+export const completeSetupResponseSchema = z.object({
+  message: z.string(),
+});

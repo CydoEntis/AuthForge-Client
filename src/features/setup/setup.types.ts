@@ -1,47 +1,25 @@
-import type z from "zod";
-import type { adminCredentialsSchema, databaseConfigSchema } from "./setup.schemas";
-import type { DATABASES, SETUP_WIZARD_STEPS } from "./setup.constants";
-import type { EmailProviderConfig } from "@/types/shared.types";
+import type { z } from "zod";
+import type {
+  adminCredentialsSchema,
+  databaseConfigSchema,
+  setupStatusResponseSchema,
+  testDatabaseConnectionRequestSchema,
+  testDatabaseConnectionResponseSchema,
+  completeSetupRequestSchema,
+  completeSetupResponseSchema,
+  allowedDatabasesEnum,
+} from "./setup.schemas";
+import type { SETUP_WIZARD_STEPS } from "./setup.constants";
 
-// ======================
-//        Setup
-// ======================
-export type SetupWizardStep = (typeof SETUP_WIZARD_STEPS)[keyof typeof SETUP_WIZARD_STEPS];
+export type AllowedDatabases = z.infer<typeof allowedDatabasesEnum>;
 
-export type SetupStatusResponse = {
-  isSetupComplete: boolean;
-  message: string;
-};
-
-export type CompleteSetupRequest = {
-  authForgeDomain: string;
-  databaseType: AllowedDatabases;
-  connectionString: string | null;
-  emailProviderConfig: EmailProviderConfig;
-  adminCredentials: AdminCredentials;
-};
-
-export type CompleteSetupResponse = {
-  message: string;
-};
-
-// ======================
-//        Database
-// ======================
-export type AllowedDatabases = (typeof DATABASES)[keyof typeof DATABASES];
 export type DatabaseConfig = z.infer<typeof databaseConfigSchema>;
-
-export type TestDatabaseConnectionRequest = {
-  databaseType: AllowedDatabases;
-  connectionString: string | null;
-};
-
-export type TestDatabaseConnectionResponse = {
-  isSuccessful: boolean;
-  message: string;
-};
-
-// ======================
-//      Admin Account
-// ======================
 export type AdminCredentials = z.infer<typeof adminCredentialsSchema>;
+export type TestDatabaseConnectionRequest = z.infer<typeof testDatabaseConnectionRequestSchema>;
+export type CompleteSetupRequest = z.infer<typeof completeSetupRequestSchema>;
+
+export type SetupStatusResponse = z.infer<typeof setupStatusResponseSchema>;
+export type TestDatabaseConnectionResponse = z.infer<typeof testDatabaseConnectionResponseSchema>;
+export type CompleteSetupResponse = z.infer<typeof completeSetupResponseSchema>;
+
+export type SetupWizardStep = (typeof SETUP_WIZARD_STEPS)[keyof typeof SETUP_WIZARD_STEPS];

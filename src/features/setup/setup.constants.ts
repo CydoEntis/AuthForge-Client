@@ -1,9 +1,3 @@
-// ======================
-//          Setup
-// ======================
-
-import type { AllowedDatabases } from "./setup.types";
-
 export const SETUP_WIZARD_STEPS = {
   WELCOME: "welcome",
   DOMAIN: "domain",
@@ -13,16 +7,14 @@ export const SETUP_WIZARD_STEPS = {
   DONE: "done",
 } as const;
 
-// ======================
-//        Database
-// ======================
-
 export const DATABASES = {
   SQLITE: "Sqlite",
   POSTGRESQL: "PostgreSql",
   MYSQL: "MySql",
   MSSQL: "MSSql",
 } as const;
+
+import type { AllowedDatabases } from "./setup.types";
 
 type DatabaseDefaults = {
   port: string;

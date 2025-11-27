@@ -1,4 +1,9 @@
 import { apiClient } from "@/lib/api/apiClient";
+import {
+  setupStatusResponseSchema,
+  testDatabaseConnectionResponseSchema,
+  completeSetupResponseSchema,
+} from "./setup.schemas";
 import type {
   TestDatabaseConnectionResponse,
   SetupStatusResponse,
@@ -9,14 +14,17 @@ import type {
 
 export const setupApi = {
   getSetupStatus: async (): Promise<SetupStatusResponse> => {
-    return apiClient.get<SetupStatusResponse>("/setup/status");
+    const data = await apiClient.get<SetupStatusResponse>("/setup/status");
+    return setupStatusResponseSchema.parse(data);
   },
 
   testDatabaseConnection: async (request: TestDatabaseConnectionRequest): Promise<TestDatabaseConnectionResponse> => {
-    return apiClient.post<TestDatabaseConnectionResponse>("/setup/test-database", request);
+    const data = await apiClient.post<TestDatabaseConnectionResponse>("/setup/test-database", request);
+    return testDatabaseConnectionResponseSchema.parse(data);
   },
 
   completeSetup: async (request: CompleteSetupRequest): Promise<CompleteSetupResponse> => {
-    return apiClient.post<CompleteSetupResponse>("/setup/complete", request);
+    const data = await apiClient.post<CompleteSetupResponse>("/setup/complete", request);
+    return completeSetupResponseSchema.parse(data);
   },
 };
