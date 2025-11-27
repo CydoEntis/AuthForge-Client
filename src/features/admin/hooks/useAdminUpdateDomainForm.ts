@@ -6,7 +6,7 @@ import { domainSchema } from "@/schemas/shared.schemas";
 export function useAdminUpdateDomainForm(currentDomain?: string) {
   const form = useZodForm(domainSchema, {
     defaultValues: {
-      authForgeDomain: "",
+      domain: "",
     },
   });
 
@@ -14,11 +14,12 @@ export function useAdminUpdateDomainForm(currentDomain?: string) {
 
   useEffect(() => {
     if (currentDomain) {
-      form.reset({ authForgeDomain: currentDomain });
+      form.reset({ domain: currentDomain });
     }
   }, [currentDomain, form]);
 
   const handleSubmit = form.handleSubmit(async (values) => {
+    console.log;
     await mutation.mutateAsync(values);
   });
 

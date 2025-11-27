@@ -16,7 +16,7 @@ export const Route = createFileRoute("/(private)/(admin)/settings")({
 
 function RouteComponent() {
   const { data: settings, isLoading } = useAdminSettingsQuery();
-
+  console.log(settings);
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">

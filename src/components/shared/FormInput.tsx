@@ -15,7 +15,7 @@ interface FormInputProps {
   description?: string;
   autoComplete?: string;
   hideLabel?: boolean;
-  showPasswordToggle?: boolean; // New prop
+  showPasswordToggle?: boolean;
 }
 
 export function FormInput({
@@ -34,7 +34,6 @@ export function FormInput({
   const [showPassword, setShowPassword] = useState(false);
   const error = form.formState.errors?.[name]?.message as string | undefined;
 
-  // Determine actual input type
   const inputType = showPasswordToggle ? (showPassword ? "text" : "password") : type;
 
   return (

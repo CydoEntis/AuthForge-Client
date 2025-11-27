@@ -5,13 +5,13 @@ import { useAdminUpdateDomainForm } from "../../hooks/useAdminUpdateDomainForm";
 
 export function AdminUpdateDomain({ currentDomain }: { currentDomain?: string }) {
   const { form, handleSubmit, isLoading } = useAdminUpdateDomainForm(currentDomain);
-
+  console.log("Excuse me: ", currentDomain);
   return (
     <Form {...form}>
       <form onSubmit={handleSubmit} className="flex gap-2 items-end">
         <FormInput
           form={form}
-          name="authForgeDomain"
+          name="domain"
           label="Domain"
           placeholder={currentDomain || "https://auth.example.com"}
           className="flex-1"

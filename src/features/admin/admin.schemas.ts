@@ -49,7 +49,7 @@ export const adminUpdateEmailSchema = z.object({
 });
 
 export const adminUpdateDomainSchema = z.object({
-  authForgeDomain: z.url("Must be a valid URL"),
+  domain: z.url("Must be a valid URL"),
 });
 
 export const adminUpdateEmailProviderRequestSchema = z.object({
