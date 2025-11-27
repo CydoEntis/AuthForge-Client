@@ -5,7 +5,7 @@ import { useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import type { SortingState, OnChangeFn } from "@tanstack/react-table";
 import { ApplicationsTable } from "@/features/applications/components/ApplicationsTable";
-import type { ApplicationSummary } from "@/features/applications/types";
+import type { ApplicationSummary } from "@/features/applications/application.types";
 
 function generateFakeApplications(count: number): ApplicationSummary[] {
   return Array.from({ length: count }).map((_, i) => ({

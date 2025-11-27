@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { applicationsApi } from "../api";
+import { applicationsApi } from "../application.api";
 import { toast } from "sonner";
-import type { CreateApplication } from "../types";
+import type { CreateApplication } from "../application.types";
 
 export function useCreateApplication() {
   const queryClient = useQueryClient();

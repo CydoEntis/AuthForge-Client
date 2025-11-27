@@ -6,8 +6,8 @@ import type {
   ApplicationSummary,
   CreateApplication,
   PrivateAndPublicKeys,
-} from "./types";
-import type { TestEmailConfigRequest, TestEmailConfigResponse, EmailProviderConfig } from "@/types/shared.types";
+  UpdateApplicationEmailProviderRequest,
+} from "./application.types";
 
 export const applicationsApi = {
   getAll: async (params: ApplicationFilterParameters): Promise<PagedResponse<ApplicationSummary>> => {
@@ -42,12 +42,8 @@ export const applicationsApi = {
     return await apiClient.post<PrivateAndPublicKeys>(`/applications/${id}/regenerate-keys`, {});
   },
 
-  updateEmailSettings: async (id: string, data: EmailProviderConfig): Promise<Application> => {
+  updateEmailProvider: async (id: string, data: UpdateApplicationEmailProviderRequest): Promise<Application> => {
     return await apiClient.put<Application>(`/applications/${id}/email`, data);
-  },
-
-  testEmailConfig: async (id: string, request: TestEmailConfigRequest): Promise<TestEmailConfigResponse> => {
-    return await apiClient.post<TestEmailConfigResponse>(`/applications/${id}/test-email`, request);
   },
 
   updateOAuth: async (id: string, data: any): Promise<Application> => {

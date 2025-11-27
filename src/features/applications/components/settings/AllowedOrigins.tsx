@@ -2,7 +2,7 @@ import { ContentSection } from "@/features/admin/components/SettingsSection";
 import { Form } from "@/components/ui/form";
 import { LoadingButton } from "@/components/shared/LoadingButton";
 import ManageOrigins from "@/features/applications/components/ManageOrigins";
-import type { Application } from "../../types";
+import type { Application } from "../../application.types";
 import { useUpdateOriginsForm } from "../../hooks/updateOriginsForm";
 
 type AllowedOriginsSectionProps = {

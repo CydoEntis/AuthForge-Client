@@ -3,7 +3,7 @@ import { LoadingButton } from "@/components/shared/LoadingButton";
 import { ContentSection } from "@/features/admin/components/SettingsSection";
 import { OAuthProviderCard } from "@/components/OAuthProviderCard";
 import { useUpdateOAuthForm } from "@/features/applications/hooks/useUpdateOAuthForm";
-import type { Application } from "../../types";
+import type { Application } from "../../application.types";
 
 interface OAuthSettingsSectionProps {
   applicationId: string;

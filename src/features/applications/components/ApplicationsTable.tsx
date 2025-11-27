@@ -19,7 +19,7 @@ import {
 import { Link } from "@tanstack/react-router";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { PagedResponse } from "@/lib/api/types";
-import type { ApplicationSummary } from "../types";
+import type { ApplicationSummary } from "../application.types";
 
 type ColumnMeta = {
   className?: string;

@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useZodForm } from "@/hooks/useZodForm";
 import { useFormMutation } from "@/hooks/useFormMutation";
 import { applicationsApi } from "@/features/applications/application.api";
-import type { CreateApplication } from "@/features/applications/types";
+import type { CreateApplication } from "@/features/applications/application.types";
 import ManageOrigins from "@/features/applications/components/ManageOrigins";
 import SelectAppEmailProvider from "@/features/applications/components/SelectAppEmailProvider";
 import EmailProviderSettingsForm from "@/components/EmailProviderSettingsForm";

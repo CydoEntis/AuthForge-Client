@@ -1,4 +1,5 @@
-import type { AllowedEmailProviders } from "../setup/setup.types";
+import type { AllowedEmailProviders } from "../email/email.constants";
+import type { EmailProviderConfig } from "../email/email.types";
 
 export type Application = {
   applicationId: string;
@@ -48,6 +49,13 @@ export type EmailSettings = {
   apiKey: string;
   fromEmail: string;
   fromName: string;
+  passwordResetCallbackUrl?: string | null;
+  emailVerificationCallbackUrl?: string | null;
+};
+
+export type UpdateApplicationEmailProviderRequest = {
+  useGlobalEmailSettings: boolean;
+  emailProviderConfig?: EmailProviderConfig | null;
   passwordResetCallbackUrl?: string | null;
   emailVerificationCallbackUrl?: string | null;
 };

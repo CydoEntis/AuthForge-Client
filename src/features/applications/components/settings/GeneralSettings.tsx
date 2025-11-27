@@ -3,7 +3,7 @@ import { Form } from "@/components/ui/form";
 import { FormInput } from "@/components/shared/FormInput";
 import { LoadingButton } from "@/components/shared/LoadingButton";
 import { useUpdateGeneralForm } from "@/features/applications/hooks/useUpdateGeneralForm";
-import type { Application } from "../../types";
+import type { Application } from "../../application.types";
 
 type GeneralSettingsSectionProps = {
   applicationId: string;

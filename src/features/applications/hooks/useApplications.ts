@@ -1,7 +1,7 @@
 // src/features/applications/hooks/useApplications.ts
 import { useQuery } from "@tanstack/react-query";
-import { applicationsApi } from "../api";
-import type { ApplicationFilterParameters } from "../types";
+import { applicationsApi } from "../application.api";
+import type { ApplicationFilterParameters } from "../application.types";
 
 export function useApplications(params: ApplicationFilterParameters) {
   return useQuery({
