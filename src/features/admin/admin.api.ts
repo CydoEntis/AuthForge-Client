@@ -10,14 +10,11 @@ import type {
   AdminVerifyPasswordResetTokenResponse,
   AdminUpdateEmailRequest,
   AdminUpdateDomainRequest,
-  AdminTestEmailProviderRequest,
   AdminUpdateEmailProviderRequest,
-  TestEmailConfigResponse,
   AdminRevokeAllSessionsResponse,
   GetAdminResponse,
   AdminSettingsResponse,
 } from "./admin.types";
-import type { TestEmailConfigRequest } from "@/types/shared.types";
 
 export const adminApi = {
   login: async (request: AdminLoginRequest): Promise<AdminLoginResponse> => {
@@ -54,10 +51,6 @@ export const adminApi = {
 
   updateDomain: async (request: AdminUpdateDomainRequest): Promise<void> => {
     return apiClient.put<void>("/admin/logout", request);
-  },
-
-  testEmailProvider: async (request: TestEmailConfigRequest): Promise<TestEmailConfigResponse> => {
-    return apiClient.post<TestEmailConfigResponse>("/admin/test-email", request);
   },
 
   updateEmailProvider: async (request: AdminUpdateEmailProviderRequest): Promise<void> => {

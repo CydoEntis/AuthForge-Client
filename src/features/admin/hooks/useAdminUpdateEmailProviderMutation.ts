@@ -1,12 +1,19 @@
-import { useFormMutation } from "@/hooks/useFormMutation";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { adminApi } from "../admin.api";
-import type { AdminUpdateEmailProviderRequest } from "../admin.types";
-import type { UseFormSetError } from "react-hook-form";
+import type { EmailProviderConfig } from "@/features/email/email.types";
 
-export function useAdminUpdateEmailProviderMutation(setError: UseFormSetError<AdminUpdateEmailProviderRequest>) {
-  return useFormMutation({
-    mutationFn: (values: AdminUpdateEmailProviderRequest) => adminApi.updateEmailProvider(values),
-    setError,
-    successMessage: "Email provider updated successfully!",
+export function useUpdateAdminEmailProviderMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (request: { emailProviderConfig: EmailProviderConfig }) => adminApi.updateEmailProvider(request),
+    onSuccess: () => {
+      toast.success("Email provider updated successfully");
+      queryClient.invalidateQueries({ queryKey: ["admin-settings"] });
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.error?.message || "Failed to update email provider");
+    },
   });
 }

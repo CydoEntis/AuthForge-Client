@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { AlertMessage } from "@/components/AlertMessage";
-
 import { Mail } from "lucide-react";
 import ResendWhite from "@/assets/resend-icon-white.svg";
 import ResendBlack from "@/assets/resend-icon-black.svg";
 import { useTheme } from "@/features/theme/hooks/useTheme";
 import OptionCard from "@/components/OptionCard";
-import ConfigureEmailProviderModal from "../ConfigureEmailProviderModal";
-import { EMAIL_PROVIDERS, type AllowedEmailProviders, type EmailProviderConfig } from "@/types/shared.types";
+import { EmailConfigModal } from "@/features/email/components/EmailConfigModal"; // ✅ NEW IMPORT
+import { EMAIL_PROVIDERS, type AllowedEmailProviders } from "@/features/email/email.constants"; // ✅ NEW IMPORT
+import type { EmailProviderConfig } from "@/features/email/email.types"; // ✅ NEW IMPORT
 
 export function EmailProviderStep({
   emailConfig,
@@ -70,18 +70,16 @@ export function EmailProviderStep({
         </div>
       </div>
 
-      {selectedEmail && (
-        <ConfigureEmailProviderModal
-          provider={selectedEmail}
-          initialConfig={emailConfig}
-          open={emailModalOpen}
-          onOpenChange={setEmailModalOpen}
-          onConnectionSuccess={(config: EmailProviderConfig) => {
-            onConfigChange(config);
-            setEmailModalOpen(false);
-          }}
-        />
-      )}
+      <EmailConfigModal
+        provider={selectedEmail}
+        initialConfig={emailConfig}
+        open={emailModalOpen}
+        onOpenChange={setEmailModalOpen}
+        onSuccess={(config) => {
+          onConfigChange(config);
+          setEmailModalOpen(false);
+        }}
+      />
     </div>
   );
 }
