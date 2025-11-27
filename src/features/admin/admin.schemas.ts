@@ -99,3 +99,11 @@ export const adminSettingsResponseSchema = z.object({
   authForgeDomain: z.string(),
   emailProvider: emailProviderConfigSchema,
 });
+
+export const domainSchema = z.object({
+  domain: z
+    .url("Please enter a valid URL starting with http:// or https://")
+    .refine((url) => url.startsWith("http://") || url.startsWith("https://"), {
+      message: "URL must start with http:// or https://",
+    }),
+});

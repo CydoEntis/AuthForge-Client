@@ -1,35 +1,17 @@
 import z from "zod";
 
-// ======================
-//        Domain
-// ======================
-export const domainSchema = z.object({
-  domain: z
-    .url("Please enter a valid URL starting with http:// or https://")
-    .refine((url) => url.startsWith("http://") || url.startsWith("https://"), {
-      message: "URL must start with http:// or https://",
-    }),
-});
-
-// ======================
-//        Auth
-// ======================
 export const loginSchema = z.object({
   email: z.email({ message: "Please enter a valid email address." }),
-  password: z.string().min(1, { message: "Password cannot be empty" }),
+  password: z.string().min(1, "Password is required"),
 });
 
 export const forgotPasswordSchema = z.object({
   email: z.email({ message: "Please enter a valid email address." }),
 });
 
-export const verifyResetPasswordTokenSchema = z.object({
-  token: z.string().min(1, { message: "Please provide a valid token." }),
-});
-
 export const resetPasswordSchema = z
   .object({
-    token: z.string().min(1, { message: "Please provide a token." }),
+    token: z.string().min(1, "Token is required"),
     newPassword: z
       .string()
       .min(8, { message: "Password must be at least 8 characters." })
@@ -46,7 +28,7 @@ export const resetPasswordSchema = z
 
 export const changePasswordSchema = z
   .object({
-    currentPassword: z.string().min(1, { message: "Password cannot be empty" }),
+    currentPassword: z.string().min(1, "Current password is required"),
     newPassword: z
       .string()
       .min(8, { message: "Password must be at least 8 characters." })
@@ -60,3 +42,29 @@ export const changePasswordSchema = z
     message: "Passwords do not match",
     path: ["confirmNewPassword"],
   });
+
+export const tokenPairSchema = z.object({
+  accessToken: z.string(),
+  refreshToken: z.string(),
+  accessTokenExpiresAt: z.string(),
+  refreshTokenExpiresAt: z.string(),
+});
+
+export const loginResponseSchema = z.object({
+  tokens: tokenPairSchema,
+});
+
+export const forgotPasswordResponseSchema = z.object({
+  message: z.string(),
+});
+
+export const verifyPasswordResetTokenResponseSchema = z.object({
+  isValid: z.boolean(),
+  message: z.string().optional(),
+});
+
+export const refreshTokenResponseSchema = z.object({
+  accessToken: z.string(),
+  refreshToken: z.string(),
+  expiresAt: z.string(),
+});
