@@ -3,9 +3,9 @@ import ConfigDialog from "@/components/shared/Modal";
 import { useZodForm } from "@/hooks/useZodForm";
 import { testEmailConfigSchema } from "../email.schemas";
 import { useTestEmailProviderMutation } from "../hooks/useTestEmailProviderMutation";
-import { EMAIL_PROVIDERS, type AllowedEmailProviders } from "../email.constants";
-import type { EmailProviderConfig, TestEmailConfigRequest } from "../email.types";
+import type { AllowedEmailProviders, EmailProviderConfig, TestEmailConfigRequest } from "../email.types";
 import EmailProviderForm from "./EmailProviderForm";
+import { EMAIL_PROVIDERS } from "../email.constants";
 
 type EmailConfigModalProps = {
   provider: AllowedEmailProviders;

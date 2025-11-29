@@ -2,10 +2,10 @@ import { useEffect } from "react";
 import { useZodForm } from "@/hooks/useZodForm";
 import { testEmailConfigSchema } from "../email.schemas";
 import { useTestEmailProviderMutation } from "../hooks/useTestEmailProviderMutation";
-import { EMAIL_PROVIDERS, type AllowedEmailProviders } from "../email.constants";
-import type { EmailProviderConfig, TestEmailConfigRequest } from "../email.types";
+import type { AllowedEmailProviders, EmailProviderConfig, TestEmailConfigRequest } from "../email.types";
 import EmailProviderForm from "./EmailProviderForm";
 import EmailProviderSelector from "./EmailProviderSelector";
+import { EMAIL_PROVIDERS } from "../email.constants";
 
 type EmailConfigFormProps = {
   initialProvider?: AllowedEmailProviders;

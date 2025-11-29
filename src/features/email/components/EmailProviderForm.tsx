@@ -5,7 +5,7 @@ import FadeSlide from "@/components/shared/animations/FadeSlide";
 import EmailProviderSettingsForm from "@/components/EmailProviderSettingsForm";
 import { CheckCircle2 } from "lucide-react";
 import type { UseFormReturn } from "react-hook-form";
-import type { AllowedEmailProviders } from "@/features/email/email.constants";
+import type { AllowedEmailProviders } from "../email.types";
 
 interface EmailProviderFormProps {
   provider: AllowedEmailProviders;
@@ -43,22 +43,20 @@ export default function EmailProviderForm({
       <form className="space-y-6">
         <EmailProviderSettingsForm provider={provider} form={form} isLoading={isLoading} />
 
-        <div className="min-h-[3rem]">
-          <FadeSlide visible={!!rootError} direction="down" className="text-sm text-destructive">
-            <FormError message={rootError!} />
-          </FadeSlide>
+        <FadeSlide visible={!!rootError} direction="down" className="text-sm text-destructive">
+          <FormError message={rootError!} />
+        </FadeSlide>
 
-          {testSuccessful && (
-            <FadeSlide visible={true} direction="down">
-              <div className="inset-shadow-success bg-linear-to-t from-green-400/10 to-green-400/40 text-green-500 border border-green-500/30 p-3 text-center rounded-lg">
-                <div className="flex items-center justify-center gap-2">
-                  <CheckCircle2 className="h-4 w-4" />
-                  <p className="font-medium">{successMessage || defaultSuccessMessage}</p>
-                </div>
+        {testSuccessful && (
+          <FadeSlide visible={true} direction="down">
+            <div className="inset-shadow-success bg-linear-to-t from-green-400/10 to-green-400/40 text-green-500 border border-green-500/30 p-3 text-center rounded-lg">
+              <div className="flex items-center justify-center gap-2">
+                <CheckCircle2 className="h-4 w-4" />
+                <p className="font-medium">{successMessage || defaultSuccessMessage}</p>
               </div>
-            </FadeSlide>
-          )}
-        </div>
+            </div>
+          </FadeSlide>
+        )}
 
         <div className={showSaveButton ? "flex gap-3" : ""}>
           <LoadingButton

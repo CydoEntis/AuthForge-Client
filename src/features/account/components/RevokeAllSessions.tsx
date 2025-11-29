@@ -17,16 +17,15 @@ export function RevokeAllSessions() {
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-muted-foreground">
-        This will log you out from all devices. You'll need to log in again everywhere.
-      </p>
-
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button variant="destructive" disabled={isPending}>
             Revoke All Sessions
           </Button>
         </AlertDialogTrigger>
+        <p className="text-xs text-muted-foreground">
+          This will log you out from all devices. You'll need to log in again everywhere.
+        </p>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>

@@ -19,7 +19,6 @@ export const revokeAllSessionsResponseSchema = z.object({
 });
 
 export const settingsResponseSchema = z.object({
-  email: z.email(),
   authForgeDomain: z.string(),
   emailProvider: emailProviderConfigSchema,
 });
