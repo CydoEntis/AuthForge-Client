@@ -1,52 +1,68 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Plus, Search } from "lucide-react";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import type { SortingState, OnChangeFn } from "@tanstack/react-table";
 import { ApplicationsTable } from "@/features/applications/components/ApplicationsTable";
-import type { ApplicationSummary } from "@/features/applications/application.types";
-
-function generateFakeApplications(count: number): ApplicationSummary[] {
-  return Array.from({ length: count }).map((_, i) => ({
-    applicationId: `app-${i + 1}`,
-    name: `Application ${i + 1}`,
-    slug: `app-${i + 1}`,
-    publicKey: `pk_${Math.random().toString(36).slice(2, 12)}`,
-    userCount: Math.floor(Math.random() * 5000),
-    isActive: Math.random() > 0.3,
-    createdAtUtc: new Date(Date.now() - Math.random() * 10000000000).toISOString(),
-  }));
-}
+import { useApplicationsQuery } from "@/features/applications/hooks/useApplicationsQuery";
+import type { ApplicationSortField, SortOrder } from "@/features/applications/application.types";
 
 export const Route = createFileRoute("/(private)/applications/")({
   component: ApplicationsDashboard,
 });
 
 export function ApplicationsDashboard() {
+  const navigate = useNavigate();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
   const pageSize = 10;
 
-  const data = useMemo(() => {
-    const items = generateFakeApplications(50);
-    return {
-      items,
-      totalCount: items.length,
-      totalPages: Math.ceil(items.length / pageSize),
-      hasNextPage: page < Math.ceil(items.length / pageSize),
-      hasPreviousPage: page > 1,
-      pageNumber: page,
-      pageSize: pageSize,
+  const getSortParams = (): { sortBy: ApplicationSortField; sortOrder: SortOrder } => {
+    if (!sorting.length) {
+      return { sortBy: "CreatedAt", sortOrder: "Desc" };
+    }
+
+    const sortId = sorting[0].id;
+    const sortOrder: SortOrder = sorting[0].desc ? "Desc" : "Asc";
+
+    const sortByMap: Record<string, ApplicationSortField> = {
+      name: "Name",
+      slug: "Slug",
+      createdAtUtc: "CreatedAt",
+      updatedAtUtc: "UpdatedAt",
+      isActive: "IsActive",
+      userCount: "CreatedAt",
     };
-  }, [page]);
+
+    return {
+      sortBy: sortByMap[sortId] || "CreatedAt",
+      sortOrder,
+    };
+  };
+
+  const { sortBy, sortOrder } = getSortParams();
+
+  const { data, isLoading } = useApplicationsQuery({
+    page,
+    pageSize,
+    search: search || undefined,
+    sortBy,
+    sortOrder,
+  });
 
   const handleSortingChange: OnChangeFn<SortingState> = (updaterOrValue) => {
     setSorting((old) => (typeof updaterOrValue === "function" ? updaterOrValue(old) : updaterOrValue));
   };
 
+  const handleEdit = (id: string) => {
+    navigate({ to: "/applications/$id", params: { id } });
+  };
+
   return (
     <div className="flex flex-col gap-4">
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Applications</h1>
@@ -60,22 +76,28 @@ export function ApplicationsDashboard() {
         </Link>
       </div>
 
+      {/* Search */}
       <div className="flex items-center gap-4">
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input placeholder="Search applications..." className="pl-9" />
+          <Input
+            placeholder="Search applications..."
+            className="pl-9"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
         </div>
       </div>
 
       <ApplicationsTable
         data={data}
-        isLoading={false}
+        isLoading={isLoading}
         sorting={sorting}
         onSortingChange={handleSortingChange}
         page={page}
         pageSize={pageSize}
         onPageChange={setPage}
-        onEdit={(id) => console.log("Edit", id)}
+        onEdit={handleEdit}
       />
     </div>
   );

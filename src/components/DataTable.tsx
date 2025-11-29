@@ -9,7 +9,7 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { PagedResponse } from "@/lib/api/types";
+import type { PagedResponse } from "@/lib/api/lib.types";
 
 declare module "@tanstack/react-table" {
   interface ColumnMeta<TData, TValue> {

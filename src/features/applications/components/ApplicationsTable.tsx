@@ -9,12 +9,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Link } from "@tanstack/react-router";
-import type { PagedResponse } from "@/lib/api/types";
-import type { ApplicationListItem } from "../application.types";
+import type { ApplicationListItem, ListApplicationsResponse } from "../application.types";
 import { DataTable } from "@/components/DataTable";
 
 type ApplicationsTableProps = {
-  data?: PagedResponse<ApplicationListItem>;
+  data?: ListApplicationsResponse;
   isLoading: boolean;
   sorting: SortingState;
   onSortingChange: OnChangeFn<SortingState>;
@@ -68,14 +67,6 @@ export function ApplicationsTable({
         cell: ({ row }) => <code className="text-xs text-muted-foreground">{row.original.slug}</code>,
         meta: { className: "w-32" },
       },
-      // {
-      //   accessorKey: "clientId",
-      //   header: "Client ID",
-      //   cell: ({ row }) => (
-      //     <code className="text-xs text-muted-foreground">{row.original.clientId.substring(0, 20)}...</code>
-      //   ),
-      //   meta: { className: "w-48" },
-      // },
       {
         accessorKey: "userCount",
         header: "Users",
