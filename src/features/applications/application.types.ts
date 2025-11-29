@@ -11,6 +11,9 @@ import type {
   updateApplicationOriginsRequestSchema,
   regenerateKeysResponseSchema,
   listApplicationsResponseSchema,
+  applicationSortFieldSchema,
+  sortOrderSchema,
+  listApplicationsParamsSchema,
 } from "./application.schemas";
 
 export type CreateApplicationRequest = z.infer<typeof createApplicationRequestSchema>;
@@ -26,3 +29,8 @@ export type RegenerateKeysResponse = z.infer<typeof regenerateKeysResponseSchema
 export type ListApplicationsResponse = z.infer<typeof listApplicationsResponseSchema>;
 
 export type OAuthSettings = z.infer<typeof oauthSettingsSchema>;
+
+export type ApplicationSortField = z.infer<typeof applicationSortFieldSchema>;
+export type SortOrder = z.infer<typeof sortOrderSchema>;
+
+export type ListApplicationsParams = z.infer<typeof listApplicationsParamsSchema>;

@@ -1,5 +1,10 @@
 import z from "zod";
 import { emailProviderConfigSchema } from "../email/email.schemas";
+import { pagedResponseSchema } from "@/lib/api/lib.schemas";
+
+export const applicationSortFieldSchema = z.enum(["Name", "Slug", "CreatedAt", "UpdatedAt", "IsActive"]);
+
+export const sortOrderSchema = z.enum(["Asc", "Desc"]);
 
 export const oauthSettingsSchema = z
   .object({
@@ -113,10 +118,13 @@ export const regenerateKeysResponseSchema = z.object({
   clientSecret: z.string(),
 });
 
-export const listApplicationsResponseSchema = z.object({
-  applications: z.array(applicationListItemSchema),
-  totalCount: z.number(),
-  page: z.number(),
-  pageSize: z.number(),
-  totalPages: z.number(),
+export const listApplicationsParamsSchema = z.object({
+  search: z.string().optional(),
+  isActive: z.boolean().optional(),
+  sortBy: applicationSortFieldSchema.default("CreatedAt"),
+  sortOrder: sortOrderSchema.default("Desc"),
+  page: z.number().int().min(1).default(1),
+  pageSize: z.number().int().min(1).max(100).default(10),
 });
+
+export const listApplicationsResponseSchema = pagedResponseSchema(applicationListItemSchema);
