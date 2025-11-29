@@ -2,14 +2,14 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useNavigate } from "@tanstack/react-router";
 import { useAuthStore } from "@/store/useAuthStore";
-import { adminApi } from "../../admin/admin.api";
+import { accountApi } from "../account.api";
 
 export function useRevokeAllSessionsMutation() {
   const navigate = useNavigate();
   const { logout } = useAuthStore();
 
   return useMutation({
-    mutationFn: () => adminApi.revokeAllSessions(),
+    mutationFn: () => accountApi.revokeAllSessions(),
     onSuccess: (data) => {
       toast.success(`${data.sessionsRevoked} session(s) revoked. Please log in again.`);
       logout();

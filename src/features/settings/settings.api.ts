@@ -1,11 +1,6 @@
 import { apiClient } from "@/lib/api/apiClient";
-import type {
-  UpdateDomainRequest,
-  UpdateEmailProviderRequest,
-  RevokeAllSessionsResponse,
-  SettingsResponse,
-} from "./settings.types";
-import { revokeAllSessionsResponseSchema, settingsResponseSchema } from "./settings.schema";
+import type { UpdateDomainRequest, UpdateEmailProviderRequest, SettingsResponse } from "./settings.types";
+import { settingsResponseSchema } from "./settings.schema";
 
 export const settingsApi = {
   getSettings: async (): Promise<SettingsResponse> => {
@@ -23,10 +18,5 @@ export const settingsApi = {
 
   regenerateJwtSecret: async (): Promise<void> => {
     await apiClient.post<void>("/admin/jwt/regenerate");
-  },
-
-  revokeAllSessions: async (): Promise<RevokeAllSessionsResponse> => {
-    const data = await apiClient.post<RevokeAllSessionsResponse>("/admin/sessions/revoke-all");
-    return revokeAllSessionsResponseSchema.parse(data);
   },
 };

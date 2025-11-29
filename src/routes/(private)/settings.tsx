@@ -7,7 +7,7 @@ import { ChangePassword } from "@/features/account/components/ChangePassword";
 import { useGetAccountQuery } from "@/features/account/hooks/useGetAccountQuery";
 import { RevokeAllSessions } from "@/features/account/components/RevokeAllSessions";
 
-export const Route = createFileRoute("/(private)/(account)/settings")({
+export const Route = createFileRoute("/(private)/settings")({
   component: RouteComponent,
 });
 

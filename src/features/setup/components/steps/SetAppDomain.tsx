@@ -5,8 +5,8 @@ import { FormInput } from "@/components/shared/FormInput";
 import { useZodForm } from "@/hooks/useZodForm";
 
 import { Card } from "@/components/ui/card";
-import type { DomainConfig } from "@/types/shared.types";
-import { domainSchema } from "@/schemas/shared.schemas";
+import { domainSchema } from "../../setup.schemas";
+import type { DomainConfig } from "../../setup.types";
 
 type SetAppDomainProps = {
   domain: string;

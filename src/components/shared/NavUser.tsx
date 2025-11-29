@@ -13,13 +13,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
-import { useAdminLogoutMutation } from "@/features/auth/hooks/useLogoutMutation";
+import { useLogoutMutation } from "@/features/auth/hooks/useLogoutMutation";
 import { Link } from "@tanstack/react-router";
 import { useAuthStore } from "@/store/useAuthStore";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
-  const logoutMutation = useAdminLogoutMutation();
+  const logoutMutation = useLogoutMutation();
   const { admin } = useAuthStore();
 
   return (

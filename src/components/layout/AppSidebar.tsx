@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Anvil, Home } from "lucide-react";
+import { Anvil, Home, Settings } from "lucide-react";
 
 import {
   Sidebar,
@@ -23,6 +23,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         url: "/applications",
         icon: Home,
         isActive: true,
+      },
+    ],
+    navFooter: [
+      {
+        title: "Settings",
+        url: "/Settings",
+        icon: Settings,
+        isActive: false,
       },
     ],
   };
@@ -54,11 +62,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <NavMain items={data.navMain} />
         </SidebarContent>
         <SidebarFooter>
-          {/* Currently we dont want to manage a light mode */}
-          {/* <div className="px-2">
-            <ThemeToggle />
-          </div> */}
-
+          {data.navFooter.map((item) => (
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild isActive={item.isActive}>
+                <Link to={item.url} viewTransition={{ types: ["slide-down"] }}>
+                  <item.icon />
+                  <span>{item.title}</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
           <NavUser />
         </SidebarFooter>
       </SidebarContent>

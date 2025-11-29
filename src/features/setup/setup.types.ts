@@ -8,6 +8,7 @@ import type {
   completeSetupRequestSchema,
   completeSetupResponseSchema,
   allowedDatabasesEnum,
+  domainSchema,
 } from "./setup.schemas";
 import type { SETUP_WIZARD_STEPS } from "./setup.constants";
 
@@ -23,3 +24,4 @@ export type TestDatabaseConnectionResponse = z.infer<typeof testDatabaseConnecti
 export type CompleteSetupResponse = z.infer<typeof completeSetupResponseSchema>;
 
 export type SetupWizardStep = (typeof SETUP_WIZARD_STEPS)[keyof typeof SETUP_WIZARD_STEPS];
+export type DomainConfig = z.infer<typeof domainSchema>;

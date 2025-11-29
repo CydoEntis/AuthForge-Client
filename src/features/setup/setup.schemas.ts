@@ -67,3 +67,22 @@ export const testDatabaseConnectionResponseSchema = z.object({
 export const completeSetupResponseSchema = z.object({
   message: z.string(),
 });
+
+export const domainSchema = z.object({
+  domain: z
+    .string()
+    .min(1, "Domain is required")
+    .url("Must be a valid URL (e.g., https://auth.mycompany.com)")
+    .refine(
+      (url) => {
+        try {
+          const parsed = new URL(url);
+          return parsed.protocol === "http:" || parsed.protocol === "https:";
+        } catch {
+          return false;
+        }
+      },
+      { message: "URL must use http:// or https://" }
+    )
+    .transform((url) => url.replace(/\/$/, "")),
+});

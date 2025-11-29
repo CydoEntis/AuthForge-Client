@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as publicRouteRouteImport } from './routes/(public)/route'
 import { Route as privateRouteRouteImport } from './routes/(private)/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as privateSettingsRouteImport } from './routes/(private)/settings'
+import { Route as privateAccountRouteImport } from './routes/(private)/account'
 import { Route as publicDashboardRouteRouteImport } from './routes/(public)/dashboard/route'
 import { Route as publicauthRouteRouteImport } from './routes/(public)/(auth)/route'
 import { Route as publicDashboardIndexRouteImport } from './routes/(public)/dashboard/index'
@@ -22,7 +24,6 @@ import { Route as publicauthLoginRouteImport } from './routes/(public)/(auth)/lo
 import { Route as publicauthForgotPasswordRouteImport } from './routes/(public)/(auth)/forgot-password'
 import { Route as publicauthChangePasswordRouteImport } from './routes/(public)/(auth)/change-password'
 import { Route as privateApplicationsCreateRouteImport } from './routes/(private)/applications/create'
-import { Route as privateaccountSettingsRouteImport } from './routes/(private)/(account)/settings'
 import { Route as privateApplicationsIdIndexRouteImport } from './routes/(private)/applications/$id/index'
 import { Route as privateApplicationsIdSettingsRouteImport } from './routes/(private)/applications/$id/settings'
 
@@ -38,6 +39,16 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const privateSettingsRoute = privateSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => privateRouteRoute,
+} as any)
+const privateAccountRoute = privateAccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => privateRouteRoute,
 } as any)
 const publicDashboardRouteRoute = publicDashboardRouteRouteImport.update({
   id: '/dashboard',
@@ -92,11 +103,6 @@ const privateApplicationsCreateRoute =
     path: '/applications/create',
     getParentRoute: () => privateRouteRoute,
   } as any)
-const privateaccountSettingsRoute = privateaccountSettingsRouteImport.update({
-  id: '/(account)/settings',
-  path: '/settings',
-  getParentRoute: () => privateRouteRoute,
-} as any)
 const privateApplicationsIdIndexRoute =
   privateApplicationsIdIndexRouteImport.update({
     id: '/applications/$id/',
@@ -113,7 +119,8 @@ const privateApplicationsIdSettingsRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof publicDashboardRouteRouteWithChildren
-  '/settings': typeof privateaccountSettingsRoute
+  '/account': typeof privateAccountRoute
+  '/settings': typeof privateSettingsRoute
   '/applications/create': typeof privateApplicationsCreateRoute
   '/change-password': typeof publicauthChangePasswordRoute
   '/forgot-password': typeof publicauthForgotPasswordRoute
@@ -127,7 +134,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/settings': typeof privateaccountSettingsRoute
+  '/account': typeof privateAccountRoute
+  '/settings': typeof privateSettingsRoute
   '/applications/create': typeof privateApplicationsCreateRoute
   '/change-password': typeof publicauthChangePasswordRoute
   '/forgot-password': typeof publicauthForgotPasswordRoute
@@ -146,7 +154,8 @@ export interface FileRoutesById {
   '/(public)': typeof publicRouteRouteWithChildren
   '/(public)/(auth)': typeof publicauthRouteRouteWithChildren
   '/(public)/dashboard': typeof publicDashboardRouteRouteWithChildren
-  '/(private)/(account)/settings': typeof privateaccountSettingsRoute
+  '/(private)/account': typeof privateAccountRoute
+  '/(private)/settings': typeof privateSettingsRoute
   '/(private)/applications/create': typeof privateApplicationsCreateRoute
   '/(public)/(auth)/change-password': typeof publicauthChangePasswordRoute
   '/(public)/(auth)/forgot-password': typeof publicauthForgotPasswordRoute
@@ -163,6 +172,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dashboard'
+    | '/account'
     | '/settings'
     | '/applications/create'
     | '/change-password'
@@ -177,6 +187,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/account'
     | '/settings'
     | '/applications/create'
     | '/change-password'
@@ -195,7 +206,8 @@ export interface FileRouteTypes {
     | '/(public)'
     | '/(public)/(auth)'
     | '/(public)/dashboard'
-    | '/(private)/(account)/settings'
+    | '/(private)/account'
+    | '/(private)/settings'
     | '/(private)/applications/create'
     | '/(public)/(auth)/change-password'
     | '/(public)/(auth)/forgot-password'
@@ -236,6 +248,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/(private)/settings': {
+      id: '/(private)/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof privateSettingsRouteImport
+      parentRoute: typeof privateRouteRoute
+    }
+    '/(private)/account': {
+      id: '/(private)/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof privateAccountRouteImport
+      parentRoute: typeof privateRouteRoute
     }
     '/(public)/dashboard': {
       id: '/(public)/dashboard'
@@ -307,13 +333,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof privateApplicationsCreateRouteImport
       parentRoute: typeof privateRouteRoute
     }
-    '/(private)/(account)/settings': {
-      id: '/(private)/(account)/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof privateaccountSettingsRouteImport
-      parentRoute: typeof privateRouteRoute
-    }
     '/(private)/applications/$id/': {
       id: '/(private)/applications/$id/'
       path: '/applications/$id'
@@ -332,7 +351,8 @@ declare module '@tanstack/react-router' {
 }
 
 interface privateRouteRouteChildren {
-  privateaccountSettingsRoute: typeof privateaccountSettingsRoute
+  privateAccountRoute: typeof privateAccountRoute
+  privateSettingsRoute: typeof privateSettingsRoute
   privateApplicationsCreateRoute: typeof privateApplicationsCreateRoute
   privateApplicationsIndexRoute: typeof privateApplicationsIndexRoute
   privateApplicationsIdSettingsRoute: typeof privateApplicationsIdSettingsRoute
@@ -340,7 +360,8 @@ interface privateRouteRouteChildren {
 }
 
 const privateRouteRouteChildren: privateRouteRouteChildren = {
-  privateaccountSettingsRoute: privateaccountSettingsRoute,
+  privateAccountRoute: privateAccountRoute,
+  privateSettingsRoute: privateSettingsRoute,
   privateApplicationsCreateRoute: privateApplicationsCreateRoute,
   privateApplicationsIndexRoute: privateApplicationsIndexRoute,
   privateApplicationsIdSettingsRoute: privateApplicationsIdSettingsRoute,
