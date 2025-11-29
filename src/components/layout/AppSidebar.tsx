@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Anvil, Home, Settings } from "lucide-react";
+import { Link, useMatchRoute } from "@tanstack/react-router";
 
 import {
   Sidebar,
@@ -13,24 +14,29 @@ import {
 } from "@/components/ui/sidebar";
 import { NavUser } from "../shared/NavUser";
 import { NavMain } from "../shared/NavMain";
-import { Link } from "@tanstack/react-router";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const matchRoute = useMatchRoute();
+
+  const isRouteActive = (url: string) => {
+    return !!matchRoute({ to: url, fuzzy: true });
+  };
+
   const data = {
     navMain: [
       {
         title: "Home",
         url: "/applications",
         icon: Home,
-        isActive: true,
+        isActive: isRouteActive("/applications"),
       },
     ],
     navFooter: [
       {
         title: "Settings",
-        url: "/Settings",
+        url: "/settings",
         icon: Settings,
-        isActive: false,
+        isActive: isRouteActive("/settings"),
       },
     ],
   };
@@ -42,7 +48,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <Link to="/applications" viewTransition={{ types: ["slide-down"] }}>
-                <div className="bg-card  flex aspect-square size-8 items-center justify-center rounded-lg">
+                <div className="bg-card flex aspect-square size-8 items-center justify-center rounded-lg">
                   <Anvil className="text-orange-400" size={20} />
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
@@ -63,7 +69,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarContent>
         <SidebarFooter>
           {data.navFooter.map((item) => (
-            <SidebarMenuItem>
+            <SidebarMenuItem key={item.url}>
               <SidebarMenuButton asChild isActive={item.isActive}>
                 <Link to={item.url} viewTransition={{ types: ["slide-down"] }}>
                   <item.icon />
