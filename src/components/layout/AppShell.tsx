@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "./AppSidebar";
 import { AppShellSkeleton } from "./AppShellSkeleton";
-import { useAdminQuery } from "@/features/admin/hooks/useAdminQuery";
+import { useAdminQuery } from "@/features/account/hooks/useGetAccountQuery";
 
 export default function AppShell() {
   const { data: admin, isLoading, isError } = useAdminQuery();

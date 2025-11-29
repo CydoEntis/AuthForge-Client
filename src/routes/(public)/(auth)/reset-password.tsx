@@ -1,5 +1,5 @@
-import { adminApi } from "@/features/admin/admin.api";
-import { AdminResetPassword } from "@/features/admin/components/AdminResetPassword";
+import { authApi } from "@/features/auth/auth.api";
+import { ResetPassword } from "@/features/auth/components/ResetPassword";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(public)/(auth)/reset-password")({
@@ -13,12 +13,12 @@ export const Route = createFileRoute("/(public)/(auth)/reset-password")({
 
     const response = await context.queryClient.fetchQuery({
       queryKey: ["validate-reset-token", search.token],
-      queryFn: () => adminApi.verifyPasswordResetToken(search.token),
+      queryFn: () => authApi.verifyPasswordResetToken(search.token),
     });
 
     if (!response.isValid) {
       throw redirect({ to: "/login" });
     }
   },
-  component: AdminResetPassword,
+  component: ResetPassword,
 });

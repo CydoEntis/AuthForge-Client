@@ -1,6 +1,6 @@
 import { Form } from "@/components/ui/form";
 import { LoadingButton } from "@/components/shared/LoadingButton";
-import { ContentSection } from "@/features/admin/components/SettingsSection";
+import { ContentSection } from "@/components/ContentSection";
 import { OAuthProviderCard } from "@/components/OAuthProviderCard";
 import { useUpdateOAuthForm } from "@/features/applications/hooks/useUpdateOAuthForm";
 import type { Application } from "../../application.types";

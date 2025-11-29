@@ -1,4 +1,4 @@
-import { ContentSection } from "@/features/admin/components/SettingsSection";
+import { ContentSection } from "@/components/ContentSection";
 import { Form } from "@/components/ui/form";
 import { FormInput } from "@/components/shared/FormInput";
 import { LoadingButton } from "@/components/shared/LoadingButton";

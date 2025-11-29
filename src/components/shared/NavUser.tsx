@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
-import { useAdminLogoutMutation } from "@/features/admin/hooks/useAdminLogoutMutation";
+import { useAdminLogoutMutation } from "@/features/auth/hooks/useLogoutMutation";
 import { Link } from "@tanstack/react-router";
 import { useAuthStore } from "@/store/useAuthStore";
 

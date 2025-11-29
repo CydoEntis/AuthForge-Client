@@ -14,7 +14,7 @@ import ManageOrigins from "@/features/applications/components/ManageOrigins";
 import SelectAppEmailProvider from "@/features/email/components/EmailProviderSelector";
 import EmailProviderSettingsForm from "@/components/EmailProviderSettingsForm";
 import { OAuthProviderCard } from "@/components/OAuthProviderCard";
-import { ContentSection } from "@/features/admin/components/SettingsSection";
+import { ContentSection } from "@/components/ContentSection";
 import { PageHeader } from "@/components/PageHeader";
 
 export const Route = createFileRoute("/(private)/applications/create")({
