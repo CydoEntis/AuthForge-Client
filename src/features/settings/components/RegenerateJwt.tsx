@@ -17,17 +17,16 @@ export function RegenerateJwt() {
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-muted-foreground">
-        Regenerate the JWT secret used to sign authentication tokens. This will immediately invalidate all existing
-        sessions and log out all admins.
-      </p>
-
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button variant="destructive" disabled={isPending}>
             Regenerate JWT Secret
           </Button>
         </AlertDialogTrigger>
+        <p className="text-sm text-muted-foreground">
+          Regenerate the JWT secret used to sign authentication tokens. This will immediately invalidate all existing
+          sessions and log out all admins.
+        </p>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
