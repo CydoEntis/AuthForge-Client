@@ -129,7 +129,7 @@ function CreateApplicationPage() {
             description="Configure how this application sends emails (password resets, verification, etc.)"
           >
             <div className="space-y-6">
-              <div className="flex items-center justify-between rounded-lg border p-4">
+              <div className="flex items-center justify-between rounded-lg border p-4 inset-shadow  bg-linear-to-t from-card to-background  dark:border-black">
                 <div className="space-y-0.5">
                   <Label htmlFor="use-global-settings" className="text-base font-medium">
                     Use Global Email Settings
@@ -151,7 +151,7 @@ function CreateApplicationPage() {
               </div>
 
               {!useGlobalEmailSettings && (
-                <div className="rounded-lg border p-4 space-y-4">
+                <div className=" space-y-4">
                   <div className="space-y-1">
                     <h4 className="text-sm font-medium">Application-Specific Email Settings</h4>
                     <p className="text-sm text-muted-foreground">
@@ -171,7 +171,7 @@ function CreateApplicationPage() {
           </ContentSection>
 
           <ContentSection title="Email Verification" description="Require users to verify their email address">
-            <div className="flex items-center justify-between rounded-lg border p-4">
+            <div className="flex items-center justify-between rounded-lg border p-4 inset-shadow  bg-linear-to-t from-card to-background  dark:border-black">
               <div className="space-y-0.5">
                 <Label htmlFor="require-verification" className="text-base font-medium">
                   Require Email Verification

@@ -27,7 +27,7 @@ function ManageOrigins({ name, isLoading }: ManageOriginProps) {
                 onChange={(e) => setInputValue(e.target.value)}
                 disabled={isLoading}
               />
-              <Button type="button" onClick={addOrigin} disabled={isLoading || !inputValue.trim()} variant="secondary">
+              <Button type="button" variant="outline" onClick={addOrigin} disabled={isLoading || !inputValue.trim()}>
                 <Plus className="w-4 h-4 mr-1" /> Add
               </Button>
             </div>
