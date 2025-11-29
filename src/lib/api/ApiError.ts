@@ -1,4 +1,4 @@
-import type { ApiError as ApiErrorType, FieldError } from "./types";
+import type { ApiError as ApiErrorType, FieldError } from "./lib.types";
 
 export class ApiError extends Error {
   public code: string;

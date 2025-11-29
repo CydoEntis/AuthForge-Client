@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import type { FieldValues, UseFormSetError } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
-import type { ApiResponse } from "./api/types";
+import type { ApiResponse } from "./api/lib.types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

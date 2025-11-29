@@ -1,7 +1,7 @@
 import { useAuthStore } from "@/store/useAuthStore";
 import axios, { type AxiosRequestConfig, type InternalAxiosRequestConfig } from "axios";
 import { ApiError } from "./ApiError";
-import type { ApiResponse } from "./types";
+import type { ApiResponse } from "./lib.types";
 
 const client = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:5046/api/v1",
