@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useZodForm } from "@/hooks/useZodForm";
 import { testEmailConfigSchema } from "../email.schemas";
 import { useTestEmailProviderMutation } from "../hooks/useTestEmailProviderMutation";
-import type { AllowedEmailProviders, EmailProviderConfig, TestEmailConfigRequest } from "../email.types";
+import type { EmailProviderConfig, TestEmailConfigRequest, AllowedEmailProviders } from "../email.types";
 import EmailProviderForm from "./EmailProviderForm";
 import EmailProviderSelector from "./EmailProviderSelector";
 import { EMAIL_PROVIDERS } from "../email.constants";
@@ -38,20 +38,18 @@ export function EmailConfigForm({
   });
 
   const testEmail = useTestEmailProviderMutation(form.setError);
-
-  const selectedProvider = form.watch("emailProvider") || initialProvider;
+  const selectedProvider = form.watch("emailProvider");
 
   useEffect(() => {
-    const currentProvider = form.getValues("emailProvider");
-
-    if (currentProvider === EMAIL_PROVIDERS.SMTP) {
+    if (selectedProvider === EMAIL_PROVIDERS.SMTP) {
       form.setValue("resendApiKey", "");
-    } else if (currentProvider === EMAIL_PROVIDERS.RESEND) {
+    } else if (selectedProvider === EMAIL_PROVIDERS.RESEND) {
       form.setValue("smtpHost", "");
       form.setValue("smtpPort", 587);
       form.setValue("smtpUsername", "");
       form.setValue("smtpPassword", "");
     }
+    // keep `useSsl` untouched — it's part of the schema defaults
   }, [selectedProvider, form]);
 
   const handleTest = form.handleSubmit(async (values) => {
@@ -59,8 +57,31 @@ export function EmailConfigForm({
   });
 
   const handleSave = form.handleSubmit(async (values) => {
-    const { testRecipient, ...emailProviderConfig } = values;
-    await onSave(emailProviderConfig as EmailProviderConfig);
+    const { testRecipient, ...v } = values;
+
+    // IMPORTANT: `useSsl` exists on the schema with a default, so include it in both branches.
+    const config: EmailProviderConfig =
+      v.emailProvider === EMAIL_PROVIDERS.SMTP
+        ? {
+            emailProvider: EMAIL_PROVIDERS.SMTP,
+            fromEmail: v.fromEmail,
+            fromName: v.fromName,
+            smtpHost: v.smtpHost!,
+            smtpPort: v.smtpPort!,
+            smtpUsername: v.smtpUsername!,
+            smtpPassword: v.smtpPassword!,
+            useSsl: v.useSsl ?? true,
+          }
+        : {
+            emailProvider: EMAIL_PROVIDERS.RESEND,
+            fromEmail: v.fromEmail,
+            fromName: v.fromName,
+            resendApiKey: v.resendApiKey!,
+            // include useSsl because your schema requires it (has a default)
+            useSsl: v.useSsl ?? true,
+          };
+
+    await onSave(config);
   });
 
   return (
@@ -81,3 +102,5 @@ export function EmailConfigForm({
     </div>
   );
 }
+
+export default EmailConfigForm;

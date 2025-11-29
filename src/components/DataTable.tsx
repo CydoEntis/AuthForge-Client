@@ -10,6 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { PagedResponse } from "@/lib/api/lib.types";
+import { Card } from "./ui/card";
 
 declare module "@tanstack/react-table" {
   interface ColumnMeta<TData, TValue> {
@@ -57,9 +58,9 @@ export function DataTable<TData>({
 
   if (!data || data.items.length === 0) {
     return (
-      <div className="rounded-xl border dark:border-black border-[#c7c7c7] p-12 text-center">
+      <Card className=" p-12 text-center">
         <p className="text-muted-foreground">{emptyMessage}</p>
-      </div>
+      </Card>
     );
   }
 
