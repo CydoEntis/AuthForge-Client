@@ -18,7 +18,7 @@ import type {
   RegenerateKeysResponse,
 } from "./application.types";
 
-const prefix = "${prefix}";
+const prefix = "/applications";
 
 export const applicationsApi = {
   getAll: async (params?: {
