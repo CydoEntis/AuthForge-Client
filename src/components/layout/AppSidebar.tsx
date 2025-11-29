@@ -70,7 +70,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarFooter>
           {data.navFooter.map((item) => (
             <SidebarMenuItem key={item.url}>
-              <SidebarMenuButton asChild isActive={item.isActive}>
+              <SidebarMenuButton className="py-4.5" asChild isActive={item.isActive}>
                 <Link to={item.url} viewTransition={{ types: ["slide-down"] }}>
                   <item.icon />
                   <span>{item.title}</span>

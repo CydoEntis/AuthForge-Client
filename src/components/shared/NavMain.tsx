@@ -19,7 +19,7 @@ export function NavMain({
         {items.map((item) => (
           <Collapsible key={item.title} asChild defaultOpen={item.isActive}>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={item.isActive}>
+              <SidebarMenuButton className="py-4.5" asChild isActive={item.isActive}>
                 <Link to={item.url} viewTransition={{ types: ["slide-down"] }}>
                   <item.icon />
                   <span>{item.title}</span>
