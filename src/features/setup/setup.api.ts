@@ -12,19 +12,21 @@ import type {
   TestDatabaseConnectionRequest,
 } from "./setup.types";
 
+const prefix = "/setup";
+
 export const setupApi = {
   getSetupStatus: async (): Promise<SetupStatusResponse> => {
-    const data = await apiClient.get<SetupStatusResponse>("/setup/status");
+    const data = await apiClient.get<SetupStatusResponse>(`${prefix}/status`);
     return setupStatusResponseSchema.parse(data);
   },
 
   testDatabaseConnection: async (request: TestDatabaseConnectionRequest): Promise<TestDatabaseConnectionResponse> => {
-    const data = await apiClient.post<TestDatabaseConnectionResponse>("/setup/test-database", request);
+    const data = await apiClient.post<TestDatabaseConnectionResponse>(`${prefix}/test-database`, request);
     return testDatabaseConnectionResponseSchema.parse(data);
   },
 
   completeSetup: async (request: CompleteSetupRequest): Promise<CompleteSetupResponse> => {
-    const data = await apiClient.post<CompleteSetupResponse>("/setup/complete", request);
+    const data = await apiClient.post<CompleteSetupResponse>(`${prefix}/complete`, request);
     return completeSetupResponseSchema.parse(data);
   },
 };

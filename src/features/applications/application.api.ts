@@ -18,6 +18,8 @@ import type {
   RegenerateKeysResponse,
 } from "./application.types";
 
+const prefix = "${prefix}";
+
 export const applicationsApi = {
   getAll: async (params?: {
     search?: string;
@@ -37,31 +39,31 @@ export const applicationsApi = {
     if (params?.pageSize) queryParams.append("pageSize", params.pageSize.toString());
 
     const query = queryParams.toString();
-    const response = await apiClient.get<ListApplicationsResponse>(`/applications${query ? `?${query}` : ""}`);
+    const response = await apiClient.get<ListApplicationsResponse>(`${prefix}${query ? `?${query}` : ""}`);
     return listApplicationsResponseSchema.parse(response);
   },
 
   getById: async (id: string): Promise<GetApplicationResponse> => {
-    const response = await apiClient.get<GetApplicationResponse>(`/applications/${id}`);
+    const response = await apiClient.get<GetApplicationResponse>(`${prefix}/${id}`);
     return getApplicationResponseSchema.parse(response);
   },
 
   create: async (request: CreateApplicationRequest): Promise<CreateApplicationResponse> => {
-    const response = await apiClient.post<CreateApplicationResponse>("/applications", request);
+    const response = await apiClient.post<CreateApplicationResponse>(`${prefix}`, request);
     return createApplicationResponseSchema.parse(response);
   },
 
   update: async (id: string, request: Partial<CreateApplicationRequest>): Promise<ApplicationResponse> => {
-    const response = await apiClient.put<ApplicationResponse>(`/applications/${id}`, request);
+    const response = await apiClient.put<ApplicationResponse>(`${prefix}/${id}`, request);
     return applicationResponseSchema.parse(response);
   },
 
   delete: async (id: string): Promise<void> => {
-    await apiClient.delete<void>(`/applications/${id}`);
+    await apiClient.delete<void>(`${prefix}/${id}`);
   },
 
   regenerateKeys: async (id: string): Promise<RegenerateKeysResponse> => {
-    const response = await apiClient.post<RegenerateKeysResponse>(`/applications/${id}/regenerate-secret`, {});
+    const response = await apiClient.post<RegenerateKeysResponse>(`${prefix}/${id}/regenerate-secret`, {});
     return regenerateKeysResponseSchema.parse(response);
   },
 
@@ -69,17 +71,17 @@ export const applicationsApi = {
     id: string,
     request: UpdateApplicationEmailProviderRequest
   ): Promise<ApplicationResponse> => {
-    const response = await apiClient.put<ApplicationResponse>(`/applications/${id}/email`, request);
+    const response = await apiClient.put<ApplicationResponse>(`${prefix}/${id}/email`, request);
     return applicationResponseSchema.parse(response);
   },
 
   updateOAuth: async (id: string, request: UpdateApplicationOAuthRequest): Promise<ApplicationResponse> => {
-    const response = await apiClient.put<ApplicationResponse>(`/applications/${id}/oauth`, request);
+    const response = await apiClient.put<ApplicationResponse>(`${prefix}/${id}/oauth`, request);
     return applicationResponseSchema.parse(response);
   },
 
   updateOrigins: async (id: string, request: UpdateApplicationOriginsRequest): Promise<ApplicationResponse> => {
-    const response = await apiClient.put<ApplicationResponse>(`/applications/${id}/origins`, request);
+    const response = await apiClient.put<ApplicationResponse>(`${prefix}/${id}/origins`, request);
     return applicationResponseSchema.parse(response);
   },
 };

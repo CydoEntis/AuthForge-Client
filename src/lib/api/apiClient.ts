@@ -60,7 +60,7 @@ client.interceptors.response.use(
       refreshPromise = (async () => {
         try {
           const refreshResponse = await axios.post(
-            `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5046/api/v1"}/admin/refresh`,
+            `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5046/api/v1"}/auth/refresh`,
             { refreshToken }
           );
 
